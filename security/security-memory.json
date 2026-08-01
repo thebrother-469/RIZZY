@@ -1,0 +1,23 @@
+{
+  "$schema": "./security-memory.schema.md",
+  "version": 2,
+  "policy": {
+    "maxDismissalAgeDays": 90,
+    "note": "Append-only audit registry. Every dismissal must be re-reviewed before nextRescanAt. CI fails once a record expires. Records are never edited to hide history; a superseded decision is appended as a new record."
+  },
+  "dismissals": [
+    {
+      "internal_id": "SUPA_pg_graphql_authenticated_table_exposed",
+      "title": "pg_graphql exposes user-owned tables to the authenticated role",
+      "severity": "WARN",
+      "rationale": "All 11 affected public tables (profiles, chats, messages, missions, memories, streaks, subscriptions, usage_daily, user_xp, xp_events, badges) are read directly by the authenticated frontend through PostgREST/pg_graphql. Every one has RLS enabled with owner-scoped policies on auth.uid() and no anon SELECT grant. Automated verification (scripts/verify-graphql-security.ts) executes real anon and authenticated GraphQL queries on every CI run and fails on any cross-user row. Revoking authenticated SELECT would break core product functionality; schema discoverability by an already-authenticated user is an accepted trade-off.",
+      "reviewer": "lovable-agent",
+      "reviewedAt": "2026-07-31T00:00:00.000Z",
+      "rescannedAt": "2026-08-01T00:00:00.000Z",
+      "nextRescanAt": "2026-10-29T00:00:00.000Z",
+      "commit": "18c731fe380465bb1b70f9d3ff51283ab211f3d1",
+      "branch": "edit/edt-f54d99f4-29cc-4ccb-9c67-572f061f3689",
+      "evidence": "scripts/verify-graphql-security.ts executed live anonymous GraphQL queries against every affected collection: HTTP 200 with zero rows returned and permission errors for user-owned collections; grants audited via SQL show no anon SELECT on any of the 11 tables and RLS enabled with auth.uid()-scoped policies on all of them."
+    }
+  ]
+}

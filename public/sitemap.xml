@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://rizzgod-ai.vercel.app/</loc><changefreq>weekly</changefreq><priority>1.0</priority></url>
+  <url><loc>https://rizzgod-ai.vercel.app/pricing</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://rizzgod-ai.vercel.app/hinge-openers</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://rizzgod-ai.vercel.app/flirty-text-messages</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://rizzgod-ai.vercel.app/tinder-openers</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://rizzgod-ai.vercel.app/dating-profile-generator</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://rizzgod-ai.vercel.app/ai-dating-guide</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://rizzgod-ai.vercel.app/auth</loc><changefreq>yearly</changefreq><priority>0.4</priority></url>
+  <url><loc>https://rizzgod-ai.vercel.app/reset-password</loc><changefreq>yearly</changefreq><priority>0.2</priority></url>
+  <url><loc>https://rizzgod-ai.vercel.app/terms</loc><changefreq>yearly</changefreq><priority>0.3</priority></url>
+  <url><loc>https://rizzgod-ai.vercel.app/privacy</loc><changefreq>yearly</changefreq><priority>0.3</priority></url>
+  <url><loc>https://rizzgod-ai.vercel.app/refund-policy</loc><changefreq>yearly</changefreq><priority>0.3</priority></url>
+</urlset>

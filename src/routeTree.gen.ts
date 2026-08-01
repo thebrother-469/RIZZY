@@ -10,33 +10,469 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AiDatingGuideRouteImport } from './routes/ai-dating-guide'
+import { Route as AppRouteImport } from './routes/app'
+import { Route as AuthRouteImport } from './routes/auth'
+import { Route as DatingProfileGeneratorRouteImport } from './routes/dating-profile-generator'
+import { Route as FlirtyTextMessagesRouteImport } from './routes/flirty-text-messages'
+import { Route as HingeOpenersRouteImport } from './routes/hinge-openers'
+import { Route as McpRouteImport } from './routes/mcp'
+import { Route as PricingRouteImport } from './routes/pricing'
+import { Route as PrivacyRouteImport } from './routes/privacy'
+import { Route as RefundPolicyRouteImport } from './routes/refund-policy'
+import { Route as ResetPasswordRouteImport } from './routes/reset-password'
+import { Route as TermsRouteImport } from './routes/terms'
+import { Route as TinderOpenersRouteImport } from './routes/tinder-openers'
+import { Route as Char91DotmcpChar93ListToolsRouteImport } from './routes/[.mcp]/list-tools'
+import { Route as Char91DotwellKnownChar93OauthProtectedResourceRouteImport } from './routes/[.well-known]/oauth-protected-resource'
+import { Route as ApiHealthzRouteImport } from './routes/api/healthz'
+import { Route as AppIndexRouteImport } from './routes/app.index'
+import { Route as AppChatRouteImport } from './routes/app.chat'
+import { Route as AppCoachRouteImport } from './routes/app.coach'
+import { Route as AppCoachesRouteImport } from './routes/app.coaches'
+import { Route as AppMemoryRouteImport } from './routes/app.memory'
+import { Route as AppMissionsRouteImport } from './routes/app.missions'
+import { Route as AppOnboardingRouteImport } from './routes/app.onboarding'
+import { Route as AppProfileGeneratorRouteImport } from './routes/app.profile-generator'
+import { Route as AppRoastRouteImport } from './routes/app.roast'
+import { Route as AppRoleplayRouteImport } from './routes/app.roleplay'
+import { Route as AppSettingsRouteImport } from './routes/app.settings'
+import { Route as DotlovableOauthConsentRouteImport } from './routes/[.]lovable.oauth.consent'
+import { Route as Char91DotmcpChar93InvokeToolToolRouteImport } from './routes/[.mcp]/invoke-tool/$tool'
+import { Route as ApiPublicCspReportRouteImport } from './routes/api/public/csp-report'
+import { Route as ApiPublicHealthRouteImport } from './routes/api/public/health'
+import { Route as ApiPublicLemonCheckoutRouteImport } from './routes/api/public/lemon-checkout'
+import { Route as ApiPublicLemonSyncRouteImport } from './routes/api/public/lemon-sync'
+import { Route as ApiPublicLemonWebhookRouteImport } from './routes/api/public/lemon-webhook'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AiDatingGuideRoute = AiDatingGuideRouteImport.update({
+  id: '/ai-dating-guide',
+  path: '/ai-dating-guide',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AppRoute = AppRouteImport.update({
+  id: '/app',
+  path: '/app',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DatingProfileGeneratorRoute = DatingProfileGeneratorRouteImport.update({
+  id: '/dating-profile-generator',
+  path: '/dating-profile-generator',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FlirtyTextMessagesRoute = FlirtyTextMessagesRouteImport.update({
+  id: '/flirty-text-messages',
+  path: '/flirty-text-messages',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const HingeOpenersRoute = HingeOpenersRouteImport.update({
+  id: '/hinge-openers',
+  path: '/hinge-openers',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const McpRoute = McpRouteImport.update({
+  id: '/mcp',
+  path: '/mcp',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PricingRoute = PricingRouteImport.update({
+  id: '/pricing',
+  path: '/pricing',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PrivacyRoute = PrivacyRouteImport.update({
+  id: '/privacy',
+  path: '/privacy',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RefundPolicyRoute = RefundPolicyRouteImport.update({
+  id: '/refund-policy',
+  path: '/refund-policy',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ResetPasswordRoute = ResetPasswordRouteImport.update({
+  id: '/reset-password',
+  path: '/reset-password',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TermsRoute = TermsRouteImport.update({
+  id: '/terms',
+  path: '/terms',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TinderOpenersRoute = TinderOpenersRouteImport.update({
+  id: '/tinder-openers',
+  path: '/tinder-openers',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const Char91DotmcpChar93ListToolsRoute =
+  Char91DotmcpChar93ListToolsRouteImport.update({
+    id: '/.mcp/list-tools',
+    path: '/.mcp/list-tools',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const Char91DotwellKnownChar93OauthProtectedResourceRoute =
+  Char91DotwellKnownChar93OauthProtectedResourceRouteImport.update({
+    id: '/.well-known/oauth-protected-resource',
+    path: '/.well-known/oauth-protected-resource',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const ApiHealthzRoute = ApiHealthzRouteImport.update({
+  id: '/api/healthz',
+  path: '/api/healthz',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AppIndexRoute = AppIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppChatRoute = AppChatRouteImport.update({
+  id: '/chat',
+  path: '/chat',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppCoachRoute = AppCoachRouteImport.update({
+  id: '/coach',
+  path: '/coach',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppCoachesRoute = AppCoachesRouteImport.update({
+  id: '/coaches',
+  path: '/coaches',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppMemoryRoute = AppMemoryRouteImport.update({
+  id: '/memory',
+  path: '/memory',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppMissionsRoute = AppMissionsRouteImport.update({
+  id: '/missions',
+  path: '/missions',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppOnboardingRoute = AppOnboardingRouteImport.update({
+  id: '/onboarding',
+  path: '/onboarding',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppProfileGeneratorRoute = AppProfileGeneratorRouteImport.update({
+  id: '/profile-generator',
+  path: '/profile-generator',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppRoastRoute = AppRoastRouteImport.update({
+  id: '/roast',
+  path: '/roast',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppRoleplayRoute = AppRoleplayRouteImport.update({
+  id: '/roleplay',
+  path: '/roleplay',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppSettingsRoute = AppSettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => AppRoute,
+} as any)
+const DotlovableOauthConsentRoute = DotlovableOauthConsentRouteImport.update({
+  id: '/.lovable/oauth/consent',
+  path: '/.lovable/oauth/consent',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const Char91DotmcpChar93InvokeToolToolRoute =
+  Char91DotmcpChar93InvokeToolToolRouteImport.update({
+    id: '/.mcp/invoke-tool/$tool',
+    path: '/.mcp/invoke-tool/$tool',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const ApiPublicCspReportRoute = ApiPublicCspReportRouteImport.update({
+  id: '/api/public/csp-report',
+  path: '/api/public/csp-report',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiPublicHealthRoute = ApiPublicHealthRouteImport.update({
+  id: '/api/public/health',
+  path: '/api/public/health',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiPublicLemonCheckoutRoute = ApiPublicLemonCheckoutRouteImport.update({
+  id: '/api/public/lemon-checkout',
+  path: '/api/public/lemon-checkout',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiPublicLemonSyncRoute = ApiPublicLemonSyncRouteImport.update({
+  id: '/api/public/lemon-sync',
+  path: '/api/public/lemon-sync',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiPublicLemonWebhookRoute = ApiPublicLemonWebhookRouteImport.update({
+  id: '/api/public/lemon-webhook',
+  path: '/api/public/lemon-webhook',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/ai-dating-guide': typeof AiDatingGuideRoute
+  '/app': typeof AppRouteWithChildren
+  '/auth': typeof AuthRoute
+  '/dating-profile-generator': typeof DatingProfileGeneratorRoute
+  '/flirty-text-messages': typeof FlirtyTextMessagesRoute
+  '/hinge-openers': typeof HingeOpenersRoute
+  '/mcp': typeof McpRoute
+  '/pricing': typeof PricingRoute
+  '/privacy': typeof PrivacyRoute
+  '/refund-policy': typeof RefundPolicyRoute
+  '/reset-password': typeof ResetPasswordRoute
+  '/terms': typeof TermsRoute
+  '/tinder-openers': typeof TinderOpenersRoute
+  '/.mcp/list-tools': typeof Char91DotmcpChar93ListToolsRoute
+  '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
+  '/api/healthz': typeof ApiHealthzRoute
+  '/app/chat': typeof AppChatRoute
+  '/app/coach': typeof AppCoachRoute
+  '/app/coaches': typeof AppCoachesRoute
+  '/app/memory': typeof AppMemoryRoute
+  '/app/missions': typeof AppMissionsRoute
+  '/app/onboarding': typeof AppOnboardingRoute
+  '/app/profile-generator': typeof AppProfileGeneratorRoute
+  '/app/roast': typeof AppRoastRoute
+  '/app/roleplay': typeof AppRoleplayRoute
+  '/app/settings': typeof AppSettingsRoute
+  '/app/': typeof AppIndexRoute
+  '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
+  '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
+  '/api/public/csp-report': typeof ApiPublicCspReportRoute
+  '/api/public/health': typeof ApiPublicHealthRoute
+  '/api/public/lemon-checkout': typeof ApiPublicLemonCheckoutRoute
+  '/api/public/lemon-sync': typeof ApiPublicLemonSyncRoute
+  '/api/public/lemon-webhook': typeof ApiPublicLemonWebhookRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/ai-dating-guide': typeof AiDatingGuideRoute
+  '/auth': typeof AuthRoute
+  '/dating-profile-generator': typeof DatingProfileGeneratorRoute
+  '/flirty-text-messages': typeof FlirtyTextMessagesRoute
+  '/hinge-openers': typeof HingeOpenersRoute
+  '/mcp': typeof McpRoute
+  '/pricing': typeof PricingRoute
+  '/privacy': typeof PrivacyRoute
+  '/refund-policy': typeof RefundPolicyRoute
+  '/reset-password': typeof ResetPasswordRoute
+  '/terms': typeof TermsRoute
+  '/tinder-openers': typeof TinderOpenersRoute
+  '/.mcp/list-tools': typeof Char91DotmcpChar93ListToolsRoute
+  '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
+  '/api/healthz': typeof ApiHealthzRoute
+  '/app/chat': typeof AppChatRoute
+  '/app/coach': typeof AppCoachRoute
+  '/app/coaches': typeof AppCoachesRoute
+  '/app/memory': typeof AppMemoryRoute
+  '/app/missions': typeof AppMissionsRoute
+  '/app/onboarding': typeof AppOnboardingRoute
+  '/app/profile-generator': typeof AppProfileGeneratorRoute
+  '/app/roast': typeof AppRoastRoute
+  '/app/roleplay': typeof AppRoleplayRoute
+  '/app/settings': typeof AppSettingsRoute
+  '/app': typeof AppIndexRoute
+  '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
+  '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
+  '/api/public/csp-report': typeof ApiPublicCspReportRoute
+  '/api/public/health': typeof ApiPublicHealthRoute
+  '/api/public/lemon-checkout': typeof ApiPublicLemonCheckoutRoute
+  '/api/public/lemon-sync': typeof ApiPublicLemonSyncRoute
+  '/api/public/lemon-webhook': typeof ApiPublicLemonWebhookRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/ai-dating-guide': typeof AiDatingGuideRoute
+  '/app': typeof AppRouteWithChildren
+  '/auth': typeof AuthRoute
+  '/dating-profile-generator': typeof DatingProfileGeneratorRoute
+  '/flirty-text-messages': typeof FlirtyTextMessagesRoute
+  '/hinge-openers': typeof HingeOpenersRoute
+  '/mcp': typeof McpRoute
+  '/pricing': typeof PricingRoute
+  '/privacy': typeof PrivacyRoute
+  '/refund-policy': typeof RefundPolicyRoute
+  '/reset-password': typeof ResetPasswordRoute
+  '/terms': typeof TermsRoute
+  '/tinder-openers': typeof TinderOpenersRoute
+  '/.mcp/list-tools': typeof Char91DotmcpChar93ListToolsRoute
+  '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
+  '/api/healthz': typeof ApiHealthzRoute
+  '/app/chat': typeof AppChatRoute
+  '/app/coach': typeof AppCoachRoute
+  '/app/coaches': typeof AppCoachesRoute
+  '/app/memory': typeof AppMemoryRoute
+  '/app/missions': typeof AppMissionsRoute
+  '/app/onboarding': typeof AppOnboardingRoute
+  '/app/profile-generator': typeof AppProfileGeneratorRoute
+  '/app/roast': typeof AppRoastRoute
+  '/app/roleplay': typeof AppRoleplayRoute
+  '/app/settings': typeof AppSettingsRoute
+  '/app/': typeof AppIndexRoute
+  '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
+  '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
+  '/api/public/csp-report': typeof ApiPublicCspReportRoute
+  '/api/public/health': typeof ApiPublicHealthRoute
+  '/api/public/lemon-checkout': typeof ApiPublicLemonCheckoutRoute
+  '/api/public/lemon-sync': typeof ApiPublicLemonSyncRoute
+  '/api/public/lemon-webhook': typeof ApiPublicLemonWebhookRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/ai-dating-guide'
+    | '/app'
+    | '/auth'
+    | '/dating-profile-generator'
+    | '/flirty-text-messages'
+    | '/hinge-openers'
+    | '/mcp'
+    | '/pricing'
+    | '/privacy'
+    | '/refund-policy'
+    | '/reset-password'
+    | '/terms'
+    | '/tinder-openers'
+    | '/.mcp/list-tools'
+    | '/.well-known/oauth-protected-resource'
+    | '/api/healthz'
+    | '/app/chat'
+    | '/app/coach'
+    | '/app/coaches'
+    | '/app/memory'
+    | '/app/missions'
+    | '/app/onboarding'
+    | '/app/profile-generator'
+    | '/app/roast'
+    | '/app/roleplay'
+    | '/app/settings'
+    | '/app/'
+    | '/.lovable/oauth/consent'
+    | '/.mcp/invoke-tool/$tool'
+    | '/api/public/csp-report'
+    | '/api/public/health'
+    | '/api/public/lemon-checkout'
+    | '/api/public/lemon-sync'
+    | '/api/public/lemon-webhook'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/ai-dating-guide'
+    | '/auth'
+    | '/dating-profile-generator'
+    | '/flirty-text-messages'
+    | '/hinge-openers'
+    | '/mcp'
+    | '/pricing'
+    | '/privacy'
+    | '/refund-policy'
+    | '/reset-password'
+    | '/terms'
+    | '/tinder-openers'
+    | '/.mcp/list-tools'
+    | '/.well-known/oauth-protected-resource'
+    | '/api/healthz'
+    | '/app/chat'
+    | '/app/coach'
+    | '/app/coaches'
+    | '/app/memory'
+    | '/app/missions'
+    | '/app/onboarding'
+    | '/app/profile-generator'
+    | '/app/roast'
+    | '/app/roleplay'
+    | '/app/settings'
+    | '/app'
+    | '/.lovable/oauth/consent'
+    | '/.mcp/invoke-tool/$tool'
+    | '/api/public/csp-report'
+    | '/api/public/health'
+    | '/api/public/lemon-checkout'
+    | '/api/public/lemon-sync'
+    | '/api/public/lemon-webhook'
+  id:
+    | '__root__'
+    | '/'
+    | '/ai-dating-guide'
+    | '/app'
+    | '/auth'
+    | '/dating-profile-generator'
+    | '/flirty-text-messages'
+    | '/hinge-openers'
+    | '/mcp'
+    | '/pricing'
+    | '/privacy'
+    | '/refund-policy'
+    | '/reset-password'
+    | '/terms'
+    | '/tinder-openers'
+    | '/.mcp/list-tools'
+    | '/.well-known/oauth-protected-resource'
+    | '/api/healthz'
+    | '/app/chat'
+    | '/app/coach'
+    | '/app/coaches'
+    | '/app/memory'
+    | '/app/missions'
+    | '/app/onboarding'
+    | '/app/profile-generator'
+    | '/app/roast'
+    | '/app/roleplay'
+    | '/app/settings'
+    | '/app/'
+    | '/.lovable/oauth/consent'
+    | '/.mcp/invoke-tool/$tool'
+    | '/api/public/csp-report'
+    | '/api/public/health'
+    | '/api/public/lemon-checkout'
+    | '/api/public/lemon-sync'
+    | '/api/public/lemon-webhook'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AiDatingGuideRoute: typeof AiDatingGuideRoute
+  AppRoute: typeof AppRouteWithChildren
+  AuthRoute: typeof AuthRoute
+  DatingProfileGeneratorRoute: typeof DatingProfileGeneratorRoute
+  FlirtyTextMessagesRoute: typeof FlirtyTextMessagesRoute
+  HingeOpenersRoute: typeof HingeOpenersRoute
+  McpRoute: typeof McpRoute
+  PricingRoute: typeof PricingRoute
+  PrivacyRoute: typeof PrivacyRoute
+  RefundPolicyRoute: typeof RefundPolicyRoute
+  ResetPasswordRoute: typeof ResetPasswordRoute
+  TermsRoute: typeof TermsRoute
+  TinderOpenersRoute: typeof TinderOpenersRoute
+  Char91DotmcpChar93ListToolsRoute: typeof Char91DotmcpChar93ListToolsRoute
+  Char91DotwellKnownChar93OauthProtectedResourceRoute: typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
+  ApiHealthzRoute: typeof ApiHealthzRoute
+  DotlovableOauthConsentRoute: typeof DotlovableOauthConsentRoute
+  Char91DotmcpChar93InvokeToolToolRoute: typeof Char91DotmcpChar93InvokeToolToolRoute
+  ApiPublicCspReportRoute: typeof ApiPublicCspReportRoute
+  ApiPublicHealthRoute: typeof ApiPublicHealthRoute
+  ApiPublicLemonCheckoutRoute: typeof ApiPublicLemonCheckoutRoute
+  ApiPublicLemonSyncRoute: typeof ApiPublicLemonSyncRoute
+  ApiPublicLemonWebhookRoute: typeof ApiPublicLemonWebhookRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +484,303 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/ai-dating-guide': {
+      id: '/ai-dating-guide'
+      path: '/ai-dating-guide'
+      fullPath: '/ai-dating-guide'
+      preLoaderRoute: typeof AiDatingGuideRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/app': {
+      id: '/app'
+      path: '/app'
+      fullPath: '/app'
+      preLoaderRoute: typeof AppRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/dating-profile-generator': {
+      id: '/dating-profile-generator'
+      path: '/dating-profile-generator'
+      fullPath: '/dating-profile-generator'
+      preLoaderRoute: typeof DatingProfileGeneratorRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/flirty-text-messages': {
+      id: '/flirty-text-messages'
+      path: '/flirty-text-messages'
+      fullPath: '/flirty-text-messages'
+      preLoaderRoute: typeof FlirtyTextMessagesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/hinge-openers': {
+      id: '/hinge-openers'
+      path: '/hinge-openers'
+      fullPath: '/hinge-openers'
+      preLoaderRoute: typeof HingeOpenersRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/mcp': {
+      id: '/mcp'
+      path: '/mcp'
+      fullPath: '/mcp'
+      preLoaderRoute: typeof McpRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/pricing': {
+      id: '/pricing'
+      path: '/pricing'
+      fullPath: '/pricing'
+      preLoaderRoute: typeof PricingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/privacy': {
+      id: '/privacy'
+      path: '/privacy'
+      fullPath: '/privacy'
+      preLoaderRoute: typeof PrivacyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/refund-policy': {
+      id: '/refund-policy'
+      path: '/refund-policy'
+      fullPath: '/refund-policy'
+      preLoaderRoute: typeof RefundPolicyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/reset-password': {
+      id: '/reset-password'
+      path: '/reset-password'
+      fullPath: '/reset-password'
+      preLoaderRoute: typeof ResetPasswordRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/terms': {
+      id: '/terms'
+      path: '/terms'
+      fullPath: '/terms'
+      preLoaderRoute: typeof TermsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/tinder-openers': {
+      id: '/tinder-openers'
+      path: '/tinder-openers'
+      fullPath: '/tinder-openers'
+      preLoaderRoute: typeof TinderOpenersRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/.mcp/list-tools': {
+      id: '/.mcp/list-tools'
+      path: '/.mcp/list-tools'
+      fullPath: '/.mcp/list-tools'
+      preLoaderRoute: typeof Char91DotmcpChar93ListToolsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/.well-known/oauth-protected-resource': {
+      id: '/.well-known/oauth-protected-resource'
+      path: '/.well-known/oauth-protected-resource'
+      fullPath: '/.well-known/oauth-protected-resource'
+      preLoaderRoute: typeof Char91DotwellKnownChar93OauthProtectedResourceRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/healthz': {
+      id: '/api/healthz'
+      path: '/api/healthz'
+      fullPath: '/api/healthz'
+      preLoaderRoute: typeof ApiHealthzRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/app/': {
+      id: '/app/'
+      path: '/'
+      fullPath: '/app/'
+      preLoaderRoute: typeof AppIndexRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/chat': {
+      id: '/app/chat'
+      path: '/chat'
+      fullPath: '/app/chat'
+      preLoaderRoute: typeof AppChatRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/coach': {
+      id: '/app/coach'
+      path: '/coach'
+      fullPath: '/app/coach'
+      preLoaderRoute: typeof AppCoachRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/coaches': {
+      id: '/app/coaches'
+      path: '/coaches'
+      fullPath: '/app/coaches'
+      preLoaderRoute: typeof AppCoachesRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/memory': {
+      id: '/app/memory'
+      path: '/memory'
+      fullPath: '/app/memory'
+      preLoaderRoute: typeof AppMemoryRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/missions': {
+      id: '/app/missions'
+      path: '/missions'
+      fullPath: '/app/missions'
+      preLoaderRoute: typeof AppMissionsRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/onboarding': {
+      id: '/app/onboarding'
+      path: '/onboarding'
+      fullPath: '/app/onboarding'
+      preLoaderRoute: typeof AppOnboardingRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/profile-generator': {
+      id: '/app/profile-generator'
+      path: '/profile-generator'
+      fullPath: '/app/profile-generator'
+      preLoaderRoute: typeof AppProfileGeneratorRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/roast': {
+      id: '/app/roast'
+      path: '/roast'
+      fullPath: '/app/roast'
+      preLoaderRoute: typeof AppRoastRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/roleplay': {
+      id: '/app/roleplay'
+      path: '/roleplay'
+      fullPath: '/app/roleplay'
+      preLoaderRoute: typeof AppRoleplayRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/settings': {
+      id: '/app/settings'
+      path: '/settings'
+      fullPath: '/app/settings'
+      preLoaderRoute: typeof AppSettingsRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/.lovable/oauth/consent': {
+      id: '/.lovable/oauth/consent'
+      path: '/.lovable/oauth/consent'
+      fullPath: '/.lovable/oauth/consent'
+      preLoaderRoute: typeof DotlovableOauthConsentRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/.mcp/invoke-tool/$tool': {
+      id: '/.mcp/invoke-tool/$tool'
+      path: '/.mcp/invoke-tool/$tool'
+      fullPath: '/.mcp/invoke-tool/$tool'
+      preLoaderRoute: typeof Char91DotmcpChar93InvokeToolToolRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/public/csp-report': {
+      id: '/api/public/csp-report'
+      path: '/api/public/csp-report'
+      fullPath: '/api/public/csp-report'
+      preLoaderRoute: typeof ApiPublicCspReportRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/public/health': {
+      id: '/api/public/health'
+      path: '/api/public/health'
+      fullPath: '/api/public/health'
+      preLoaderRoute: typeof ApiPublicHealthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/public/lemon-checkout': {
+      id: '/api/public/lemon-checkout'
+      path: '/api/public/lemon-checkout'
+      fullPath: '/api/public/lemon-checkout'
+      preLoaderRoute: typeof ApiPublicLemonCheckoutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/public/lemon-sync': {
+      id: '/api/public/lemon-sync'
+      path: '/api/public/lemon-sync'
+      fullPath: '/api/public/lemon-sync'
+      preLoaderRoute: typeof ApiPublicLemonSyncRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/public/lemon-webhook': {
+      id: '/api/public/lemon-webhook'
+      path: '/api/public/lemon-webhook'
+      fullPath: '/api/public/lemon-webhook'
+      preLoaderRoute: typeof ApiPublicLemonWebhookRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
+interface AppRouteChildren {
+  AppChatRoute: typeof AppChatRoute
+  AppCoachRoute: typeof AppCoachRoute
+  AppCoachesRoute: typeof AppCoachesRoute
+  AppMemoryRoute: typeof AppMemoryRoute
+  AppMissionsRoute: typeof AppMissionsRoute
+  AppOnboardingRoute: typeof AppOnboardingRoute
+  AppProfileGeneratorRoute: typeof AppProfileGeneratorRoute
+  AppRoastRoute: typeof AppRoastRoute
+  AppRoleplayRoute: typeof AppRoleplayRoute
+  AppSettingsRoute: typeof AppSettingsRoute
+  AppIndexRoute: typeof AppIndexRoute
+}
+
+const AppRouteChildren: AppRouteChildren = {
+  AppChatRoute: AppChatRoute,
+  AppCoachRoute: AppCoachRoute,
+  AppCoachesRoute: AppCoachesRoute,
+  AppMemoryRoute: AppMemoryRoute,
+  AppMissionsRoute: AppMissionsRoute,
+  AppOnboardingRoute: AppOnboardingRoute,
+  AppProfileGeneratorRoute: AppProfileGeneratorRoute,
+  AppRoastRoute: AppRoastRoute,
+  AppRoleplayRoute: AppRoleplayRoute,
+  AppSettingsRoute: AppSettingsRoute,
+  AppIndexRoute: AppIndexRoute,
+}
+
+const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AiDatingGuideRoute: AiDatingGuideRoute,
+  AppRoute: AppRouteWithChildren,
+  AuthRoute: AuthRoute,
+  DatingProfileGeneratorRoute: DatingProfileGeneratorRoute,
+  FlirtyTextMessagesRoute: FlirtyTextMessagesRoute,
+  HingeOpenersRoute: HingeOpenersRoute,
+  McpRoute: McpRoute,
+  PricingRoute: PricingRoute,
+  PrivacyRoute: PrivacyRoute,
+  RefundPolicyRoute: RefundPolicyRoute,
+  ResetPasswordRoute: ResetPasswordRoute,
+  TermsRoute: TermsRoute,
+  TinderOpenersRoute: TinderOpenersRoute,
+  Char91DotmcpChar93ListToolsRoute: Char91DotmcpChar93ListToolsRoute,
+  Char91DotwellKnownChar93OauthProtectedResourceRoute:
+    Char91DotwellKnownChar93OauthProtectedResourceRoute,
+  ApiHealthzRoute: ApiHealthzRoute,
+  DotlovableOauthConsentRoute: DotlovableOauthConsentRoute,
+  Char91DotmcpChar93InvokeToolToolRoute: Char91DotmcpChar93InvokeToolToolRoute,
+  ApiPublicCspReportRoute: ApiPublicCspReportRoute,
+  ApiPublicHealthRoute: ApiPublicHealthRoute,
+  ApiPublicLemonCheckoutRoute: ApiPublicLemonCheckoutRoute,
+  ApiPublicLemonSyncRoute: ApiPublicLemonSyncRoute,
+  ApiPublicLemonWebhookRoute: ApiPublicLemonWebhookRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

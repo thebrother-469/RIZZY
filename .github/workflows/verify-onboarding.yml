@@ -1,0 +1,64 @@
+name: verify-onboarding
+
+on:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  verify-onboarding:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      RUN_PLAYWRIGHT: ${{ secrets.RUN_PLAYWRIGHT }}
+      PLAYWRIGHT_BASE_URL: ${{ secrets.PLAYWRIGHT_BASE_URL }}
+      LOVABLE_BROWSER_SUPABASE_SESSION_JSON: ${{ secrets.LOVABLE_BROWSER_SUPABASE_SESSION_JSON }}
+      LOVABLE_BROWSER_SUPABASE_STORAGE_KEY: ${{ secrets.LOVABLE_BROWSER_SUPABASE_STORAGE_KEY }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+      - name: Install deps
+        run: bun install --frozen-lockfile
+      - name: Install Playwright browsers
+        run: bunx playwright install --with-deps chromium
+      - name: Run verify:onboarding
+        id: verify
+        continue-on-error: true
+        run: |
+          set +e
+          bun run verify:onboarding | tee verify-onboarding.log
+          echo "exit=$?" >> "$GITHUB_OUTPUT"
+      - name: Compute status
+        id: status
+        run: |
+          if grep -q '"overall":"PASS"' verify-onboarding.log; then
+            echo "status=PASS" >> "$GITHUB_OUTPUT"
+          elif grep -q '"overall":"FAIL"' verify-onboarding.log; then
+            echo "status=FAIL" >> "$GITHUB_OUTPUT"
+          else
+            echo "status=NOT VERIFIED" >> "$GITHUB_OUTPUT"
+          fi
+      - name: Publish summary
+        run: |
+          {
+            echo "## verify:onboarding"
+            echo ""
+            echo "**Status:** ${{ steps.status.outputs.status }}"
+            echo ""
+            echo '```'
+            grep '^MACHINE_JSON=' verify-onboarding.log | sed 's/^MACHINE_JSON=//' || echo '(no machine json)'
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+      - name: Upload Playwright artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-artifacts
+          path: |
+            test-results/**
+            playwright-report/**
+          if-no-files-found: ignore
+      - name: Fail job on FAIL
+        if: steps.status.outputs.status == 'FAIL'
+        run: exit 1

@@ -1,0 +1,13 @@
+# RizzGod AI
+
+> Brutally honest AI dating and confidence coach. Practice flirting, get your DMs roasted, run real-life roleplays, and crush daily missions until you're the high-value man.
+
+RizzGod AI is a web-based AI coaching app built for men who want to improve dating, texting, and social confidence. It combines practice chat, AI roast feedback, roleplay scenarios, daily missions, and long-term coaching memory. The landing page explains the product, the pricing page shows Free, Pro, and Elite plans, and the legal pages cover terms, privacy, and refunds. The authenticated app lives under `/app` and requires sign-in.
+
+## Pages
+
+- [Home](/): RizzGod AI landing page — features, social proof, and how the AI dating coach works.
+- [Pricing](/pricing): Free, Pro ($19), and Elite ($49) plans, features, and upgrade options.
+- [Terms of Service](/terms): Legal terms for using RizzGod AI.
+- [Privacy Policy](/privacy): How user data is collected, used, and protected.
+- [Refund Policy](/refund-policy): Refund and cancellation policy.

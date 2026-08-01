@@ -1,0 +1,74 @@
+{
+  "version": 1,
+  "sdk_version": "0.24.0",
+  "path": "/mcp",
+  "auth": {
+    "type": "oauth",
+    "issuer": "https://jfiojbbrdfgeruborkzx.supabase.co/auth/v1",
+    "accepted_audiences": [
+      "authenticated"
+    ]
+  },
+  "mcp": {
+    "server": {
+      "name": "rizzgod-mcp",
+      "version": "0.1.0",
+      "title": "RizzGod"
+    },
+    "tools": [
+      {
+        "name": "list_coaches",
+        "title": "List coaches",
+        "description": "List the available RizzGod coaches (id, name, tagline, description).",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {}
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "get_my_stats",
+        "title": "Get my stats",
+        "description": "Get the signed-in user's RizzGod stats: total XP, level, current streak, and longest streak.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {}
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "list_my_missions",
+        "title": "List my missions",
+        "description": "List the signed-in user's RizzGod missions. Defaults to today; pass `all: true` to list every mission.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {
+            "all": {
+              "description": "If true, return all missions instead of today's only.",
+              "type": "boolean"
+            }
+          }
+        },
+        "outputSchema": null
+      }
+    ]
+  }
+}
