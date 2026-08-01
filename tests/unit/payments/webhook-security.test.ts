@@ -74,22 +74,24 @@ describe("replay and expiry", () => {
 describe("subscription lifecycle -> entitlements", () => {
   const PRO = "111";
   const ELITE = "222";
-  const variants = { pro: PRO, elite: ELITE };
+  const variants = { proVariant: PRO, eliteVariant: ELITE };
 
   it("maps variants to the correct plan tier", () => {
-    expect(resolvePlanFromVariant(PRO, variants)).toBe("pro");
-    expect(resolvePlanFromVariant(ELITE, variants)).toBe("elite");
-    expect(resolvePlanFromVariant("999", variants)).toBe("free");
+    expect(resolvePlanFromVariant(PRO, "active", variants)).toBe("pro");
+    expect(resolvePlanFromVariant(ELITE, "active", variants)).toBe("elite");
+    expect(resolvePlanFromVariant("999", "active", variants)).toBe("free");
+    // A known variant on a terminal status must not grant premium.
+    expect(resolvePlanFromVariant(ELITE, "expired", variants)).toBe("free");
   });
 
   it("grants premium for active-equivalent statuses", () => {
-    for (const status of ["active", "on_trial"]) {
+    for (const status of ["active", "on_trial", "past_due", "paused"]) {
       expect(isSubscriptionActive(status)).toBe(true);
     }
   });
 
   it("removes premium for terminal statuses", () => {
-    for (const status of ["cancelled", "expired", "unpaid", "past_due", null, undefined]) {
+    for (const status of ["cancelled", "expired", "unpaid", null, undefined]) {
       expect(isSubscriptionActive(status)).toBe(false);
     }
   });
