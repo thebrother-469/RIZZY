@@ -29,7 +29,12 @@
     "verify:graphql": "bun run scripts/verify-graphql-security.ts",
     "verify:ci": "bun run scripts/ci-verify.ts",
     "e2e:user": "bun run scripts/create-e2e-user.ts",
-    "verify:security-memory": "bun run scripts/verify-security-memory.ts"
+    "verify:security-memory": "bun run scripts/verify-security-memory.ts",
+    "e2e:create-user": "bun run scripts/create-test-user.ts",
+    "e2e:reset-user": "bun run scripts/reset-test-user.ts",
+    "e2e:session": "bun run scripts/create-test-session.ts",
+    "verify:rls": "bun run scripts/verify-rls.ts",
+    "verify:storage": "bun run scripts/verify-storage.ts"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.4.0",
