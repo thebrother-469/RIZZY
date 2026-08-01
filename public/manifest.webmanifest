@@ -1,0 +1,17 @@
+{
+  "name": "RizzGod AI — Elite Social AI Coach",
+  "short_name": "RizzGod AI",
+  "description": "Brutally honest AI coach. Practice Socializing Online, get your DMs roasted, run roleplays, and crush daily missions.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#1a0808",
+  "theme_color": "#1a0808",
+  "categories": ["lifestyle", "social", "education"],
+  "icons": [
+    { "src": "/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

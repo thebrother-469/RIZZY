@@ -1,0 +1,1 @@
+REVOKE EXECUTE ON FUNCTION public.profiles_onboarding_guard() FROM PUBLIC, anon, authenticated;

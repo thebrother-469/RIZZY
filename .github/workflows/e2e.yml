@@ -1,0 +1,100 @@
+name: e2e-matrix
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  playwright:
+    name: Playwright (${{ matrix.browser }})
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        browser: [chromium, firefox, webkit]
+    env:
+      VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
+      VITE_SUPABASE_PUBLISHABLE_KEY: ${{ secrets.VITE_SUPABASE_PUBLISHABLE_KEY }}
+      VITE_SUPABASE_PROJECT_ID: ${{ secrets.VITE_SUPABASE_PROJECT_ID }}
+      SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+      SUPABASE_PUBLISHABLE_KEY: ${{ secrets.SUPABASE_PUBLISHABLE_KEY }}
+      SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+      LOVABLE_API_KEY: ${{ secrets.LOVABLE_API_KEY }}
+      E2E_TEST_USER_EMAIL: ${{ secrets.E2E_TEST_USER_EMAIL }}
+      E2E_TEST_USER_PASSWORD: ${{ secrets.E2E_TEST_USER_PASSWORD }}
+      E2E_BASE_URL: ${{ secrets.E2E_BASE_URL || 'http://localhost:3000' }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Install Playwright browsers
+        run: bunx playwright install --with-deps ${{ matrix.browser }}
+
+      - name: Build app
+        run: bun run build
+
+      - name: Run Playwright (${{ matrix.browser }})
+        id: playwright
+        run: bunx playwright test --project=${{ matrix.browser }} --reporter=list,html,json
+        env:
+          PLAYWRIGHT_JSON_OUTPUT_NAME: test-results/results-${{ matrix.browser }}.json
+
+      - name: Compute artifact suffix
+        if: always()
+        id: suffix
+        run: |
+          echo "suffix=${{ matrix.browser }}-${GITHUB_SHA::7}-$(date -u +%Y%m%dT%H%M%S)" >> "$GITHUB_OUTPUT"
+
+      - name: Upload trace + HAR + videos + screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-${{ steps.suffix.outputs.suffix }}-traces
+          path: |
+            test-results/**
+            playwright-report/**
+          if-no-files-found: warn
+          retention-days: 14
+
+      - name: Upload JSON results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-${{ steps.suffix.outputs.suffix }}-json
+          path: test-results/results-${{ matrix.browser }}.json
+          if-no-files-found: warn
+          retention-days: 30
+
+  smoke-prod:
+    name: Production smoke (read-only)
+    runs-on: ubuntu-latest
+    if: github.event_name == 'workflow_dispatch' || github.ref == 'refs/heads/main'
+    needs: [playwright]
+    timeout-minutes: 10
+    env:
+      SMOKE_BASE_URL: ${{ secrets.SMOKE_BASE_URL || 'https://rizz-omega-restore.lovable.app' }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+        with: { bun-version: latest }
+      - run: bun install --frozen-lockfile
+      - run: bunx playwright install --with-deps chromium
+      - name: Run smoke suite
+        run: bunx playwright test tests/e2e/smoke.spec.ts --project=chromium
+      - if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: prod-smoke-${{ github.sha }}
+          path: |
+            test-results/**
+            playwright-report/**
+          retention-days: 30

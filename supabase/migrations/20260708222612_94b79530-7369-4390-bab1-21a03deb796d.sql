@@ -1,0 +1,1 @@
+DROP POLICY IF EXISTS "Users insert own missions" ON public.missions;

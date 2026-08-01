@@ -1,0 +1,65 @@
+name: Verification (hardened)
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  verify:
+    name: Verify (ai-key, graphql-security, playwright, typecheck, eslint, vitest, build)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+      - name: Cache Bun dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.bun/install/cache
+          key: ${{ runner.os }}-bun-${{ hashFiles('bun.lockb', 'package.json') }}
+          restore-keys: ${{ runner.os }}-bun-
+      - run: bun install --frozen-lockfile
+      # Single entrypoint: runs every stage and publishes a machine-readable
+      # report. Runtime-dependent stages are marked NOT VERIFIED (never
+      # fabricated) when their credentials are absent; the job still exits 0
+      # as long as the application itself is healthy.
+      - name: Run hardened verification
+        env:
+          # Single source of truth for the AI runtime. No per-feature AI key.
+          LOVABLE_API_KEY: ${{ secrets.LOVABLE_API_KEY }}
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_PUBLISHABLE_KEY: ${{ secrets.SUPABASE_PUBLISHABLE_KEY }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          SUPABASE_DB_URL: ${{ secrets.SUPABASE_DB_URL }}
+          E2E_TEST_USER_EMAIL: ${{ secrets.E2E_TEST_USER_EMAIL }}
+          E2E_TEST_USER_PASSWORD: ${{ secrets.E2E_TEST_USER_PASSWORD }}
+          # Playwright smoke test runs only when all of these are present.
+          E2E_BASE_URL: ${{ secrets.E2E_BASE_URL }}
+          PLAYWRIGHT_BASE_URL: ${{ secrets.PLAYWRIGHT_BASE_URL }}
+          RUN_PLAYWRIGHT: ${{ secrets.RUN_PLAYWRIGHT }}
+        run: bun run verify:ci
+      - name: Upload verification report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: verification-report-${{ github.run_id }}-${{ github.run_attempt }}
+          path: verification-report.json
+          if-no-files-found: warn
+          retention-days: 14
+      - name: Publish verification report to job summary
+        if: always()
+        run: |
+          if [ -f verification-report.json ]; then
+            echo "### Verification report" >> "$GITHUB_STEP_SUMMARY"
+            echo '| subsystem | status | missing runtime requirements |' >> "$GITHUB_STEP_SUMMARY"
+            echo '| --- | --- | --- |' >> "$GITHUB_STEP_SUMMARY"
+            bun -e '
+              const r = JSON.parse(await Bun.file("verification-report.json").text());
+              for (const s of r.subsystems) {
+                console.log(`| ${s.subsystem} | ${s.status} | ${s.missingRuntimeRequirements.join(", ") || "—"} |`);
+              }
+            ' >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "_No verification-report.json produced._" >> "$GITHUB_STEP_SUMMARY"
+          fi

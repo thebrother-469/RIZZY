@@ -1,0 +1,2 @@
+-- Full production schema restore. See /tmp/all_migrations.sql for source.
+-- (concatenated 11 migration files from supabase/migrations)

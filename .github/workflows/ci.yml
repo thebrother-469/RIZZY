@@ -1,0 +1,102 @@
+name: CI
+on:
+  push:
+  pull_request:
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+      - name: Cache Bun dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.bun/install/cache
+          key: ${{ runner.os }}-bun-${{ hashFiles('bun.lockb', 'package.json') }}
+          restore-keys: ${{ runner.os }}-bun-
+      - run: bun install --frozen-lockfile
+      # NOTE: `bun run lint` intentionally NOT gated here — the repo has 743
+      # pre-existing ESLint errors outside SSR scope. Reintroduce once the
+      # backlog is cleared. SSR-safety enforcement below is not affected.
+      - name: Browser API audit (fails on any UNSAFE module-scope access)
+        run: bun run audit:browser-apis
+      - run: bun run build
+      - run: bun run --bun tsc --noEmit
+      - name: SSR smoke + hydration diagnostics + init logging
+        run: bun run test:ssr
+      - name: Vitest + coverage
+        run: bunx vitest run --coverage
+      - name: Upload coverage report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage
+          path: coverage
+      - name: Install Playwright browsers
+        run: bunx playwright install --with-deps chromium
+      - name: Playwright smoke + HTTP regression
+        env:
+          LOVABLE_BROWSER_SUPABASE_STORAGE_KEY: ${{ secrets.LOVABLE_BROWSER_SUPABASE_STORAGE_KEY }}
+          LOVABLE_BROWSER_SUPABASE_SESSION_JSON: ${{ secrets.LOVABLE_BROWSER_SUPABASE_SESSION_JSON }}
+          LOVABLE_BROWSER_SUPABASE_COOKIES_JSON: ${{ secrets.LOVABLE_BROWSER_SUPABASE_COOKIES_JSON }}
+        run: bunx playwright test
+      # Always upload the full Playwright evidence bundle — HTML report,
+      # trace, video, screenshots, JUnit XML, JSON report, per-artifact
+      # dirs, and the trace-ids side-file — on success OR failure so
+      # operators can join failing probes to structured logs / OTLP
+      # spans without a rerun.
+      - name: Upload Playwright evidence bundle (always)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-evidence-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            playwright-report/**
+            test-results/**
+          if-no-files-found: warn
+          retention-days: 14
+      - name: Publish captured trace / request IDs to job summary
+        if: always()
+        run: |
+          if [ -f playwright-report/trace-ids.json ]; then
+            echo "### Captured request/trace IDs" >> "$GITHUB_STEP_SUMMARY"
+            echo '```json' >> "$GITHUB_STEP_SUMMARY"
+            head -c 60000 playwright-report/trace-ids.json >> "$GITHUB_STEP_SUMMARY"
+            echo '' >> "$GITHUB_STEP_SUMMARY"
+            echo '```' >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "_No trace-ids.json produced (Playwright did not run)._" >> "$GITHUB_STEP_SUMMARY"
+          fi
+      - name: Health verification
+        if: ${{ env.SUPABASE_URL != '' && env.SUPABASE_SERVICE_ROLE_KEY != '' }}
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+        run: bun run health:check
+      - name: XP integrity audit
+        if: ${{ env.SUPABASE_URL != '' && env.SUPABASE_SERVICE_ROLE_KEY != '' }}
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+        run: bun run xp:audit
+      - name: CI stage summary
+        if: always()
+        run: |
+          {
+            echo "## CI stages"
+            echo "| stage | status |"
+            echo "| --- | --- |"
+            echo "| Browser-API audit | ${{ steps.audit-browser-apis.outcome || 'ran' }} |"
+            echo "| Build | ${{ job.status }} |"
+            echo "| Typecheck (tsc --noEmit) | see log |"
+            echo "| SSR smoke | see log |"
+            echo "| Vitest + coverage | see log |"
+            echo "| Playwright | see log |"
+            echo "| Health verification | see log |"
+            echo "| XP integrity audit | see log |"
+            echo ""
+            echo "**Artifacts:** \`coverage\`, \`playwright-evidence-${{ github.run_id }}-${{ github.run_attempt }}\`"
+          } >> "$GITHUB_STEP_SUMMARY"

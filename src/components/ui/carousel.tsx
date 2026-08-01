@@ -95,11 +95,16 @@ const Carousel = React.forwardRef<
       return;
     }
 
-    onSelect(api);
+    // Embla emits "reInit" once the carousel has measured itself, so the
+    // initial scroll state arrives through the subscription instead of a
+    // synchronous setState in the effect body.
     api.on("reInit", onSelect);
     api.on("select", onSelect);
+    const raf = requestAnimationFrame(() => onSelect(api));
 
     return () => {
+      cancelAnimationFrame(raf);
+      api?.off("reInit", onSelect);
       api?.off("select", onSelect);
     };
   }, [api, onSelect]);

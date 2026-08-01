@@ -1,0 +1,1 @@
+REVOKE EXECUTE ON FUNCTION public.enforce_memory_cap() FROM PUBLIC, anon, authenticated;

@@ -1,0 +1,2 @@
+CREATE POLICY "Users can update their own missions" ON public.missions FOR UPDATE USING (auth.uid() = user_id) WITH CHECK (auth.uid() = user_id);
+CREATE POLICY "Users can delete their own missions" ON public.missions FOR DELETE USING (auth.uid() = user_id);

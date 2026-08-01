@@ -1,0 +1,81 @@
+{
+  "base_url": "http://localhost:8080",
+  "timestamp": "2026-07-31T13:34:35.577Z",
+  "total": 9,
+  "passed": 9,
+  "failed": 0,
+  "checks": [
+    {
+      "path": "/",
+      "status": 200,
+      "ok": true,
+      "html": true,
+      "request_id": "ms8zi2q0-hjnxongv8b1quzj6",
+      "duration_ms": 76
+    },
+    {
+      "path": "/pricing",
+      "status": 200,
+      "ok": true,
+      "html": true,
+      "request_id": "ms8zi2sq-8larr2famdmf4l8i",
+      "duration_ms": 168
+    },
+    {
+      "path": "/privacy",
+      "status": 200,
+      "ok": true,
+      "html": true,
+      "request_id": "ms8zi2w4-93c0o8s5l5l6tfg3",
+      "duration_ms": 138
+    },
+    {
+      "path": "/terms",
+      "status": 200,
+      "ok": true,
+      "html": true,
+      "request_id": "ms8zi2zy-grsck9vdpenkj1h2",
+      "duration_ms": 72
+    },
+    {
+      "path": "/robots.txt",
+      "status": 200,
+      "ok": true,
+      "html": true,
+      "request_id": null,
+      "duration_ms": 5
+    },
+    {
+      "path": "/sitemap.xml",
+      "status": 200,
+      "ok": true,
+      "html": true,
+      "request_id": null,
+      "duration_ms": 3
+    },
+    {
+      "path": "/auth?mode=signin",
+      "status": 200,
+      "ok": true,
+      "html": true,
+      "request_id": "ms8zi324-ryjkmrfs6cv1t04e",
+      "duration_ms": 96
+    },
+    {
+      "path": "/api/public/health",
+      "status": 200,
+      "ok": true,
+      "html": true,
+      "request_id": "ms8zi34v-22egvdj9b4djy5by",
+      "duration_ms": 213
+    },
+    {
+      "path": "/.well-known/oauth-protected-resource",
+      "status": 200,
+      "ok": true,
+      "html": true,
+      "request_id": "ms8zi3au-bmtc4wvs0wtxenf7",
+      "duration_ms": 10
+    }
+  ]
+}
