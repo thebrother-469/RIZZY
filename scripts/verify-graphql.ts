@@ -14,7 +14,16 @@
  */
 import { mkdirSync, writeFileSync } from "node:fs";
 import { dirname } from "node:path";
-import { resolveEnv, passwordSignIn } from "./e2e-env";
+import {
+  resolveEnv,
+  passwordSignIn,
+  ensureUser,
+  deleteUser,
+  findUserByEmail,
+  disposableIdentity,
+  type AuthSession,
+  type E2EEnv,
+} from "./e2e-env";
 
 export const ARTIFACT_PATH = "security-artifacts/graphql-exposure.json";
 const GRAPHQL_PATH = "/graphql/v1";
@@ -220,6 +229,10 @@ export interface AuditArtifact {
   generatedAt: string;
   project: string | null;
   allowlist: { authenticated: string[]; serviceOnly: string[] };
+  denylist: { anon: string[]; authenticated: string[] };
+  anon: ExposureCheck[];
+  authenticated: ExposureCheck[];
+  unexpectedExposures: ExposureCheck[];
   summary: { pass: number; fail: number; notVerified: number };
   checks: ExposureCheck[];
   blockers: string[];
@@ -242,6 +255,15 @@ export function buildArtifact(
       authenticated: [...AUTHENTICATED_ALLOWLIST],
       serviceOnly: [...SERVICE_ONLY_TABLES],
     },
+    denylist: {
+      anon: [...ANON_FORBIDDEN_TABLES],
+      authenticated: [...SERVICE_ONLY_TABLES],
+    },
+    anon: checks.filter((c) => c.role === "anon"),
+    authenticated: checks.filter((c) => c.role === "authenticated"),
+    unexpectedExposures: checks.filter(
+      (c) => c.status === "FAIL" && c.expected === "hidden" && c.observed === "rows",
+    ),
     summary: { pass, fail, notVerified },
     checks,
     blockers,
@@ -252,6 +274,61 @@ export function buildArtifact(
 export function writeArtifact(artifact: AuditArtifact, path = ARTIFACT_PATH): void {
   mkdirSync(dirname(path), { recursive: true });
   writeFileSync(path, `${JSON.stringify(artifact, null, 2)}\n`);
+}
+
+export interface AuditSession {
+  session: AuthSession | null;
+  /** Set when a throwaway identity was minted and must be destroyed after. */
+  disposableUserId?: string;
+  reason?: string;
+}
+
+/**
+ * Resolves a REAL authenticated Supabase session for the audit, in the same
+ * priority order as the E2E test-session tooling:
+ *
+ *   1. a session already injected into the runtime (managed Lovable sandbox),
+ *   2. a disposable identity minted through the Auth admin API (service key),
+ *   3. the configured shared E2E user password grant.
+ *
+ * Never logs a credential. Returns a reason instead of throwing so the audit
+ * can report NOT_VERIFIED rather than fail on absent infrastructure.
+ */
+export async function acquireAuditSession(e: E2EEnv = resolveEnv()): Promise<AuditSession> {
+  const injected = process.env.LOVABLE_BROWSER_SUPABASE_SESSION_JSON;
+  if (injected) {
+    try {
+      const parsed = JSON.parse(injected) as AuthSession;
+      if (parsed.access_token && parsed.user?.id) return { session: parsed };
+    } catch {
+      /* fall through */
+    }
+  }
+
+  if (e.serviceKey) {
+    const identity = disposableIdentity("gqlaudit");
+    const created = await ensureUser(e, identity.email, identity.password);
+    if (created.action !== "none") {
+      const grant = await passwordSignIn(e, identity.email, identity.password);
+      if (grant.session) {
+        const id = created.id ?? (await findUserByEmail(e, identity.email))?.id;
+        return { session: grant.session, disposableUserId: id };
+      }
+    }
+  }
+
+  const grant = await passwordSignIn(e);
+  if (grant.session) return { session: grant.session };
+  return {
+    session: null,
+    reason:
+      `password grant failed (HTTP ${grant.status}${grant.errorCode ? `, ${grant.errorCode}` : ""}). ` +
+      `Bind SUPABASE_SERVICE_ROLE_KEY or E2E_TEST_USER_EMAIL / E2E_TEST_USER_PASSWORD.`,
+  };
+}
+
+export async function releaseAuditSession(s: AuditSession, e: E2EEnv = resolveEnv()): Promise<void> {
+  if (s.disposableUserId && e.serviceKey) await deleteUser(e, s.disposableUserId);
 }
 
 export async function main(): Promise<number> {
@@ -267,22 +344,22 @@ export async function main(): Promise<number> {
   } else {
     checks.push(...(await auditAnon(e.url, e.anonKey)));
 
-    const grant = await passwordSignIn(e);
-    if (!grant.session) {
-      blockers.push(
-        `Authenticated audit could not execute: password grant failed (HTTP ${grant.status}${
-          grant.errorCode ? `, ${grant.errorCode}` : ""
-        }). Bind E2E_TEST_USER_EMAIL / E2E_TEST_USER_PASSWORD.`,
-      );
+    const acquired = await acquireAuditSession(e);
+    if (!acquired.session) {
+      blockers.push(`Authenticated audit could not execute: ${acquired.reason}`);
     } else {
-      checks.push(
-        ...(await auditAuthenticated(
-          e.url,
-          e.anonKey,
-          grant.session.access_token,
-          grant.session.user.id,
-        )),
-      );
+      try {
+        checks.push(
+          ...(await auditAuthenticated(
+            e.url,
+            e.anonKey,
+            acquired.session.access_token,
+            acquired.session.user.id,
+          )),
+        );
+      } finally {
+        await releaseAuditSession(acquired, e);
+      }
     }
   }
 
