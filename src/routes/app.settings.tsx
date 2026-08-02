@@ -139,24 +139,25 @@ function SettingsPage() {
   });
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
-  const [memoryEnabled, setMemoryEnabled] = useState(
-    typeof window !== "undefined" ? localStorage.getItem("rg_memory_disabled") !== "1" : true,
-  );
-  const [accent, setAccent] = useState<string>(
-    typeof window !== "undefined" ? (localStorage.getItem("rg_accent") ?? "blood") : "blood",
-  );
-  const [reduced, setReduced] = useState<boolean>(
-    typeof window !== "undefined" ? localStorage.getItem("rg_reduced_motion") === "1" : false,
-  );
-  const [notifEmail, setNotifEmail] = useState<boolean>(
-    typeof window !== "undefined" ? localStorage.getItem("rg_notif_email") !== "0" : true,
-  );
-  const [notifPush, setNotifPush] = useState<boolean>(
-    typeof window !== "undefined" ? localStorage.getItem("rg_notif_push") === "1" : false,
-  );
-  const [reminderTime, setReminderTime] = useState<string>(
-    typeof window !== "undefined" ? (localStorage.getItem("rg_reminder") ?? "09:00") : "09:00",
-  );
+  // Preferences live in localStorage. They are read AFTER mount (never in a
+  // state initializer) so the first client render matches the server pass
+  // byte for byte — a `typeof window` guard in an initializer still produces
+  // a hydration mismatch.
+  const [memoryEnabled, setMemoryEnabled] = useState(true);
+  const [accent, setAccent] = useState<string>("blood");
+  const [reduced, setReduced] = useState<boolean>(false);
+  const [notifEmail, setNotifEmail] = useState<boolean>(true);
+  const [notifPush, setNotifPush] = useState<boolean>(false);
+  const [reminderTime, setReminderTime] = useState<string>("09:00");
+
+  useEffect(() => {
+    setMemoryEnabled(localStorage.getItem("rg_memory_disabled") !== "1");
+    setAccent(localStorage.getItem("rg_accent") ?? "blood");
+    setReduced(localStorage.getItem("rg_reduced_motion") === "1");
+    setNotifEmail(localStorage.getItem("rg_notif_email") !== "0");
+    setNotifPush(localStorage.getItem("rg_notif_push") === "1");
+    setReminderTime(localStorage.getItem("rg_reminder") ?? "09:00");
+  }, []);
   const [stats, setStats] = useState<{
     chats: number;
     messages: number;
