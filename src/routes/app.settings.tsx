@@ -120,6 +120,41 @@ function applyMotion(reduced: boolean) {
   localStorage.setItem("rg_reduced_motion", reduced ? "1" : "0");
 }
 
+/**
+ * Local preference store.
+ *
+ * Read through `useSyncExternalStore` so the server snapshot (the default)
+ * is used for the hydrating render and the real localStorage value lands in
+ * the immediately following commit. This is hydration-safe without reading
+ * storage in a state initializer and without a synchronous setState in an
+ * effect (which triggers cascading renders).
+ */
+const prefListeners = new Set<() => void>();
+
+function subscribePrefs(cb: () => void): () => void {
+  prefListeners.add(cb);
+  return () => {
+    prefListeners.delete(cb);
+  };
+}
+
+function writePref(key: string, value: string): void {
+  localStorage.setItem(key, value);
+  for (const cb of prefListeners) cb();
+}
+
+function useStoredPref<T extends string | boolean>(
+  key: string,
+  decode: (raw: string | null) => T,
+  serverValue: T,
+): T {
+  return useSyncExternalStore(
+    subscribePrefs,
+    () => decode(localStorage.getItem(key)),
+    () => serverValue,
+  );
+}
+
 function SettingsPage() {
   const { user, plan, signOut } = useAuth();
   const nav = useNavigate();
