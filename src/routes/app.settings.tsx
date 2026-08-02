@@ -178,21 +178,19 @@ function SettingsPage() {
   // state initializer) so the first client render matches the server pass
   // byte for byte — a `typeof window` guard in an initializer still produces
   // a hydration mismatch.
-  const [memoryEnabled, setMemoryEnabled] = useState(true);
-  const [accent, setAccent] = useState<string>("blood");
-  const [reduced, setReduced] = useState<boolean>(false);
-  const [notifEmail, setNotifEmail] = useState<boolean>(true);
-  const [notifPush, setNotifPush] = useState<boolean>(false);
-  const [reminderTime, setReminderTime] = useState<string>("09:00");
+  const memoryEnabled = useStoredPref("rg_memory_disabled", (v) => v !== "1", true);
+  const accent = useStoredPref("rg_accent", (v) => v ?? "blood", "blood");
+  const reduced = useStoredPref("rg_reduced_motion", (v) => v === "1", false);
+  const notifEmail = useStoredPref("rg_notif_email", (v) => v !== "0", true);
+  const notifPush = useStoredPref("rg_notif_push", (v) => v === "1", false);
+  const reminderTime = useStoredPref("rg_reminder", (v) => v ?? "09:00", "09:00");
 
-  useEffect(() => {
-    setMemoryEnabled(localStorage.getItem("rg_memory_disabled") !== "1");
-    setAccent(localStorage.getItem("rg_accent") ?? "blood");
-    setReduced(localStorage.getItem("rg_reduced_motion") === "1");
-    setNotifEmail(localStorage.getItem("rg_notif_email") !== "0");
-    setNotifPush(localStorage.getItem("rg_notif_push") === "1");
-    setReminderTime(localStorage.getItem("rg_reminder") ?? "09:00");
-  }, []);
+  const setMemoryEnabled = (on: boolean) => writePref("rg_memory_disabled", on ? "0" : "1");
+  const setAccent = (key: string) => writePref("rg_accent", key);
+  const setReduced = (v: boolean) => writePref("rg_reduced_motion", v ? "1" : "0");
+  const setNotifEmail = (v: boolean) => writePref("rg_notif_email", v ? "1" : "0");
+  const setNotifPush = (v: boolean) => writePref("rg_notif_push", v ? "1" : "0");
+  const setReminderTime = (v: string) => writePref("rg_reminder", v);
   const [stats, setStats] = useState<{
     chats: number;
     messages: number;
