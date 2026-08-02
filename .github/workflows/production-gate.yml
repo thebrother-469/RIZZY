@@ -1,0 +1,190 @@
+name: Production Release Gate
+
+on:
+  pull_request:
+    branches: [main, master, "release/**"]
+  merge_group:
+  push:
+    branches: [main, master, "release/**"]
+  workflow_dispatch:
+
+concurrency:
+  group: production-gate-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  CI: "true"
+  SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+  VITE_SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+  SUPABASE_PUBLISHABLE_KEY: ${{ secrets.SUPABASE_PUBLISHABLE_KEY }}
+  VITE_SUPABASE_PUBLISHABLE_KEY: ${{ secrets.SUPABASE_PUBLISHABLE_KEY }}
+  SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+  E2E_TEST_USER_EMAIL: ${{ secrets.E2E_TEST_USER_EMAIL }}
+  E2E_TEST_USER_PASSWORD: ${{ secrets.E2E_TEST_USER_PASSWORD }}
+
+jobs:
+  # ---------------------------------------------------------------- stage 1
+  build:
+    name: Build verification (TypeScript / ESLint / production build)
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+      - name: Restore dependency cache
+        uses: actions/cache@v4
+        with:
+          path: |
+            node_modules
+            ~/.bun/install/cache
+          key: ${{ runner.os }}-bun-${{ hashFiles('bun.lock', 'bun.lockb', 'package.json') }}
+          restore-keys: ${{ runner.os }}-bun-
+      - run: bun install --frozen-lockfile
+      - name: Validate environment variables
+        run: bun run validate:env
+      - name: TypeScript
+        run: bun run typecheck
+      - name: ESLint
+        run: bun run lint
+      - name: Production build
+        run: bun run build
+
+  # ---------------------------------------------------------------- stage 2
+  ssr:
+    name: SSR + hydration verification
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    needs: build
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+      - uses: actions/cache@v4
+        with:
+          path: |
+            node_modules
+            ~/.bun/install/cache
+          key: ${{ runner.os }}-bun-${{ hashFiles('bun.lock', 'bun.lockb', 'package.json') }}
+          restore-keys: ${{ runner.os }}-bun-
+      - run: bun install --frozen-lockfile
+      - name: SSR smoke + protected pages + hydration core flows
+        run: bun run test:ssr
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: ssr-report
+          path: test-results/
+          if-no-files-found: ignore
+
+  # ---------------------------------------------------------------- stage 3
+  security:
+    name: Security verification (RLS / GraphQL / storage / webhooks)
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    needs: build
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+      - uses: actions/cache@v4
+        with:
+          path: |
+            node_modules
+            ~/.bun/install/cache
+          key: ${{ runner.os }}-bun-${{ hashFiles('bun.lock', 'bun.lockb', 'package.json') }}
+          restore-keys: ${{ runner.os }}-bun-
+      - run: bun install --frozen-lockfile
+
+      - name: RLS + auth.uid() isolation regression
+        run: bun run verify:rls
+      - name: pg_graphql exposure audit (anon + authenticated)
+        run: bun run verify:graphql:audit
+      - name: Storage bucket policy verification
+        run: bun run verify:storage
+      - name: Webhook signature / replay / entitlement tests
+        run: bunx vitest run tests/unit/payments tests/unit/lemon
+      - name: GraphQL exposure contract suite
+        run: bun run test:security
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: security-artifacts
+          path: security-artifacts/
+          if-no-files-found: error
+
+  # ---------------------------------------------------------------- stage 4
+  integration:
+    name: Integration verification (authenticated Playwright + canonical smoke)
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    needs: [ssr, security]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+      - uses: actions/cache@v4
+        with:
+          path: |
+            node_modules
+            ~/.bun/install/cache
+          key: ${{ runner.os }}-bun-${{ hashFiles('bun.lock', 'bun.lockb', 'package.json') }}
+          restore-keys: ${{ runner.os }}-bun-
+      - run: bun install --frozen-lockfile
+      - name: Install Playwright browsers
+        run: bunx playwright install --with-deps chromium
+
+      - name: Provision the E2E identity and session
+        run: |
+          bun run e2e:create-user
+          bun run e2e:session
+
+      - name: Authenticated + protected-route + realtime Playwright
+        run: bunx playwright test tests/playwright/authenticated
+
+      - name: Canonical production smoke test (release blocking)
+        env:
+          SMOKE_RUN_ID: gate-${{ github.run_id }}-${{ github.run_attempt }}
+        run: bunx playwright test tests/playwright/production-smoke.spec.ts
+
+      - name: Reset the shared E2E identity
+        if: always()
+        run: bun run e2e:reset-user || true
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: playwright-evidence
+          path: |
+            test-results/
+            playwright-report/
+            security-artifacts/production-smoke.json
+          if-no-files-found: ignore
+
+  # ---------------------------------------------------------------- stage 5
+  merge-gate:
+    name: Merge gate
+    runs-on: ubuntu-latest
+    needs: [build, ssr, security, integration]
+    if: always()
+    steps:
+      - name: Block the merge on any release-blocking failure
+        run: |
+          set -euo pipefail
+          echo "build:       ${{ needs.build.result }}"
+          echo "ssr:         ${{ needs.ssr.result }}"
+          echo "security:    ${{ needs.security.result }}"
+          echo "integration: ${{ needs.integration.result }}"
+          for r in "${{ needs.build.result }}" "${{ needs.ssr.result }}" \
+                   "${{ needs.security.result }}" "${{ needs.integration.result }}"; do
+            if [ "$r" != "success" ]; then
+              echo "::error::Release gate FAILED — a release-blocking stage did not succeed."
+              exit 1
+            fi
+          done
+          echo "Release gate PASSED."
