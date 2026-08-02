@@ -14,7 +14,10 @@ import { resolveEnv, missing, ensureUser, disposableIdentity } from "./e2e-env";
 
 export async function createTestUser(disposable: boolean) {
   const e = resolveEnv();
-  const need = missing(e, disposable ? ["url", "serviceKey"] : ["url", "serviceKey", "email", "password"]);
+  const need = missing(
+    e,
+    disposable ? ["url", "serviceKey"] : ["url", "serviceKey", "email", "password"],
+  );
   if (need.length) {
     return {
       status: "NOT VERIFIED" as const,
@@ -22,9 +25,7 @@ export async function createTestUser(disposable: boolean) {
       detail: `Cannot create an Auth user; missing ${need.join(", ")}.`,
     };
   }
-  const identity = disposable
-    ? disposableIdentity()
-    : { email: e.email!, password: e.password! };
+  const identity = disposable ? disposableIdentity() : { email: e.email!, password: e.password! };
   const result = await ensureUser(e, identity.email, identity.password);
   if (result.action === "none") {
     return {

@@ -1,5 +1,5 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, useSyncExternalStore } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/lib/auth";
 import { toast } from "sonner";
@@ -120,6 +120,41 @@ function applyMotion(reduced: boolean) {
   localStorage.setItem("rg_reduced_motion", reduced ? "1" : "0");
 }
 
+/**
+ * Local preference store.
+ *
+ * Read through `useSyncExternalStore` so the server snapshot (the default)
+ * is used for the hydrating render and the real localStorage value lands in
+ * the immediately following commit. This is hydration-safe without reading
+ * storage in a state initializer and without a synchronous setState in an
+ * effect (which triggers cascading renders).
+ */
+const prefListeners = new Set<() => void>();
+
+function subscribePrefs(cb: () => void): () => void {
+  prefListeners.add(cb);
+  return () => {
+    prefListeners.delete(cb);
+  };
+}
+
+function writePref(key: string, value: string): void {
+  localStorage.setItem(key, value);
+  for (const cb of prefListeners) cb();
+}
+
+function useStoredPref<T extends string | boolean>(
+  key: string,
+  decode: (raw: string | null) => T,
+  serverValue: T,
+): T {
+  return useSyncExternalStore(
+    subscribePrefs,
+    () => decode(localStorage.getItem(key)),
+    () => serverValue,
+  );
+}
+
 function SettingsPage() {
   const { user, plan, signOut } = useAuth();
   const nav = useNavigate();
@@ -143,21 +178,19 @@ function SettingsPage() {
   // state initializer) so the first client render matches the server pass
   // byte for byte — a `typeof window` guard in an initializer still produces
   // a hydration mismatch.
-  const [memoryEnabled, setMemoryEnabled] = useState(true);
-  const [accent, setAccent] = useState<string>("blood");
-  const [reduced, setReduced] = useState<boolean>(false);
-  const [notifEmail, setNotifEmail] = useState<boolean>(true);
-  const [notifPush, setNotifPush] = useState<boolean>(false);
-  const [reminderTime, setReminderTime] = useState<string>("09:00");
+  const memoryEnabled = useStoredPref("rg_memory_disabled", (v) => v !== "1", true);
+  const accent = useStoredPref("rg_accent", (v) => v ?? "blood", "blood");
+  const reduced = useStoredPref("rg_reduced_motion", (v) => v === "1", false);
+  const notifEmail = useStoredPref("rg_notif_email", (v) => v !== "0", true);
+  const notifPush = useStoredPref("rg_notif_push", (v) => v === "1", false);
+  const reminderTime = useStoredPref("rg_reminder", (v) => v ?? "09:00", "09:00");
 
-  useEffect(() => {
-    setMemoryEnabled(localStorage.getItem("rg_memory_disabled") !== "1");
-    setAccent(localStorage.getItem("rg_accent") ?? "blood");
-    setReduced(localStorage.getItem("rg_reduced_motion") === "1");
-    setNotifEmail(localStorage.getItem("rg_notif_email") !== "0");
-    setNotifPush(localStorage.getItem("rg_notif_push") === "1");
-    setReminderTime(localStorage.getItem("rg_reminder") ?? "09:00");
-  }, []);
+  const setMemoryEnabled = (on: boolean) => writePref("rg_memory_disabled", on ? "0" : "1");
+  const setAccent = (key: string) => writePref("rg_accent", key);
+  const setReduced = (v: boolean) => writePref("rg_reduced_motion", v ? "1" : "0");
+  const setNotifEmail = (v: boolean) => writePref("rg_notif_email", v ? "1" : "0");
+  const setNotifPush = (v: boolean) => writePref("rg_notif_push", v ? "1" : "0");
+  const setReminderTime = (v: string) => writePref("rg_reminder", v);
   const [stats, setStats] = useState<{
     chats: number;
     messages: number;
@@ -204,10 +237,10 @@ function SettingsPage() {
 
   useEffect(() => {
     applyAccent(accent);
-  }, []);
+  }, [accent]);
   useEffect(() => {
     applyMotion(reduced);
-  }, []);
+  }, [reduced]);
 
   const save = async () => {
     if (!user) return;

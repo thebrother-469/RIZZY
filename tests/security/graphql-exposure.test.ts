@@ -11,6 +11,8 @@ import {
   ANON_FORBIDDEN_TABLES,
   AUTHENTICATED_ALLOWLIST,
   SERVICE_ONLY_TABLES,
+  acquireAuditSession,
+  releaseAuditSession,
   auditAnon,
   auditAuthenticated,
   buildArtifact,
@@ -20,7 +22,7 @@ import {
   isHidden,
   writeArtifact,
 } from "../../scripts/verify-graphql";
-import { resolveEnv, passwordSignIn } from "../../scripts/e2e-env";
+import { resolveEnv } from "../../scripts/e2e-env";
 
 const e = resolveEnv();
 
@@ -99,14 +101,47 @@ describe("response classification", () => {
 
 describe("artifact shape", () => {
   it("is machine-readable and reflects failures", () => {
-    const failing = classify("anon", "profiles", "hidden", {
-      data: { profilesCollection: { edges: [{ node: { nodeId: "a" } }] } },
-    }, "q");
+    const failing = classify(
+      "anon",
+      "profiles",
+      "hidden",
+      {
+        data: { profilesCollection: { edges: [{ node: { nodeId: "a" } }] } },
+      },
+      "q",
+    );
     const artifact = buildArtifact([failing], [], "proj", new Date("2026-01-01T00:00:00Z"));
     expect(artifact.status).toBe("FAIL");
     expect(artifact.summary).toEqual({ pass: 0, fail: 1, notVerified: 0 });
     expect(artifact.generatedAt).toBe("2026-01-01T00:00:00.000Z");
     expect(JSON.parse(JSON.stringify(artifact)).checks[0].collection).toBe("profilesCollection");
+  });
+
+  it("carries anon/authenticated splits, the denylist and unexpected exposures", () => {
+    const leaked = classify(
+      "anon",
+      "profiles",
+      "hidden",
+      {
+        data: { profilesCollection: { edges: [{ node: { nodeId: "a" } }] } },
+      },
+      "q",
+    );
+    const owned = classify(
+      "authenticated",
+      "missions",
+      "owner_scoped",
+      { data: { missionsCollection: { edges: [{ node: { user_id: "me" } }] } } },
+      "q",
+      0,
+    );
+    const artifact = buildArtifact([leaked, owned], [], "proj");
+    expect(artifact.anon).toHaveLength(1);
+    expect(artifact.authenticated).toHaveLength(1);
+    expect(artifact.denylist.anon).toEqual([...ANON_FORBIDDEN_TABLES]);
+    expect(artifact.denylist.authenticated).toEqual([...SERVICE_ONLY_TABLES]);
+    expect(artifact.unexpectedExposures.map((c) => c.table)).toEqual(["profiles"]);
+    expect(artifact.status).toBe("FAIL");
   });
 });
 
@@ -157,24 +192,29 @@ liveAnon("LIVE: anon exposure", () => {
   }, 60_000);
 });
 
-const liveAuth = e.url && e.anonKey && e.email && e.password ? describe : describe.skip;
+const liveAuth =
+  e.url && e.anonKey && (e.serviceKey || (e.email && e.password)) ? describe : describe.skip;
 liveAuth("LIVE: authenticated exposure", () => {
   it("matches the authenticated allowlist and hides every service-only table", async (ctx) => {
-    const grant = await passwordSignIn(e);
-    if (!grant.session) {
+    const acquired = await acquireAuditSession(e);
+    if (!acquired.session) {
       console.warn(
-        `[NOT VERIFIED] authenticated pg_graphql audit :: password grant failed ` +
-          `(HTTP ${grant.status}, ${grant.errorCode ?? "unknown"}).`,
+        `[NOT VERIFIED] authenticated pg_graphql audit :: ${acquired.reason ?? "no session"}`,
       );
       ctx.skip();
       return;
     }
-    const checks = await auditAuthenticated(
-      e.url!,
-      e.anonKey!,
-      grant.session.access_token,
-      grant.session.user.id,
-    );
+    let checks;
+    try {
+      checks = await auditAuthenticated(
+        e.url!,
+        e.anonKey!,
+        acquired.session.access_token,
+        acquired.session.user.id,
+      );
+    } finally {
+      await releaseAuditSession(acquired, e);
+    }
     for (const c of checks) {
       console.log(`[${c.status}] authenticated ${c.collection} — ${c.detail}`);
     }
@@ -183,5 +223,11 @@ liveAuth("LIVE: authenticated exposure", () => {
     for (const c of checks) expect(known.has(c.table), `${c.table} not declared`).toBe(true);
     expect(checks.filter((c) => c.status === "FAIL")).toEqual([]);
     expect(collectionName("missions")).toBe("missionsCollection");
+
+    // Both halves land in one artifact so CI uploads a complete record.
+    const anon = await auditAnon(e.url!, e.anonKey!);
+    writeArtifact(
+      buildArtifact([...anon, ...checks], [], e.url!.match(/\/\/([^.]+)\./)?.[1] ?? null),
+    );
   }, 60_000);
 });

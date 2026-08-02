@@ -73,8 +73,9 @@ test("a new chat message persists and broadcasts to a second live client", async
     // Realtime delivery: exactly one event carrying this payload.
     await secondary.page.waitForFunction(
       (needle) =>
-        ((window as unknown as { __rtEvents?: { new?: { content?: string } }[] }).__rtEvents ?? [])
-          .filter((e) => e.new?.content === needle).length > 0,
+        (
+          (window as unknown as { __rtEvents?: { new?: { content?: string } }[] }).__rtEvents ?? []
+        ).filter((e) => e.new?.content === needle).length > 0,
       content,
       { timeout: 30_000 },
     );

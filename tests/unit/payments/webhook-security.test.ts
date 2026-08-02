@@ -8,7 +8,11 @@
  */
 import { describe, it, expect } from "vitest";
 import { createHmac } from "node:crypto";
-import { verifyLemonSignature, resolvePlanFromVariant, isSubscriptionActive } from "../../../src/lib/lemon";
+import {
+  verifyLemonSignature,
+  resolvePlanFromVariant,
+  isSubscriptionActive,
+} from "../../../src/lib/lemon";
 
 const SECRET = "test-webhook-secret";
 const sign = (body: string, secret = SECRET) =>

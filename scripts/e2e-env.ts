@@ -156,7 +156,10 @@ export function storageStateFor(
   origin: string,
   storageKey: string,
   session: AuthSession,
-): { cookies: never[]; origins: { origin: string; localStorage: { name: string; value: string }[] }[] } {
+): {
+  cookies: never[];
+  origins: { origin: string; localStorage: { name: string; value: string }[] }[];
+} {
   return {
     cookies: [],
     origins: [

@@ -16,7 +16,11 @@ const SRC = resolve(process.cwd(), "src");
 /** Flow ⇢ the modules that render it. */
 const CORE_FLOWS: Record<string, string[]> = {
   onboarding: ["routes/app.onboarding.tsx"],
-  dashboard: ["routes/app.index.tsx", "components/ActivityHeatmap.tsx", "components/UsagePanel.tsx"],
+  dashboard: [
+    "routes/app.index.tsx",
+    "components/ActivityHeatmap.tsx",
+    "components/UsagePanel.tsx",
+  ],
   chat: ["routes/app.chat.tsx", "components/ChatWindow.tsx", "components/ChatComposer.tsx"],
   missions: ["routes/app.missions.tsx"],
   "profile-generator": ["routes/app.profile-generator.tsx"],
@@ -49,7 +53,13 @@ describe("hydration — no browser access at module evaluation time", () => {
     for (const file of files) {
       it(`${flow}: ${file} has a clean module scope`, () => {
         const scope = moduleScope(code(file));
-        for (const api of ["window.", "document.", "localStorage", "sessionStorage", "navigator."]) {
+        for (const api of [
+          "window.",
+          "document.",
+          "localStorage",
+          "sessionStorage",
+          "navigator.",
+        ]) {
           expect(scope.includes(api), `${file} touches ${api} at module scope`).toBe(false);
         }
       });
@@ -78,9 +88,10 @@ describe("hydration — non-deterministic values are not rendered during the ser
       it(`${flow}: ${file} keeps Date.now()/Math.random() out of module scope`, () => {
         const scope = moduleScope(code(file));
         expect(/Math\.random\(/.test(scope), `${file} randomises at module scope`).toBe(false);
-        expect(/new Date\(\)|Date\.now\(/.test(scope), `${file} reads the clock at module scope`).toBe(
-          false,
-        );
+        expect(
+          /new Date\(\)|Date\.now\(/.test(scope),
+          `${file} reads the clock at module scope`,
+        ).toBe(false);
       });
     }
   }

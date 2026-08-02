@@ -147,7 +147,11 @@ async function main() {
   const sessionB = (await passwordSignIn(e, b.email, b.password)).session;
 
   if (!sessionA || !sessionB || !userA.id || !userB.id) {
-    emit({ overall: "NOT VERIFIED", detail: "Could not provision two test identities.", checks: [] });
+    emit({
+      overall: "NOT VERIFIED",
+      detail: "Could not provision two test identities.",
+      checks: [],
+    });
     process.exit(0);
   }
   const tokenA = sessionA.access_token;

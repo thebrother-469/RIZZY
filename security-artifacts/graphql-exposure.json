@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-02T00:04:20.678Z",
+  "generatedAt": "2026-08-02T00:23:08.327Z",
   "project": "jfiojbbrdfgeruborkzx",
   "allowlist": {
     "authenticated": [
@@ -24,6 +24,226 @@
       "profile_gen_usage"
     ]
   },
+  "denylist": {
+    "anon": [
+      "profiles",
+      "chats",
+      "messages",
+      "memories",
+      "missions",
+      "subscriptions",
+      "user_xp",
+      "streaks",
+      "badges",
+      "usage_daily",
+      "xp_events",
+      "lemonsqueezy_webhook_events",
+      "paddle_webhook_events",
+      "auth_audit_logs",
+      "onboarding_debug_events",
+      "daily_mission_debug_events",
+      "profile_gen_usage"
+    ],
+    "authenticated": [
+      "lemonsqueezy_webhook_events",
+      "paddle_webhook_events",
+      "auth_audit_logs",
+      "onboarding_debug_events",
+      "daily_mission_debug_events",
+      "profile_gen_usage"
+    ]
+  },
+  "anon": [
+    {
+      "role": "anon",
+      "table": "profiles",
+      "collection": "profilesCollection",
+      "expected": "hidden",
+      "observed": "hidden",
+      "rowCount": null,
+      "status": "PASS",
+      "query": "{ profilesCollection(first: 5) { edges { node { nodeId } } } }",
+      "detail": "collection is not exposed (no SELECT grant)"
+    },
+    {
+      "role": "anon",
+      "table": "chats",
+      "collection": "chatsCollection",
+      "expected": "hidden",
+      "observed": "hidden",
+      "rowCount": null,
+      "status": "PASS",
+      "query": "{ chatsCollection(first: 5) { edges { node { nodeId } } } }",
+      "detail": "collection is not exposed (no SELECT grant)"
+    },
+    {
+      "role": "anon",
+      "table": "messages",
+      "collection": "messagesCollection",
+      "expected": "hidden",
+      "observed": "hidden",
+      "rowCount": null,
+      "status": "PASS",
+      "query": "{ messagesCollection(first: 5) { edges { node { nodeId } } } }",
+      "detail": "collection is not exposed (no SELECT grant)"
+    },
+    {
+      "role": "anon",
+      "table": "memories",
+      "collection": "memoriesCollection",
+      "expected": "hidden",
+      "observed": "hidden",
+      "rowCount": null,
+      "status": "PASS",
+      "query": "{ memoriesCollection(first: 5) { edges { node { nodeId } } } }",
+      "detail": "collection is not exposed (no SELECT grant)"
+    },
+    {
+      "role": "anon",
+      "table": "missions",
+      "collection": "missionsCollection",
+      "expected": "hidden",
+      "observed": "hidden",
+      "rowCount": null,
+      "status": "PASS",
+      "query": "{ missionsCollection(first: 5) { edges { node { nodeId } } } }",
+      "detail": "collection is not exposed (no SELECT grant)"
+    },
+    {
+      "role": "anon",
+      "table": "subscriptions",
+      "collection": "subscriptionsCollection",
+      "expected": "hidden",
+      "observed": "hidden",
+      "rowCount": null,
+      "status": "PASS",
+      "query": "{ subscriptionsCollection(first: 5) { edges { node { nodeId } } } }",
+      "detail": "collection is not exposed (no SELECT grant)"
+    },
+    {
+      "role": "anon",
+      "table": "user_xp",
+      "collection": "user_xpCollection",
+      "expected": "hidden",
+      "observed": "hidden",
+      "rowCount": null,
+      "status": "PASS",
+      "query": "{ user_xpCollection(first: 5) { edges { node { nodeId } } } }",
+      "detail": "collection is not exposed (no SELECT grant)"
+    },
+    {
+      "role": "anon",
+      "table": "streaks",
+      "collection": "streaksCollection",
+      "expected": "hidden",
+      "observed": "hidden",
+      "rowCount": null,
+      "status": "PASS",
+      "query": "{ streaksCollection(first: 5) { edges { node { nodeId } } } }",
+      "detail": "collection is not exposed (no SELECT grant)"
+    },
+    {
+      "role": "anon",
+      "table": "badges",
+      "collection": "badgesCollection",
+      "expected": "hidden",
+      "observed": "hidden",
+      "rowCount": null,
+      "status": "PASS",
+      "query": "{ badgesCollection(first: 5) { edges { node { nodeId } } } }",
+      "detail": "collection is not exposed (no SELECT grant)"
+    },
+    {
+      "role": "anon",
+      "table": "usage_daily",
+      "collection": "usage_dailyCollection",
+      "expected": "hidden",
+      "observed": "hidden",
+      "rowCount": null,
+      "status": "PASS",
+      "query": "{ usage_dailyCollection(first: 5) { edges { node { nodeId } } } }",
+      "detail": "collection is not exposed (no SELECT grant)"
+    },
+    {
+      "role": "anon",
+      "table": "xp_events",
+      "collection": "xp_eventsCollection",
+      "expected": "hidden",
+      "observed": "hidden",
+      "rowCount": null,
+      "status": "PASS",
+      "query": "{ xp_eventsCollection(first: 5) { edges { node { nodeId } } } }",
+      "detail": "collection is not exposed (no SELECT grant)"
+    },
+    {
+      "role": "anon",
+      "table": "lemonsqueezy_webhook_events",
+      "collection": "lemonsqueezy_webhook_eventsCollection",
+      "expected": "hidden",
+      "observed": "hidden",
+      "rowCount": null,
+      "status": "PASS",
+      "query": "{ lemonsqueezy_webhook_eventsCollection(first: 5) { edges { node { nodeId } } } }",
+      "detail": "collection is not exposed (no SELECT grant)"
+    },
+    {
+      "role": "anon",
+      "table": "paddle_webhook_events",
+      "collection": "paddle_webhook_eventsCollection",
+      "expected": "hidden",
+      "observed": "hidden",
+      "rowCount": null,
+      "status": "PASS",
+      "query": "{ paddle_webhook_eventsCollection(first: 5) { edges { node { nodeId } } } }",
+      "detail": "collection is not exposed (no SELECT grant)"
+    },
+    {
+      "role": "anon",
+      "table": "auth_audit_logs",
+      "collection": "auth_audit_logsCollection",
+      "expected": "hidden",
+      "observed": "hidden",
+      "rowCount": null,
+      "status": "PASS",
+      "query": "{ auth_audit_logsCollection(first: 5) { edges { node { nodeId } } } }",
+      "detail": "collection is not exposed (no SELECT grant)"
+    },
+    {
+      "role": "anon",
+      "table": "onboarding_debug_events",
+      "collection": "onboarding_debug_eventsCollection",
+      "expected": "hidden",
+      "observed": "hidden",
+      "rowCount": null,
+      "status": "PASS",
+      "query": "{ onboarding_debug_eventsCollection(first: 5) { edges { node { nodeId } } } }",
+      "detail": "collection is not exposed (no SELECT grant)"
+    },
+    {
+      "role": "anon",
+      "table": "daily_mission_debug_events",
+      "collection": "daily_mission_debug_eventsCollection",
+      "expected": "hidden",
+      "observed": "hidden",
+      "rowCount": null,
+      "status": "PASS",
+      "query": "{ daily_mission_debug_eventsCollection(first: 5) { edges { node { nodeId } } } }",
+      "detail": "collection is not exposed (no SELECT grant)"
+    },
+    {
+      "role": "anon",
+      "table": "profile_gen_usage",
+      "collection": "profile_gen_usageCollection",
+      "expected": "hidden",
+      "observed": "hidden",
+      "rowCount": null,
+      "status": "PASS",
+      "query": "{ profile_gen_usageCollection(first: 5) { edges { node { nodeId } } } }",
+      "detail": "collection is not exposed (no SELECT grant)"
+    }
+  ],
+  "authenticated": [],
+  "unexpectedExposures": [],
   "summary": {
     "pass": 17,
     "fail": 0,
