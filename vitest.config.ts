@@ -7,7 +7,11 @@ export default defineConfig({
   },
   test: {
     environment: "node",
-    include: ["tests/unit/**/*.{test,spec}.ts", "tests/api/**/*.{test,spec}.ts"],
+    include: [
+      "tests/unit/**/*.{test,spec}.ts",
+      "tests/api/**/*.{test,spec}.ts",
+      "tests/security/**/*.{test,spec}.ts",
+    ],
     setupFiles: ["tests/unit/ssr/setup.ts"],
     globals: false,
     coverage: {
