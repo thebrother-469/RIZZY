@@ -34,7 +34,9 @@
     "e2e:reset-user": "bun run scripts/reset-test-user.ts",
     "e2e:session": "bun run scripts/create-test-session.ts",
     "verify:rls": "bun run scripts/verify-rls.ts",
-    "verify:storage": "bun run scripts/verify-storage.ts"
+    "verify:storage": "bun run scripts/verify-storage.ts",
+    "verify:graphql:audit": "bun run scripts/verify-graphql.ts",
+    "test:security": "vitest run tests/security"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.4.0",
