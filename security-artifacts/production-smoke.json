@@ -1,12 +1,12 @@
 {
-  "generatedAt": "2026-08-02T00:17:49.414Z",
-  "runId": "smoke-msb1x53g",
+  "generatedAt": "2026-08-02T00:23:32.246Z",
+  "runId": "smoke-msb24hm0",
   "status": "NOT_VERIFIED",
   "reason": "NOT VERIFIED: neither SUPABASE_SERVICE_ROLE_KEY nor E2E_TEST_USER_EMAIL/PASSWORD are bound.",
   "userId": null,
-  "storagePrefix": "e2e/smoke-msb1x53g",
+  "storagePrefix": "e2e/smoke-msb24hm0",
   "timings": {
-    "totalMs": 90,
+    "totalMs": 111,
     "stages": {}
   },
   "completedStages": [],
