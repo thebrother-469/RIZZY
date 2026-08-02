@@ -237,10 +237,10 @@ function SettingsPage() {
 
   useEffect(() => {
     applyAccent(accent);
-  }, []);
+  }, [accent]);
   useEffect(() => {
     applyMotion(reduced);
-  }, []);
+  }, [reduced]);
 
   const save = async () => {
     if (!user) return;
