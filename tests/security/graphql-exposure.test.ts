@@ -101,9 +101,15 @@ describe("response classification", () => {
 
 describe("artifact shape", () => {
   it("is machine-readable and reflects failures", () => {
-    const failing = classify("anon", "profiles", "hidden", {
-      data: { profilesCollection: { edges: [{ node: { nodeId: "a" } }] } },
-    }, "q");
+    const failing = classify(
+      "anon",
+      "profiles",
+      "hidden",
+      {
+        data: { profilesCollection: { edges: [{ node: { nodeId: "a" } }] } },
+      },
+      "q",
+    );
     const artifact = buildArtifact([failing], [], "proj", new Date("2026-01-01T00:00:00Z"));
     expect(artifact.status).toBe("FAIL");
     expect(artifact.summary).toEqual({ pass: 0, fail: 1, notVerified: 0 });
@@ -112,9 +118,15 @@ describe("artifact shape", () => {
   });
 
   it("carries anon/authenticated splits, the denylist and unexpected exposures", () => {
-    const leaked = classify("anon", "profiles", "hidden", {
-      data: { profilesCollection: { edges: [{ node: { nodeId: "a" } }] } },
-    }, "q");
+    const leaked = classify(
+      "anon",
+      "profiles",
+      "hidden",
+      {
+        data: { profilesCollection: { edges: [{ node: { nodeId: "a" } }] } },
+      },
+      "q",
+    );
     const owned = classify(
       "authenticated",
       "missions",

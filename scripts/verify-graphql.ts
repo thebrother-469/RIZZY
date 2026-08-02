@@ -61,10 +61,7 @@ export const SERVICE_ONLY_TABLES = [
 ] as const;
 
 /** The anon role may reach nothing at all. */
-export const ANON_FORBIDDEN_TABLES = [
-  ...AUTHENTICATED_ALLOWLIST,
-  ...SERVICE_ONLY_TABLES,
-] as const;
+export const ANON_FORBIDDEN_TABLES = [...AUTHENTICATED_ALLOWLIST, ...SERVICE_ONLY_TABLES] as const;
 
 export type CheckStatus = "PASS" | "FAIL" | "NOT_VERIFIED";
 
@@ -327,7 +324,10 @@ export async function acquireAuditSession(e: E2EEnv = resolveEnv()): Promise<Aud
   };
 }
 
-export async function releaseAuditSession(s: AuditSession, e: E2EEnv = resolveEnv()): Promise<void> {
+export async function releaseAuditSession(
+  s: AuditSession,
+  e: E2EEnv = resolveEnv(),
+): Promise<void> {
   if (s.disposableUserId && e.serviceKey) await deleteUser(e, s.disposableUserId);
 }
 

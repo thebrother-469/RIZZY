@@ -96,10 +96,7 @@ const state = {
 // ---------------------------------------------------------------------------
 // PostgREST helpers bound to the signed-in user's token (RLS applies).
 // ---------------------------------------------------------------------------
-async function rest<T>(
-  path: string,
-  init: RequestInit = {},
-): Promise<{ status: number; body: T }> {
+async function rest<T>(path: string, init: RequestInit = {}): Promise<{ status: number; body: T }> {
   const res = await fetch(`${env.url!.replace(/\/$/, "")}/rest/v1${path}`, {
     ...init,
     headers: {
@@ -126,7 +123,10 @@ async function stage<T>(name: string, fn: () => Promise<T>): Promise<T> {
     const result = await Promise.race([
       fn(),
       new Promise<never>((_, reject) =>
-        setTimeout(() => reject(new Error(`stage "${name}" exceeded ${STAGE_TIMEOUT}ms`)), STAGE_TIMEOUT),
+        setTimeout(
+          () => reject(new Error(`stage "${name}" exceeded ${STAGE_TIMEOUT}ms`)),
+          STAGE_TIMEOUT,
+        ),
       ),
     ]);
     stages.push({ name, status: "PASS", ms: Date.now() - started });
@@ -496,7 +496,9 @@ test.describe("canonical production smoke", () => {
 
       // 9. Integrity: no console errors, no network failures.
       await stage("no_console_errors", async () => {
-        const fatal = consoleErrors.filter((e) => !/favicon|ResizeObserver|Download the React/i.test(e));
+        const fatal = consoleErrors.filter(
+          (e) => !/favicon|ResizeObserver|Download the React/i.test(e),
+        );
         expect(fatal, `console errors: ${fatal.join(" | ")}`).toEqual([]);
       });
 
@@ -522,16 +524,13 @@ test.describe("canonical production smoke", () => {
       await del(`/chats?user_id=eq.${state.userId}`);
       await del(`/memories?user_id=eq.${state.userId}`);
       await del(`/missions?user_id=eq.${state.userId}`);
-      await fetch(
-        `${env.url.replace(/\/$/, "")}/storage/v1/object/uploads/${STORAGE_PREFIX}`,
-        {
-          method: "DELETE",
-          headers: {
-            apikey: env.anonKey,
-            Authorization: `Bearer ${state.session.access_token}`,
-          },
+      await fetch(`${env.url.replace(/\/$/, "")}/storage/v1/object/uploads/${STORAGE_PREFIX}`, {
+        method: "DELETE",
+        headers: {
+          apikey: env.anonKey,
+          Authorization: `Bearer ${state.session.access_token}`,
         },
-      ).catch(() => undefined);
+      }).catch(() => undefined);
     }
     if (state.identity) await destroyTestUser(state.identity).catch(() => undefined);
   });

@@ -1,0 +1,35 @@
+{
+  "generatedAt": "2026-08-02T00:17:49.414Z",
+  "runId": "smoke-msb1x53g",
+  "status": "NOT_VERIFIED",
+  "reason": "NOT VERIFIED: neither SUPABASE_SERVICE_ROLE_KEY nor E2E_TEST_USER_EMAIL/PASSWORD are bound.",
+  "userId": null,
+  "storagePrefix": "e2e/smoke-msb1x53g",
+  "timings": {
+    "totalMs": 90,
+    "stages": {}
+  },
+  "completedStages": [],
+  "xp": {
+    "before": 0,
+    "after": 0,
+    "delta": 0
+  },
+  "streak": {
+    "before": 0,
+    "after": 0,
+    "delta": 0
+  },
+  "chatId": null,
+  "messageId": null,
+  "memoryId": null,
+  "missionId": null,
+  "profileId": null,
+  "subscription": {
+    "plan": null,
+    "status": null
+  },
+  "consoleErrors": [],
+  "networkFailures": [],
+  "stages": []
+}
