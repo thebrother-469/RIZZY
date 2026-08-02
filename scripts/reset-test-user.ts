@@ -106,7 +106,10 @@ export async function resetTestUser(opts: { email?: string; destroy?: boolean } 
       userId: user.id,
       cleaned,
       storageObjects,
-      detail: status < 400 ? "User data purged and Auth user deleted." : `Delete failed (HTTP ${status}).`,
+      detail:
+        status < 400
+          ? "User data purged and Auth user deleted."
+          : `Delete failed (HTTP ${status}).`,
     };
   }
   return {

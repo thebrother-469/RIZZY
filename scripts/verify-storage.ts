@@ -72,7 +72,10 @@ async function main() {
   const e = resolveEnv();
   const need = missing(e, ["url", "anonKey", "serviceKey"]);
   if (need.length) {
-    return emit({ overall: "NOT VERIFIED", detail: `Storage suite needs ${need.join(", ")}.`, checks: [] }, 0);
+    return emit(
+      { overall: "NOT VERIFIED", detail: `Storage suite needs ${need.join(", ")}.`, checks: [] },
+      0,
+    );
   }
 
   const a = disposableIdentity("storage-a");
@@ -82,7 +85,10 @@ async function main() {
   const sa = (await passwordSignIn(e, a.email, a.password)).session;
   const sb = (await passwordSignIn(e, b.email, b.password)).session;
   if (!sa || !sb) {
-    return emit({ overall: "NOT VERIFIED", detail: "Could not provision identities.", checks: [] }, 0);
+    return emit(
+      { overall: "NOT VERIFIED", detail: "Could not provision identities.", checks: [] },
+      0,
+    );
   }
   const tokenA = sa.access_token;
   const tokenB = sb.access_token;
@@ -94,7 +100,11 @@ async function main() {
     const png = Uint8Array.from([
       0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a, 0x00, 0x00, 0x00, 0x0d,
     ]);
-    record("upload image (owner)", "allow", await upload(e, tokenA, `${base}.png`, png, "image/png"));
+    record(
+      "upload image (owner)",
+      "allow",
+      await upload(e, tokenA, `${base}.png`, png, "image/png"),
+    );
     record(
       "upload text (owner)",
       "allow",
@@ -199,7 +209,12 @@ async function main() {
 
   const failures = checks.filter((c) => c.result === "FAIL");
   emit(
-    { overall: failures.length ? "FAIL" : "PASS", total: checks.length, failures: failures.length, checks },
+    {
+      overall: failures.length ? "FAIL" : "PASS",
+      total: checks.length,
+      failures: failures.length,
+      checks,
+    },
     failures.length ? 1 : 0,
   );
 }
