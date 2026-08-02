@@ -39,3 +39,6 @@ dist-ssr
 .vercel
 .env*
 verification-report.json
+
+# Generated verification artifacts
+!security-artifacts/
