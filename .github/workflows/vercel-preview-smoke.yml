@@ -75,6 +75,9 @@ jobs:
           echo "::error::Preview never returned 200."
           exit 1
 
+      - name: Secret preflight (fail fast)
+        run: bun run ci:secrets preview
+
       - run: bunx playwright install --with-deps chromium
 
       - name: Public surface smoke
