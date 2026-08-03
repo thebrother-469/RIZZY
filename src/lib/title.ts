@@ -94,3 +94,13 @@ export function sentence(prefix: string, profile: TitleProfile): string {
 export function salutation(profile: TitleProfile): string {
   return resolveTitle(profile).salutation;
 }
+
+/**
+ * Canonical accessor used by every non-React surface (outbound messages,
+ * server functions, scripts). React surfaces use the `useUserTitle()` hook, which
+ * delegates to `resolveTitle` — both share this single implementation so a
+ * stored preference renders identically on every surface.
+ */
+export function getUserTitle(profile: TitleProfile): ResolvedTitle {
+  return resolveTitle(profile);
+}

@@ -231,3 +231,153 @@ liveAuth("LIVE: authenticated exposure", () => {
     );
   }, 60_000);
 });
+
+// ---------------------------------------------------------------------------
+// Phase 3 — ROW-LEVEL isolation (auth.uid() scoping) contract + LIVE probes.
+// ---------------------------------------------------------------------------
+import {
+  ROW_SCOPE_TABLES,
+  auditRowScope,
+  acquireTwoActors,
+  releaseActors,
+  buildRowScopeArtifact,
+  collectOwners,
+  evaluateScope,
+  scopeQuery,
+  writeRowScopeArtifact,
+} from "../../scripts/verify-graphql-row-scope";
+
+const A = "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa";
+const B = "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb";
+
+describe("row-scope probe construction", () => {
+  it("covers every allowlisted owner-scoped table", () => {
+    expect([...ROW_SCOPE_TABLES].sort()).toEqual([...AUTHENTICATED_ALLOWLIST].sort());
+  });
+
+  it("builds nested, paginated and ordered probes", () => {
+    expect(scopeQuery("chats", "nested")).toContain("messagesCollection");
+    expect(scopeQuery("missions", "pagination")).toContain("first: 50");
+    expect(scopeQuery("missions", "ordering")).toContain("orderBy");
+    expect(scopeQuery("profiles", "plain")).toContain("id");
+  });
+
+  it("collects owner ids recursively through nested relations", () => {
+    const res = {
+      data: {
+        chatsCollection: {
+          edges: [
+            { node: { user_id: A, messagesCollection: { edges: [{ node: { user_id: B } }] } } },
+          ],
+        },
+      },
+    };
+    expect(collectOwners(res.data, "user_id").sort()).toEqual([A, B].sort());
+  });
+});
+
+describe("row-scope classification", () => {
+  const own = { data: { missionsCollection: { edges: [{ node: { user_id: A } }] } } };
+  const leaked = {
+    data: { missionsCollection: { edges: [{ node: { user_id: A } }, { node: { user_id: B } }] } },
+  };
+
+  it("PASSes when every row belongs to the caller", () => {
+    const c = evaluateScope("userA", A, "missions", "plain", own, "q");
+    expect(c.status).toBe("PASS");
+    expect(c.foreignRows).toBe(0);
+  });
+
+  it("FAILs on any foreign row", () => {
+    const c = evaluateScope("userA", A, "missions", "pagination", leaked, "q");
+    expect(c.status).toBe("FAIL");
+    expect(c.detail).toContain("RLS LEAK");
+  });
+
+  it("FAILs on a nested relation leak", () => {
+    const nested = {
+      data: {
+        chatsCollection: {
+          edges: [
+            { node: { user_id: A, messagesCollection: { edges: [{ node: { user_id: B } }] } } },
+          ],
+        },
+      },
+    };
+    expect(evaluateScope("userA", A, "chats", "nested", nested, "q").status).toBe("FAIL");
+  });
+
+  it("reports NOT_VERIFIED when the probe itself errored", () => {
+    const c = evaluateScope("userA", A, "missions", "plain", { errors: [{ message: "boom" }] }, "q");
+    expect(c.status).toBe("NOT_VERIFIED");
+  });
+
+  it("builds a machine-readable artifact that surfaces leaks", () => {
+    const good = evaluateScope("userA", A, "missions", "plain", own, "q");
+    const bad = evaluateScope("userB", B, "missions", "plain", leaked, "q");
+    const artifact = buildRowScopeArtifact([], [good, bad], [], "proj", new Date("2026-01-01Z"));
+    expect(artifact.status).toBe("FAIL");
+    expect(artifact.leaks).toHaveLength(1);
+    expect(artifact.actors).toEqual(["userA", "userB"]);
+    expect(artifact.summary).toEqual({ pass: 1, fail: 1, notVerified: 0 });
+  });
+});
+
+describe("row-scope mocked transport", () => {
+  it("PASSes a fully isolated surface for both users", async () => {
+    const forUser = (uid: string) =>
+      (async (_u: string, init: RequestInit) => {
+        const body = JSON.parse(String(init.body)) as { query: string };
+        const collection = /\{ (\w+)\(/.exec(body.query)?.[1] ?? "";
+        return {
+          json: async () => ({ data: { [collection]: { edges: [{ node: { user_id: uid, id: uid } }] } } }),
+        };
+      }) as unknown as typeof fetch;
+
+    for (const uid of [A, B]) {
+      const checks = await auditRowScope("https://x", "anon", "u", "tok", uid, forUser(uid));
+      expect(checks).toHaveLength(ROW_SCOPE_TABLES.length * 4);
+      expect(checks.filter((c) => c.status !== "PASS")).toEqual([]);
+    }
+  });
+});
+
+const liveScope =
+  e.url && e.anonKey && (e.serviceKey || (e.email && e.password)) ? describe : describe.skip;
+liveScope("LIVE: auth.uid() row isolation", () => {
+  it("never returns a foreign row to either identity", async (ctx) => {
+    const { actors, reason } = await acquireTwoActors(e);
+    if (actors.length === 0) {
+      console.warn(`[NOT VERIFIED] row-scope audit :: ${reason}`);
+      ctx.skip();
+      return;
+    }
+    const scope = [];
+    try {
+      for (const a of actors) {
+        scope.push(
+          ...(await auditRowScope(
+            e.url!,
+            e.anonKey!,
+            a.name,
+            a.session.access_token,
+            a.session.user.id,
+          )),
+        );
+      }
+    } finally {
+      await releaseActors(actors, e);
+    }
+    const anon = await auditAnon(e.url!, e.anonKey!);
+    writeRowScopeArtifact(
+      buildRowScopeArtifact(
+        anon,
+        scope,
+        reason ? [reason] : [],
+        e.url!.match(/\/\/([^.]+)\./)?.[1] ?? null,
+      ),
+    );
+    expect(anon.filter((c) => c.status === "FAIL")).toEqual([]);
+    expect(scope.filter((c) => c.status === "FAIL")).toEqual([]);
+  }, 120_000);
+});

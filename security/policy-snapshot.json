@@ -1,0 +1,726 @@
+{
+  "$comment": "Captured live from the connected Supabase project (pg_policies + pg_class.relacl). Regenerate with `bun run security:evidence` when SUPABASE_DB_URL/psql is bound.",
+  "capturedAt": "2026-08-03T22:36:36.931Z",
+  "project": "jfiojbbrdfgeruborkzx",
+  "source": "live-query",
+  "tables": [
+    {
+      "table": "profiles",
+      "schema": "public",
+      "rlsEnabled": true,
+      "exposure": "authenticated",
+      "owner": "id",
+      "policies": [
+        {
+          "name": "own profile select",
+          "cmd": "SELECT",
+          "roles": [
+            "authenticated"
+          ],
+          "permissive": "PERMISSIVE",
+          "using": "(( SELECT auth.uid() AS uid) = id)",
+          "withCheck": null
+        },
+        {
+          "name": "own profile insert",
+          "cmd": "INSERT",
+          "roles": [
+            "authenticated"
+          ],
+          "permissive": "PERMISSIVE",
+          "using": null,
+          "withCheck": "(( SELECT auth.uid() AS uid) = id)"
+        },
+        {
+          "name": "own profile update",
+          "cmd": "UPDATE",
+          "roles": [
+            "authenticated"
+          ],
+          "permissive": "PERMISSIVE",
+          "using": "(( SELECT auth.uid() AS uid) = id)",
+          "withCheck": "(( SELECT auth.uid() AS uid) = id)"
+        }
+      ],
+      "grants": {
+        "authenticated": "INSERT,SELECT,UPDATE",
+        "service_role": "DELETE,INSERT,REFERENCES,SELECT,TRIGGER,TRUNCATE,UPDATE"
+      }
+    },
+    {
+      "table": "chats",
+      "schema": "public",
+      "rlsEnabled": true,
+      "exposure": "authenticated",
+      "owner": "user_id",
+      "policies": [
+        {
+          "name": "own chats all",
+          "cmd": "ALL",
+          "roles": [
+            "authenticated"
+          ],
+          "permissive": "PERMISSIVE",
+          "using": "(( SELECT auth.uid() AS uid) = user_id)",
+          "withCheck": "(( SELECT auth.uid() AS uid) = user_id)"
+        }
+      ],
+      "grants": {
+        "authenticated": "DELETE,INSERT,SELECT,UPDATE",
+        "service_role": "DELETE,INSERT,REFERENCES,SELECT,TRIGGER,TRUNCATE,UPDATE"
+      }
+    },
+    {
+      "table": "messages",
+      "schema": "public",
+      "rlsEnabled": true,
+      "exposure": "authenticated",
+      "owner": "user_id",
+      "policies": [
+        {
+          "name": "own msg all",
+          "cmd": "ALL",
+          "roles": [
+            "authenticated"
+          ],
+          "permissive": "PERMISSIVE",
+          "using": "(( SELECT auth.uid() AS uid) = user_id)",
+          "withCheck": "(( SELECT auth.uid() AS uid) = user_id)"
+        }
+      ],
+      "grants": {
+        "authenticated": "DELETE,INSERT,SELECT,UPDATE",
+        "service_role": "DELETE,INSERT,REFERENCES,SELECT,TRIGGER,TRUNCATE,UPDATE"
+      }
+    },
+    {
+      "table": "memories",
+      "schema": "public",
+      "rlsEnabled": true,
+      "exposure": "authenticated",
+      "owner": "user_id",
+      "policies": [
+        {
+          "name": "own memories",
+          "cmd": "ALL",
+          "roles": [
+            "authenticated"
+          ],
+          "permissive": "PERMISSIVE",
+          "using": "(( SELECT auth.uid() AS uid) = user_id)",
+          "withCheck": "(( SELECT auth.uid() AS uid) = user_id)"
+        }
+      ],
+      "grants": {
+        "authenticated": "DELETE,INSERT,SELECT,UPDATE",
+        "service_role": "DELETE,INSERT,REFERENCES,SELECT,TRIGGER,TRUNCATE,UPDATE"
+      }
+    },
+    {
+      "table": "missions",
+      "schema": "public",
+      "rlsEnabled": true,
+      "exposure": "authenticated",
+      "owner": "user_id",
+      "policies": [
+        {
+          "name": "own missions read",
+          "cmd": "SELECT",
+          "roles": [
+            "authenticated"
+          ],
+          "permissive": "PERMISSIVE",
+          "using": "(( SELECT auth.uid() AS uid) = user_id)",
+          "withCheck": null
+        },
+        {
+          "name": "Users can create their own missions",
+          "cmd": "INSERT",
+          "roles": [
+            "authenticated"
+          ],
+          "permissive": "PERMISSIVE",
+          "using": null,
+          "withCheck": "((( SELECT auth.uid() AS uid) = user_id) AND (completed = false) AND (completed_at IS NULL))"
+        },
+        {
+          "name": "Users can update own mission reflection and skip",
+          "cmd": "UPDATE",
+          "roles": [
+            "authenticated"
+          ],
+          "permissive": "PERMISSIVE",
+          "using": "(( SELECT auth.uid() AS uid) = user_id)",
+          "withCheck": "((( SELECT auth.uid() AS uid) = user_id) AND (completed = ( SELECT m.completed FROM missions m WHERE (m.id = missions.id))) AND (NOT (completed_at IS DISTINCT FROM ( SELECT m.completed_at FROM missions m WHERE (m.id = missions.id)))))"
+        },
+        {
+          "name": "Users can delete their own missions",
+          "cmd": "DELETE",
+          "roles": [
+            "authenticated"
+          ],
+          "permissive": "PERMISSIVE",
+          "using": "(( SELECT auth.uid() AS uid) = user_id)",
+          "withCheck": null
+        }
+      ],
+      "grants": {
+        "authenticated": "DELETE,INSERT,SELECT,UPDATE",
+        "service_role": "DELETE,INSERT,REFERENCES,SELECT,TRIGGER,TRUNCATE,UPDATE"
+      }
+    },
+    {
+      "table": "subscriptions",
+      "schema": "public",
+      "rlsEnabled": true,
+      "exposure": "authenticated",
+      "owner": "user_id",
+      "policies": [
+        {
+          "name": "own sub select",
+          "cmd": "SELECT",
+          "roles": [
+            "authenticated"
+          ],
+          "permissive": "PERMISSIVE",
+          "using": "(( SELECT auth.uid() AS uid) = user_id)",
+          "withCheck": null
+        },
+        {
+          "name": "Block client inserts on subscriptions",
+          "cmd": "INSERT",
+          "roles": [
+            "anon",
+            "authenticated"
+          ],
+          "permissive": "RESTRICTIVE",
+          "using": null,
+          "withCheck": "false"
+        },
+        {
+          "name": "Block client updates on subscriptions",
+          "cmd": "UPDATE",
+          "roles": [
+            "anon",
+            "authenticated"
+          ],
+          "permissive": "RESTRICTIVE",
+          "using": "false",
+          "withCheck": "false"
+        },
+        {
+          "name": "Block client deletes on subscriptions",
+          "cmd": "DELETE",
+          "roles": [
+            "anon",
+            "authenticated"
+          ],
+          "permissive": "RESTRICTIVE",
+          "using": "false",
+          "withCheck": null
+        }
+      ],
+      "grants": {
+        "authenticated": "SELECT",
+        "service_role": "DELETE,INSERT,REFERENCES,SELECT,TRIGGER,TRUNCATE,UPDATE"
+      }
+    },
+    {
+      "table": "user_xp",
+      "schema": "public",
+      "rlsEnabled": true,
+      "exposure": "authenticated",
+      "owner": "user_id",
+      "policies": [
+        {
+          "name": "own xp read",
+          "cmd": "SELECT",
+          "roles": [
+            "authenticated"
+          ],
+          "permissive": "PERMISSIVE",
+          "using": "(( SELECT auth.uid() AS uid) = user_id)",
+          "withCheck": null
+        },
+        {
+          "name": "Block client inserts on user_xp",
+          "cmd": "INSERT",
+          "roles": [
+            "anon",
+            "authenticated"
+          ],
+          "permissive": "RESTRICTIVE",
+          "using": null,
+          "withCheck": "false"
+        },
+        {
+          "name": "Block client updates on user_xp",
+          "cmd": "UPDATE",
+          "roles": [
+            "anon",
+            "authenticated"
+          ],
+          "permissive": "RESTRICTIVE",
+          "using": "false",
+          "withCheck": "false"
+        },
+        {
+          "name": "Block client deletes on user_xp",
+          "cmd": "DELETE",
+          "roles": [
+            "anon",
+            "authenticated"
+          ],
+          "permissive": "RESTRICTIVE",
+          "using": "false",
+          "withCheck": null
+        }
+      ],
+      "grants": {
+        "authenticated": "SELECT",
+        "service_role": "DELETE,INSERT,REFERENCES,SELECT,TRIGGER,TRUNCATE,UPDATE"
+      }
+    },
+    {
+      "table": "streaks",
+      "schema": "public",
+      "rlsEnabled": true,
+      "exposure": "authenticated",
+      "owner": "user_id",
+      "policies": [
+        {
+          "name": "own streaks read",
+          "cmd": "SELECT",
+          "roles": [
+            "authenticated"
+          ],
+          "permissive": "PERMISSIVE",
+          "using": "(( SELECT auth.uid() AS uid) = user_id)",
+          "withCheck": null
+        },
+        {
+          "name": "Block client inserts on streaks",
+          "cmd": "INSERT",
+          "roles": [
+            "anon",
+            "authenticated"
+          ],
+          "permissive": "PERMISSIVE",
+          "using": null,
+          "withCheck": "false"
+        },
+        {
+          "name": "Block client updates on streaks",
+          "cmd": "UPDATE",
+          "roles": [
+            "anon",
+            "authenticated"
+          ],
+          "permissive": "PERMISSIVE",
+          "using": "false",
+          "withCheck": "false"
+        },
+        {
+          "name": "Block client deletes on streaks",
+          "cmd": "DELETE",
+          "roles": [
+            "anon",
+            "authenticated"
+          ],
+          "permissive": "PERMISSIVE",
+          "using": "false",
+          "withCheck": null
+        }
+      ],
+      "grants": {
+        "authenticated": "SELECT",
+        "service_role": "DELETE,INSERT,REFERENCES,SELECT,TRIGGER,TRUNCATE,UPDATE"
+      }
+    },
+    {
+      "table": "badges",
+      "schema": "public",
+      "rlsEnabled": true,
+      "exposure": "authenticated",
+      "owner": "user_id",
+      "policies": [
+        {
+          "name": "own badges read",
+          "cmd": "SELECT",
+          "roles": [
+            "authenticated"
+          ],
+          "permissive": "PERMISSIVE",
+          "using": "(user_id = ( SELECT auth.uid() AS uid))",
+          "withCheck": null
+        },
+        {
+          "name": "Badges are not user-writable (insert)",
+          "cmd": "INSERT",
+          "roles": [
+            "authenticated"
+          ],
+          "permissive": "PERMISSIVE",
+          "using": null,
+          "withCheck": "false"
+        },
+        {
+          "name": "Badges are not user-writable (update)",
+          "cmd": "UPDATE",
+          "roles": [
+            "authenticated"
+          ],
+          "permissive": "PERMISSIVE",
+          "using": "false",
+          "withCheck": "false"
+        },
+        {
+          "name": "Badges are not user-writable (delete)",
+          "cmd": "DELETE",
+          "roles": [
+            "authenticated"
+          ],
+          "permissive": "PERMISSIVE",
+          "using": "false",
+          "withCheck": null
+        }
+      ],
+      "grants": {
+        "authenticated": "SELECT",
+        "service_role": "DELETE,INSERT,REFERENCES,SELECT,TRIGGER,TRUNCATE,UPDATE"
+      }
+    },
+    {
+      "table": "usage_daily",
+      "schema": "public",
+      "rlsEnabled": true,
+      "exposure": "authenticated",
+      "owner": "user_id",
+      "policies": [
+        {
+          "name": "own usage read",
+          "cmd": "SELECT",
+          "roles": [
+            "authenticated"
+          ],
+          "permissive": "PERMISSIVE",
+          "using": "(( SELECT auth.uid() AS uid) = user_id)",
+          "withCheck": null
+        },
+        {
+          "name": "Block client inserts on usage_daily",
+          "cmd": "INSERT",
+          "roles": [
+            "anon",
+            "authenticated"
+          ],
+          "permissive": "PERMISSIVE",
+          "using": null,
+          "withCheck": "false"
+        },
+        {
+          "name": "Block client updates on usage_daily",
+          "cmd": "UPDATE",
+          "roles": [
+            "anon",
+            "authenticated"
+          ],
+          "permissive": "PERMISSIVE",
+          "using": "false",
+          "withCheck": "false"
+        },
+        {
+          "name": "Block client deletes on usage_daily",
+          "cmd": "DELETE",
+          "roles": [
+            "anon",
+            "authenticated"
+          ],
+          "permissive": "PERMISSIVE",
+          "using": "false",
+          "withCheck": null
+        }
+      ],
+      "grants": {
+        "authenticated": "SELECT",
+        "service_role": "DELETE,INSERT,REFERENCES,SELECT,TRIGGER,TRUNCATE,UPDATE"
+      }
+    },
+    {
+      "table": "xp_events",
+      "schema": "public",
+      "rlsEnabled": true,
+      "exposure": "authenticated",
+      "owner": "user_id",
+      "policies": [
+        {
+          "name": "own xp events read",
+          "cmd": "SELECT",
+          "roles": [
+            "authenticated"
+          ],
+          "permissive": "PERMISSIVE",
+          "using": "(( SELECT auth.uid() AS uid) = user_id)",
+          "withCheck": null
+        },
+        {
+          "name": "Block client inserts on xp_events",
+          "cmd": "INSERT",
+          "roles": [
+            "authenticated"
+          ],
+          "permissive": "PERMISSIVE",
+          "using": null,
+          "withCheck": "false"
+        },
+        {
+          "name": "Block client updates on xp_events",
+          "cmd": "UPDATE",
+          "roles": [
+            "authenticated"
+          ],
+          "permissive": "PERMISSIVE",
+          "using": "false",
+          "withCheck": "false"
+        },
+        {
+          "name": "Block client deletes on xp_events",
+          "cmd": "DELETE",
+          "roles": [
+            "authenticated"
+          ],
+          "permissive": "PERMISSIVE",
+          "using": "false",
+          "withCheck": null
+        }
+      ],
+      "grants": {
+        "authenticated": "SELECT",
+        "service_role": "DELETE,INSERT,REFERENCES,SELECT,TRIGGER,TRUNCATE,UPDATE"
+      }
+    },
+    {
+      "table": "auth_audit_logs",
+      "schema": "public",
+      "rlsEnabled": true,
+      "exposure": "service_only",
+      "owner": "user_id",
+      "policies": [
+        {
+          "name": "auth_audit_owner_select",
+          "cmd": "SELECT",
+          "roles": [
+            "authenticated"
+          ],
+          "permissive": "PERMISSIVE",
+          "using": "(user_id = ( SELECT auth.uid() AS uid))",
+          "withCheck": null
+        }
+      ],
+      "grants": {
+        "service_role": "DELETE,INSERT,REFERENCES,SELECT,TRIGGER,TRUNCATE,UPDATE"
+      }
+    },
+    {
+      "table": "profile_gen_usage",
+      "schema": "public",
+      "rlsEnabled": true,
+      "exposure": "service_only",
+      "owner": "user_id",
+      "policies": [
+        {
+          "name": "own profile gen usage read",
+          "cmd": "SELECT",
+          "roles": [
+            "authenticated"
+          ],
+          "permissive": "PERMISSIVE",
+          "using": "(( SELECT auth.uid() AS uid) = user_id)",
+          "withCheck": null
+        },
+        {
+          "name": "block client insert profile gen usage",
+          "cmd": "INSERT",
+          "roles": [
+            "authenticated"
+          ],
+          "permissive": "PERMISSIVE",
+          "using": null,
+          "withCheck": "false"
+        },
+        {
+          "name": "block client update profile gen usage",
+          "cmd": "UPDATE",
+          "roles": [
+            "authenticated"
+          ],
+          "permissive": "PERMISSIVE",
+          "using": "false",
+          "withCheck": "false"
+        },
+        {
+          "name": "block client delete profile gen usage",
+          "cmd": "DELETE",
+          "roles": [
+            "authenticated"
+          ],
+          "permissive": "PERMISSIVE",
+          "using": "false",
+          "withCheck": null
+        }
+      ],
+      "grants": {
+        "service_role": "DELETE,INSERT,REFERENCES,SELECT,TRIGGER,TRUNCATE,UPDATE"
+      }
+    },
+    {
+      "table": "onboarding_debug_events",
+      "schema": "public",
+      "rlsEnabled": true,
+      "exposure": "service_only",
+      "owner": "user_id",
+      "policies": [
+        {
+          "name": "own onboarding debug read",
+          "cmd": "SELECT",
+          "roles": [
+            "authenticated"
+          ],
+          "permissive": "PERMISSIVE",
+          "using": "(user_id = ( SELECT auth.uid() AS uid))",
+          "withCheck": null
+        },
+        {
+          "name": "block client insert onboarding debug",
+          "cmd": "INSERT",
+          "roles": [
+            "authenticated"
+          ],
+          "permissive": "PERMISSIVE",
+          "using": null,
+          "withCheck": "false"
+        },
+        {
+          "name": "block client update onboarding debug",
+          "cmd": "UPDATE",
+          "roles": [
+            "authenticated"
+          ],
+          "permissive": "PERMISSIVE",
+          "using": "false",
+          "withCheck": "false"
+        },
+        {
+          "name": "block client delete onboarding debug",
+          "cmd": "DELETE",
+          "roles": [
+            "authenticated"
+          ],
+          "permissive": "PERMISSIVE",
+          "using": "false",
+          "withCheck": null
+        }
+      ],
+      "grants": {
+        "service_role": "DELETE,INSERT,REFERENCES,SELECT,TRIGGER,TRUNCATE,UPDATE"
+      }
+    },
+    {
+      "table": "daily_mission_debug_events",
+      "schema": "public",
+      "rlsEnabled": true,
+      "exposure": "service_only",
+      "owner": "user_id",
+      "policies": [
+        {
+          "name": "own daily mission debug read",
+          "cmd": "SELECT",
+          "roles": [
+            "authenticated"
+          ],
+          "permissive": "PERMISSIVE",
+          "using": "(user_id = ( SELECT auth.uid() AS uid))",
+          "withCheck": null
+        },
+        {
+          "name": "block client insert daily mission debug",
+          "cmd": "INSERT",
+          "roles": [
+            "authenticated"
+          ],
+          "permissive": "PERMISSIVE",
+          "using": null,
+          "withCheck": "false"
+        },
+        {
+          "name": "block client update daily mission debug",
+          "cmd": "UPDATE",
+          "roles": [
+            "authenticated"
+          ],
+          "permissive": "PERMISSIVE",
+          "using": "false",
+          "withCheck": "false"
+        },
+        {
+          "name": "block client delete daily mission debug",
+          "cmd": "DELETE",
+          "roles": [
+            "authenticated"
+          ],
+          "permissive": "PERMISSIVE",
+          "using": "false",
+          "withCheck": null
+        }
+      ],
+      "grants": {
+        "service_role": "DELETE,INSERT,REFERENCES,SELECT,TRIGGER,TRUNCATE,UPDATE"
+      }
+    },
+    {
+      "table": "lemonsqueezy_webhook_events",
+      "schema": "public",
+      "rlsEnabled": true,
+      "exposure": "service_only",
+      "owner": null,
+      "policies": [
+        {
+          "name": "service role only",
+          "cmd": "ALL",
+          "roles": [
+            "service_role"
+          ],
+          "permissive": "PERMISSIVE",
+          "using": "true",
+          "withCheck": "true"
+        }
+      ],
+      "grants": {
+        "service_role": "DELETE,INSERT,REFERENCES,SELECT,TRIGGER,TRUNCATE,UPDATE"
+      }
+    },
+    {
+      "table": "paddle_webhook_events",
+      "schema": "public",
+      "rlsEnabled": true,
+      "exposure": "service_only",
+      "owner": null,
+      "policies": [
+        {
+          "name": "Deny all client access",
+          "cmd": "ALL",
+          "roles": [
+            "anon",
+            "authenticated"
+          ],
+          "permissive": "RESTRICTIVE",
+          "using": "false",
+          "withCheck": "false"
+        }
+      ],
+      "grants": {
+        "service_role": "DELETE,INSERT,REFERENCES,SELECT,TRIGGER,TRUNCATE,UPDATE"
+      }
+    }
+  ]
+}
