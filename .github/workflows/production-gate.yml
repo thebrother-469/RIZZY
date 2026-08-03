@@ -42,6 +42,8 @@ jobs:
           key: ${{ runner.os }}-bun-${{ hashFiles('bun.lock', 'bun.lockb', 'package.json') }}
           restore-keys: ${{ runner.os }}-bun-
       - run: bun install --frozen-lockfile
+      - name: Secret preflight (fail fast)
+        run: bun run ci:secrets build
       - name: Validate environment variables
         run: bun run validate:env
       - name: TypeScript
@@ -70,6 +72,8 @@ jobs:
           key: ${{ runner.os }}-bun-${{ hashFiles('bun.lock', 'bun.lockb', 'package.json') }}
           restore-keys: ${{ runner.os }}-bun-
       - run: bun install --frozen-lockfile
+      - name: Secret preflight (fail fast)
+        run: bun run ci:secrets ssr
       - name: SSR smoke + protected pages + hydration core flows
         run: bun run test:ssr
       - uses: actions/upload-artifact@v4
@@ -98,6 +102,8 @@ jobs:
           key: ${{ runner.os }}-bun-${{ hashFiles('bun.lock', 'bun.lockb', 'package.json') }}
           restore-keys: ${{ runner.os }}-bun-
       - run: bun install --frozen-lockfile
+      - name: Secret preflight (fail fast)
+        run: bun run ci:secrets security
 
       - name: RLS + auth.uid() isolation regression
         run: bun run verify:rls
@@ -109,6 +115,10 @@ jobs:
         run: bunx vitest run tests/unit/payments tests/unit/lemon
       - name: GraphQL exposure contract suite
         run: bun run test:security
+
+      - name: Publish the verification summary
+        if: always()
+        run: bun run ci:summary
 
       - uses: actions/upload-artifact@v4
         if: always()
@@ -136,6 +146,8 @@ jobs:
           key: ${{ runner.os }}-bun-${{ hashFiles('bun.lock', 'bun.lockb', 'package.json') }}
           restore-keys: ${{ runner.os }}-bun-
       - run: bun install --frozen-lockfile
+      - name: Secret preflight (fail fast)
+        run: bun run ci:secrets integration
       - name: Install Playwright browsers
         run: bunx playwright install --with-deps chromium
 
@@ -155,6 +167,10 @@ jobs:
       - name: Reset the shared E2E identity
         if: always()
         run: bun run e2e:reset-user || true
+
+      - name: Publish the verification summary
+        if: always()
+        run: bun run ci:summary
 
       - uses: actions/upload-artifact@v4
         if: always()
@@ -188,3 +204,16 @@ jobs:
             fi
           done
           echo "Release gate PASSED."
+      - name: Record the gate outcome
+        if: always()
+        run: |
+          {
+            echo "### Production release gate"
+            echo ""
+            echo "| Stage | Result |"
+            echo "| --- | --- |"
+            echo "| Build verification | ${{ needs.build.result }} |"
+            echo "| SSR + hydration | ${{ needs.ssr.result }} |"
+            echo "| Security verification | ${{ needs.security.result }} |"
+            echo "| Integration verification | ${{ needs.integration.result }} |"
+          } >> "$GITHUB_STEP_SUMMARY"
