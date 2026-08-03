@@ -40,6 +40,7 @@ const VIBES = [
 ];
 
 function ProfileGeneratorPage() {
+  const title = useUserTitle();
   const gen = useServerFn(generateDatingProfile);
 
   const [hobbies, setHobbies] = useState("");

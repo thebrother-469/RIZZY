@@ -68,6 +68,7 @@ export const Route = createFileRoute("/app/memory")({
 type SortKey = "newest" | "oldest" | "last_used" | "importance";
 
 function MemoryManager() {
+  const title = useUserTitle();
   const { user } = useAuth();
   const [showArchived, setShowArchived] = useState(false);
   const [category, setCategory] = useState<MemoryCategory | "all">("all");

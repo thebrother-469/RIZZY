@@ -53,6 +53,7 @@ type Mission = {
 };
 
 function MissionsPage() {
+  const title = useUserTitle();
   const { user } = useAuth();
   const nowMs = useNowMs(60_000);
   const [generating, setGenerating] = useState(false);

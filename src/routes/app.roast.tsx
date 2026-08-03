@@ -37,6 +37,7 @@ type Seed = { prompt: string; shots: RoastShot[] };
 const SEED_KEY = "rizz_roast_seed";
 
 function RoastPage() {
+  const title = useUserTitle();
   const { id } = Route.useSearch();
   const { user } = useAuth();
   const nav = useNavigate();

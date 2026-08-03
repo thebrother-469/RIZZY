@@ -26,6 +26,7 @@ export const Route = createFileRoute("/app/coaches")({
 });
 
 function CoachesPage() {
+  const title = useUserTitle();
   const nav = useNavigate();
   return (
     <div className="px-4 md:px-8 py-8 max-w-6xl mx-auto">
