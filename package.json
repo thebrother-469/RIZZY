@@ -40,7 +40,11 @@
     "smoke:production": "playwright test tests/playwright/production-smoke.spec.ts",
     "ci:secrets": "bun run scripts/ci-secrets.ts",
     "ci:summary": "bun run scripts/ci-summary.ts",
-    "gate:local": "bun run typecheck && bun run lint && bun run build && bun run test:ssr && bun run verify:graphql:audit && bun run test:security"
+    "gate:local": "bun run typecheck && bun run lint && bun run build && bun run test:ssr && bun run verify:graphql:audit && bun run test:security",
+    "security:evidence": "bun run scripts/generate-security-evidence.ts",
+    "security:findings": "bun run scripts/verify-security-findings.ts",
+    "verify:graphql:row-scope": "bun run scripts/verify-graphql-row-scope.ts",
+    "test:mobile:pwa": "playwright test tests/playwright/mobile"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.4.0",

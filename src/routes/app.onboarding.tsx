@@ -7,6 +7,7 @@ import { toast } from "sonner";
 import { ArrowRight, ArrowLeft, Check, Loader2, Flame } from "lucide-react";
 import { awardXP, awardBadge } from "@/lib/xp";
 import { createMemory } from "@/lib/memory";
+import { NEUTRAL_SALUTATION } from "@/lib/title";
 import { errorMessage, errorName, errorStatus } from "@/lib/errors";
 
 export const Route = createFileRoute("/app/onboarding")({
@@ -576,7 +577,7 @@ function Onboarding() {
               </label>
               <p className="text-xs text-muted-foreground mb-3">
                 Optional. We never guess this from your name or email — leave it alone and
-                we&apos;ll call you Champion.
+                we&apos;ll call you {NEUTRAL_SALUTATION}.
               </p>
               <select
                 id="preferred-title"
