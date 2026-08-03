@@ -1,5 +1,6 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect, useMemo, useState, useSyncExternalStore } from "react";
+import { useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/lib/auth";
 import { toast } from "sonner";
@@ -158,6 +159,7 @@ function useStoredPref<T extends string | boolean>(
 
 function SettingsPage() {
   const { user, plan, signOut } = useAuth();
+  const qc = useQueryClient();
   const nav = useNavigate();
   const openPortal = useServerFn(getCustomerPortalUrl);
   const [portalLoading, setPortalLoading] = useState(false);
@@ -262,7 +264,11 @@ function SettingsPage() {
       .eq("id", user.id);
     setSaving(false);
     if (error) toast.error("Save failed.");
-    else toast.success("Saved.");
+    else {
+      // Salutation must update everywhere immediately, not on next stale window.
+      await qc.invalidateQueries({ queryKey: ["title-profile"] });
+      toast.success("Saved.");
+    }
   };
 
   const toggleMemory = (on: boolean) => {
