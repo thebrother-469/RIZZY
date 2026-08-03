@@ -403,6 +403,7 @@ export type Database = {
           memory_enabled: boolean
           onboarded_at: string | null
           plan: Database["public"]["Enums"]["plan_tier"]
+          preferred_title: string | null
           social_challenges: string[] | null
           strengths: string | null
           updated_at: string
@@ -422,6 +423,7 @@ export type Database = {
           memory_enabled?: boolean
           onboarded_at?: string | null
           plan?: Database["public"]["Enums"]["plan_tier"]
+          preferred_title?: string | null
           social_challenges?: string[] | null
           strengths?: string | null
           updated_at?: string
@@ -441,6 +443,7 @@ export type Database = {
           memory_enabled?: boolean
           onboarded_at?: string | null
           plan?: Database["public"]["Enums"]["plan_tier"]
+          preferred_title?: string | null
           social_challenges?: string[] | null
           strengths?: string | null
           updated_at?: string
