@@ -1,5 +1,6 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect, useMemo, useState, useSyncExternalStore } from "react";
+import { useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/lib/auth";
 import { toast } from "sonner";
@@ -52,6 +53,7 @@ export const Route = createFileRoute("/app/settings")({
 type Profile = {
   display_name: string | null;
   gender: string | null;
+  preferred_title: string | null;
   goals: string | null;
   strengths: string | null;
   weaknesses: string | null;
@@ -157,6 +159,7 @@ function useStoredPref<T extends string | boolean>(
 
 function SettingsPage() {
   const { user, plan, signOut } = useAuth();
+  const qc = useQueryClient();
   const nav = useNavigate();
   const openPortal = useServerFn(getCustomerPortalUrl);
   const [portalLoading, setPortalLoading] = useState(false);
@@ -165,6 +168,7 @@ function SettingsPage() {
   const [profile, setProfile] = useState<Profile>({
     display_name: "",
     gender: "",
+    preferred_title: "",
     goals: "",
     strengths: "",
     weaknesses: "",
@@ -207,7 +211,7 @@ function SettingsPage() {
       supabase
         .from("profiles")
         .select(
-          "display_name, gender, goals, strengths, weaknesses, coaching_style, confidence_level, onboarded_at",
+          "display_name, gender, preferred_title, goals, strengths, weaknesses, coaching_style, confidence_level, onboarded_at",
         )
         .eq("id", user.id)
         .maybeSingle(),
@@ -250,6 +254,7 @@ function SettingsPage() {
       .update({
         display_name: profile.display_name,
         gender: profile.gender ? profile.gender : null,
+        preferred_title: profile.preferred_title ? profile.preferred_title : null,
         goals: profile.goals,
         strengths: profile.strengths,
         weaknesses: profile.weaknesses,
@@ -259,7 +264,11 @@ function SettingsPage() {
       .eq("id", user.id);
     setSaving(false);
     if (error) toast.error("Save failed.");
-    else toast.success("Saved.");
+    else {
+      // Salutation must update everywhere immediately, not on next stale window.
+      await qc.invalidateQueries({ queryKey: ["title-profile"] });
+      toast.success("Saved.");
+    }
   };
 
   const toggleMemory = (on: boolean) => {
@@ -385,6 +394,7 @@ function SettingsPage() {
         .update({
           display_name: null,
           gender: null,
+          preferred_title: null,
           goals: null,
           strengths: null,
           weaknesses: null,
@@ -455,16 +465,15 @@ function SettingsPage() {
               </Field>
               <Field label="How should we address you?">
                 <select
-                  value={profile.gender ?? ""}
-                  onChange={(e) => setProfile({ ...profile, gender: e.target.value })}
+                  value={profile.preferred_title ?? ""}
+                  onChange={(e) => setProfile({ ...profile, preferred_title: e.target.value })}
                   className="input"
                   aria-label="How should we address you"
                 >
-                  <option value="">— Neutral (default) —</option>
-                  <option value="male">King (he/him)</option>
-                  <option value="female">Queen (she/her)</option>
-                  <option value="nonbinary">Neutral (they/them)</option>
-                  <option value="prefer_not_to_say">Prefer not to say</option>
+                  <option value="">— Champion (neutral default) —</option>
+                  <option value="king">King</option>
+                  <option value="queen">Queen</option>
+                  <option value="neutral">Champion (neutral)</option>
                 </select>
               </Field>
               <Field label="Confidence self-rating (1-10)">

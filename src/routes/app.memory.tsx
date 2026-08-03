@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { useUserTitle } from "@/hooks/use-title";
 import { useEffect, useMemo, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { toast } from "sonner";
@@ -67,6 +68,7 @@ export const Route = createFileRoute("/app/memory")({
 type SortKey = "newest" | "oldest" | "last_used" | "importance";
 
 function MemoryManager() {
+  const title = useUserTitle();
   const { user } = useAuth();
   const [showArchived, setShowArchived] = useState(false);
   const [category, setCategory] = useState<MemoryCategory | "all">("all");
@@ -198,6 +200,9 @@ function MemoryManager() {
           <h1 className="display text-3xl md:text-4xl truncate">
             The <span className="text-gradient-blood">AI knows you</span>.
           </h1>
+          <p className="text-sm text-muted-foreground mt-1">
+            {title.sentence("This is your edge")}
+          </p>
           <p className="text-sm text-muted-foreground mt-1">
             Every coach reads this. Pin what matters most.
           </p>

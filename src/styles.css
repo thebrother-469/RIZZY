@@ -280,6 +280,15 @@
     padding-left: env(safe-area-inset-left);
     padding-right: env(safe-area-inset-right);
   }
+  /*
+   * The app shell is already sized to `--app-height` (the *visible* viewport),
+   * so the sticky dock stays above the keyboard without extra offsets. While
+   * the keyboard is open we only drop the safe-area padding — the home
+   * indicator is covered by the keyboard — so no dead space appears.
+   */
+  :root[data-keyboard="open"] .composer-dock {
+    padding-bottom: 0;
+  }
   .h-dvh {
     height: 100dvh;
   }

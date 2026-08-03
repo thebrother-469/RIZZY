@@ -38,6 +38,8 @@
     "verify:graphql:audit": "bun run scripts/verify-graphql.ts",
     "test:security": "vitest run tests/security",
     "smoke:production": "playwright test tests/playwright/production-smoke.spec.ts",
+    "ci:secrets": "bun run scripts/ci-secrets.ts",
+    "ci:summary": "bun run scripts/ci-summary.ts",
     "gate:local": "bun run typecheck && bun run lint && bun run build && bun run test:ssr && bun run verify:graphql:audit && bun run test:security"
   },
   "dependencies": {

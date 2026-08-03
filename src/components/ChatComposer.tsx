@@ -642,6 +642,17 @@ export function ChatComposer({
               }
             }}
             rows={1}
+            onFocus={() => {
+              // Keyboard-aware: once the viewport has settled, pull the
+              // composer fully into view on mobile browsers that pan rather
+              // than resize the layout viewport.
+              const el = textareaRef.current;
+              if (!el) return;
+              window.setTimeout(
+                () => el.scrollIntoView({ block: "nearest", behavior: "smooth" }),
+                250,
+              );
+            }}
             aria-label="Message"
             placeholder={placeholder || "Type your line, attach a screenshot, or ask anything..."}
             className={`w-full resize-none bg-card border rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/60 max-h-[200px] ${overLimit ? "border-destructive" : "border-border/60"}`}

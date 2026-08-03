@@ -41,6 +41,7 @@ type State = {
   coaching_style: string;
   notif_email: boolean;
   memory_enabled: boolean;
+  preferred_title: string;
 };
 
 const AGES = ["18-24", "25-29", "30-34", "35-44", "45+"];
@@ -112,6 +113,7 @@ function Onboarding() {
     coaching_style: "",
     notif_email: true,
     memory_enabled: true,
+    preferred_title: "",
   });
 
   // Read-once on mount: if the DB already says onboarded, skip the flow.
@@ -237,6 +239,7 @@ function Onboarding() {
           coaching_style: s.coaching_style || null,
           goals: goalsTrim || null,
           memory_enabled: s.memory_enabled,
+          preferred_title: s.preferred_title || null,
         })
         .eq("id", user.id)
         .select();
@@ -567,6 +570,27 @@ function Onboarding() {
 
         {step === 8 && (
           <Section title="A couple of preferences." subtitle="You control everything.">
+            <div className="rounded-xl border border-border/60 bg-card/40 p-4">
+              <label htmlFor="preferred-title" className="block font-bold text-base mb-1">
+                How should we address you?
+              </label>
+              <p className="text-xs text-muted-foreground mb-3">
+                Optional. We never guess this from your name or email — leave it alone and
+                we&apos;ll call you Champion.
+              </p>
+              <select
+                id="preferred-title"
+                value={s.preferred_title}
+                onChange={(e) => setS({ ...s, preferred_title: e.target.value })}
+                className="input"
+                aria-label="How should we address you"
+              >
+                <option value="">— Champion (neutral default) —</option>
+                <option value="king">King</option>
+                <option value="queen">Queen</option>
+                <option value="neutral">Champion (neutral)</option>
+              </select>
+            </div>
             <ToggleRow
               label="AI memory"
               desc="Coaches remember your goals, wins, and losses across sessions."
