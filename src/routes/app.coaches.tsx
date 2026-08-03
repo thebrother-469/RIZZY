@@ -1,4 +1,5 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { useUserTitle } from "@/hooks/use-title";
 import { COACHES } from "@/lib/coaches";
 
 export const Route = createFileRoute("/app/coaches")({
@@ -32,6 +33,7 @@ function CoachesPage() {
       <h1 className="display text-3xl md:text-5xl mb-2">
         Pick your <span className="text-gradient-blood">specialist</span>
       </h1>
+      <p className="text-sm text-muted-foreground mb-2">{title.sentence("Choose wisely")}</p>
       <p className="text-muted-foreground mb-8 max-w-2xl">
         Ten elite AI coaches, each with their own style and playbook. Pick the one that fits what
         you're working on today.

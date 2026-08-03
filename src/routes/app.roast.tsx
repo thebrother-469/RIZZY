@@ -1,4 +1,5 @@
 import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
+import { useUserTitle } from "@/hooks/use-title";
 import { useEffect, useRef, useState } from "react";
 import { ChatWindow } from "@/components/ChatWindow";
 import { RoastUploader, type RoastShot } from "@/components/RoastUploader";
@@ -75,6 +76,7 @@ function RoastPage() {
       <div className="px-4 md:px-8 py-4 border-b border-border/60 bg-card/30">
         <div className="text-xs text-gold uppercase tracking-widest font-bold">Roast My DMs</div>
         <h1 className="display text-2xl md:text-3xl">Upload your convo. Get the truth.</h1>
+        <p className="text-sm text-muted-foreground mt-1">{title.sentence("No filter")}</p>
       </div>
       <RoastUploader onConfirm={onConfirm} />
     </div>

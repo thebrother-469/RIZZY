@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { useUserTitle } from "@/hooks/use-title";
 import { useMemo, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
@@ -196,6 +197,7 @@ function MissionsPage() {
           <h1 className="display text-3xl md:text-4xl">
             Real action. <span className="text-gradient-blood">Every day.</span>
           </h1>
+          <p className="text-sm text-muted-foreground mt-1">{title.sentence("One rep at a time")}</p>
         </div>
       </div>
 

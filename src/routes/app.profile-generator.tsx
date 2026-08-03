@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { useUserTitle } from "@/hooks/use-title";
 import { useEffect, useRef, useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
 import { generateDatingProfile, type ProfileGenResult } from "@/lib/profile-generator.functions";
@@ -95,6 +96,7 @@ function ProfileGeneratorPage() {
         <h1 className="display text-2xl md:text-3xl">
           AI dating profile that <span className="text-gradient-blood">actually</span> gets matches.
         </h1>
+        <p className="text-sm text-muted-foreground mt-1">{title.sentence("Let’s build it")}</p>
       </div>
 
       <div className="px-4 md:px-8 py-6 md:py-10 max-w-3xl mx-auto w-full">
