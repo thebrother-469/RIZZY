@@ -1,13 +1,7 @@
 import { describe, it, expect } from "vitest";
 import { readFileSync, readdirSync } from "node:fs";
 import { join } from "node:path";
-import {
-  resolveTitle,
-  greeting,
-  sentence,
-  salutation,
-  NEUTRAL_SALUTATION,
-} from "@/lib/title";
+import { resolveTitle, greeting, sentence, salutation, NEUTRAL_SALUTATION } from "@/lib/title";
 
 const onboarded = "2026-01-01T00:00:00.000Z";
 

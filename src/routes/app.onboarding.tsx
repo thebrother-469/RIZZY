@@ -571,15 +571,12 @@ function Onboarding() {
         {step === 8 && (
           <Section title="A couple of preferences." subtitle="You control everything.">
             <div className="rounded-xl border border-border/60 bg-card/40 p-4">
-              <label
-                htmlFor="preferred-title"
-                className="block font-bold text-base mb-1"
-              >
+              <label htmlFor="preferred-title" className="block font-bold text-base mb-1">
                 How should we address you?
               </label>
               <p className="text-xs text-muted-foreground mb-3">
-                Optional. We never guess this from your name or email — leave it alone and we&apos;ll
-                call you Champion.
+                Optional. We never guess this from your name or email — leave it alone and
+                we&apos;ll call you Champion.
               </p>
               <select
                 id="preferred-title"

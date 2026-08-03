@@ -65,7 +65,12 @@ if (summary) {
     ok ? "All required secrets are bound." : `**Missing: ${missing.join(", ")}**`,
     "",
   ];
-  await Bun.write(summary, (await Bun.file(summary).text().catch(() => "")) + lines.join("\n"));
+  await Bun.write(
+    summary,
+    (await Bun.file(summary)
+      .text()
+      .catch(() => "")) + lines.join("\n"),
+  );
 }
 
 if (!ok) {

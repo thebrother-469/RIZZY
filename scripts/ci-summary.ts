@@ -15,11 +15,14 @@ type Row = { artifact: string; status: string; detail: string };
 const rows: Row[] = [];
 
 if (existsSync(DIR)) {
-  for (const file of readdirSync(DIR).filter((f) => f.endsWith(".json")).sort()) {
+  for (const file of readdirSync(DIR)
+    .filter((f) => f.endsWith(".json"))
+    .sort()) {
     try {
       const raw = JSON.parse(readFileSync(join(DIR, file), "utf8")) as Record<string, unknown>;
       const status = String(raw["status"] ?? "UNKNOWN");
-      const summary = raw["summary"] as { pass?: number; fail?: number; notVerified?: number } | undefined;
+      const summary = raw["summary"] as
+        { pass?: number; fail?: number; notVerified?: number } | undefined;
       const detail = summary
         ? `pass ${summary.pass ?? 0} · fail ${summary.fail ?? 0} · not verified ${summary.notVerified ?? 0}`
         : String(raw["reason"] ?? "—");

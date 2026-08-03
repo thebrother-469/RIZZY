@@ -200,7 +200,9 @@ function MemoryManager() {
           <h1 className="display text-3xl md:text-4xl truncate">
             The <span className="text-gradient-blood">AI knows you</span>.
           </h1>
-          <p className="text-sm text-muted-foreground mt-1">{title.sentence("This is your edge")}</p>
+          <p className="text-sm text-muted-foreground mt-1">
+            {title.sentence("This is your edge")}
+          </p>
           <p className="text-sm text-muted-foreground mt-1">
             Every coach reads this. Pin what matters most.
           </p>
