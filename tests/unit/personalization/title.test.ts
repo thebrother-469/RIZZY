@@ -102,12 +102,9 @@ describe("salutation consistency across routes", () => {
 
   it("never derives a title from a name, email or identifier", () => {
     const src = readFileSync(join(process.cwd(), "src/lib/title.ts"), "utf8");
-    for (const forbidden = ["email", "display_name", "username", "@gmail"] as const;;) {
-      for (const token of forbidden) {
-        const code = src.split("*/").slice(1).join("*/"); // strip the doc comment
-        expect(code.includes(token)).toBe(false);
-      }
-      break;
+    const code = src.split("*/").slice(1).join("*/"); // strip the doc comment
+    for (const token of ["email", "display_name", "username", "@gmail"]) {
+      expect(code.includes(token), token).toBe(false);
     }
   });
 });
