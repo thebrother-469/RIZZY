@@ -16,7 +16,7 @@ export function useUserTitle() {
     queryFn: async () => {
       const { data } = await supabase
         .from("profiles")
-        .select("gender, onboarded_at")
+        .select("preferred_title, gender, onboarded_at")
         .eq("id", user!.id)
         .maybeSingle();
       return (data as TitleProfile) ?? null;
