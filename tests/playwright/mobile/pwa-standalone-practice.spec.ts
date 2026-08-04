@@ -70,8 +70,7 @@ async function installStandalone(page: Page) {
         : real(q)) as typeof window.matchMedia;
     // iPhone notch + Android gesture navigation insets.
     const style = document.createElement("style");
-    style.textContent =
-      ":root{--sat:47px;--sab:34px;padding-top:env(safe-area-inset-top,47px);}";
+    style.textContent = ":root{--sat:47px;--sab:34px;padding-top:env(safe-area-inset-top,47px);}";
     document.documentElement.appendChild(style);
   });
 }
@@ -91,7 +90,12 @@ async function assertComposerVisible(page: Page, height: number, label: string, 
     () => document.documentElement.scrollWidth - document.documentElement.clientWidth,
   );
   expect(overflow, `${label}: horizontal overflow`).toBeLessThanOrEqual(1);
-  record({ device, scenario: label, status: "PASS", detail: `composer at y=${Math.round(box!.y)}` });
+  record({
+    device,
+    scenario: label,
+    status: "PASS",
+    detail: `composer at y=${Math.round(box!.y)}`,
+  });
   return composer;
 }
 
@@ -109,7 +113,8 @@ test.describe("PWA standalone — practice composer", () => {
   test.beforeAll(async () => {
     if (!pre.ok) blocker = pre.reason;
     else blocker = await probeAuthenticatedRun();
-    if (blocker) record({ device: "-", scenario: "suite", status: "NOT_VERIFIED", detail: blocker });
+    if (blocker)
+      record({ device: "-", scenario: "suite", status: "NOT_VERIFIED", detail: blocker });
   });
 
   test.beforeEach(() => {
@@ -139,12 +144,7 @@ test.describe("PWA standalone — practice composer", () => {
       await composer.click();
       await page.setViewportSize({ width: vp.width, height: Math.round(vp.height * 0.55) });
       await page.waitForTimeout(250);
-      await assertComposerVisible(
-        page,
-        Math.round(vp.height * 0.55),
-        "keyboard open",
-        vp.name,
-      );
+      await assertComposerVisible(page, Math.round(vp.height * 0.55), "keyboard open", vp.name);
 
       // 3. Keyboard close — layout restores with no residual offset.
       await page.locator("body").click({ position: { x: 5, y: 5 } });

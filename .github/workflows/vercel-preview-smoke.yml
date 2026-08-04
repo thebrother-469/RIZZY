@@ -88,6 +88,19 @@ jobs:
           SMOKE_RUN_ID: preview-${{ github.run_id }}-${{ github.run_attempt }}
         run: bunx playwright test tests/playwright/production-smoke.spec.ts
 
+      - name: SSR + hydration smoke against the deployed preview
+        env:
+          E2E_BASE_URL: ${{ env.PREVIEW_URL }}
+          PLAYWRIGHT_BASE_URL: ${{ env.PREVIEW_URL }}
+        run: bun run verify:ssr:artifacts
+
+      - name: Mobile PWA standalone smoke
+        run: bun run test:mobile:pwa
+
+      - name: Verify the preview artifact layout
+        run: |
+          bun run verify:artifacts --optional graphql-exposure.json,graphql-row-scope.json,security-findings.json,security-evidence.md,security-evidence.json
+
       - name: Publish the smoke summary
         if: always()
         run: bun run ci:summary || true
@@ -99,5 +112,8 @@ jobs:
           path: |
             test-results/
             playwright-report/
+            trace/
+            videos/
+            screenshots/
             security-artifacts/
           if-no-files-found: ignore

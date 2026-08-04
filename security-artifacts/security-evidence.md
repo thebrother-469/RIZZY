@@ -1,6 +1,6 @@
 # RIZZGOD AI — Security Evidence Report
 
-Generated: 2026-08-03T22:42:47.126Z
+Generated: 2026-08-04T12:26:27.584Z
 Database snapshot captured: 2026-08-03T22:36:36.931Z (live-query)
 Supabase project: `jfiojbbrdfgeruborkzx`
 
@@ -16,25 +16,25 @@ pg_graphql is listed with the exact SQL that protects it.
 - Tables granting anything to `anon`: **0**
 - Policy violations detected: **0**
 
-| Table | Exposure | RLS | anon | authenticated | auth.uid() |
-| --- | --- | --- | --- | --- | --- |
-| `profiles` | authenticated | ✅ | — | INSERT,SELECT,UPDATE | ✅ |
-| `chats` | authenticated | ✅ | — | DELETE,INSERT,SELECT,UPDATE | ✅ |
-| `messages` | authenticated | ✅ | — | DELETE,INSERT,SELECT,UPDATE | ✅ |
-| `memories` | authenticated | ✅ | — | DELETE,INSERT,SELECT,UPDATE | ✅ |
-| `missions` | authenticated | ✅ | — | DELETE,INSERT,SELECT,UPDATE | ✅ |
-| `subscriptions` | authenticated | ✅ | — | SELECT | ✅ |
-| `user_xp` | authenticated | ✅ | — | SELECT | ✅ |
-| `streaks` | authenticated | ✅ | — | SELECT | ✅ |
-| `badges` | authenticated | ✅ | — | SELECT | ✅ |
-| `usage_daily` | authenticated | ✅ | — | SELECT | ✅ |
-| `xp_events` | authenticated | ✅ | — | SELECT | ✅ |
-| `auth_audit_logs` | service_only | ✅ | — | — | ✅ |
-| `profile_gen_usage` | service_only | ✅ | — | — | ✅ |
-| `onboarding_debug_events` | service_only | ✅ | — | — | ✅ |
-| `daily_mission_debug_events` | service_only | ✅ | — | — | ✅ |
-| `lemonsqueezy_webhook_events` | service_only | ✅ | — | — | ✅ |
-| `paddle_webhook_events` | service_only | ✅ | — | — | ✅ |
+| Table | Exposure | RLS | anon | authenticated | auth.uid() | row scope |
+| --- | --- | --- | --- | --- | --- | --- |
+| `profiles` | authenticated | ✅ | — | INSERT,SELECT,UPDATE | ✅ | NOT_VERIFIED |
+| `chats` | authenticated | ✅ | — | DELETE,INSERT,SELECT,UPDATE | ✅ | NOT_VERIFIED |
+| `messages` | authenticated | ✅ | — | DELETE,INSERT,SELECT,UPDATE | ✅ | NOT_VERIFIED |
+| `memories` | authenticated | ✅ | — | DELETE,INSERT,SELECT,UPDATE | ✅ | NOT_VERIFIED |
+| `missions` | authenticated | ✅ | — | DELETE,INSERT,SELECT,UPDATE | ✅ | NOT_VERIFIED |
+| `subscriptions` | authenticated | ✅ | — | SELECT | ✅ | NOT_VERIFIED |
+| `user_xp` | authenticated | ✅ | — | SELECT | ✅ | NOT_VERIFIED |
+| `streaks` | authenticated | ✅ | — | SELECT | ✅ | NOT_VERIFIED |
+| `badges` | authenticated | ✅ | — | SELECT | ✅ | NOT_VERIFIED |
+| `usage_daily` | authenticated | ✅ | — | SELECT | ✅ | NOT_VERIFIED |
+| `xp_events` | authenticated | ✅ | — | SELECT | ✅ | NOT_VERIFIED |
+| `auth_audit_logs` | service_only | ✅ | — | — | ✅ | PASS |
+| `profile_gen_usage` | service_only | ✅ | — | — | ✅ | PASS |
+| `onboarding_debug_events` | service_only | ✅ | — | — | ✅ | PASS |
+| `daily_mission_debug_events` | service_only | ✅ | — | — | ✅ | PASS |
+| `lemonsqueezy_webhook_events` | service_only | ✅ | — | — | ✅ | PASS |
+| `paddle_webhook_events` | service_only | ✅ | — | — | ✅ | PASS |
 
 ## Exposed tables
 
@@ -45,9 +45,11 @@ pg_graphql is listed with the exact SQL that protects it.
 | pg_graphql exposure | reachable by the **authenticated** role (intentional, owner-scoped) |
 | RLS enabled | ✅ yes |
 | Owner column | `id` |
+| Allowed roles (policies) | `authenticated` |
 | Anonymous access | ❌ none — no GRANT to `anon` |
 | Authenticated access | INSERT,SELECT,UPDATE, filtered by RLS |
 | auth.uid() enforcement | ✅ every client policy is scoped to `auth.uid()` (or denies outright) |
+| Row-scope verification | ⚠️ NOT_VERIFIED (no live probe in this run) |
 
 **GRANT statements**
 
@@ -104,9 +106,11 @@ CREATE POLICY "own profile update"
 | pg_graphql exposure | reachable by the **authenticated** role (intentional, owner-scoped) |
 | RLS enabled | ✅ yes |
 | Owner column | `user_id` |
+| Allowed roles (policies) | `authenticated` |
 | Anonymous access | ❌ none — no GRANT to `anon` |
 | Authenticated access | DELETE,INSERT,SELECT,UPDATE, filtered by RLS |
 | auth.uid() enforcement | ✅ every client policy is scoped to `auth.uid()` (or denies outright) |
+| Row-scope verification | ⚠️ NOT_VERIFIED (no live probe in this run) |
 
 **GRANT statements**
 
@@ -171,9 +175,11 @@ CREATE POLICY "own chats all"
 | pg_graphql exposure | reachable by the **authenticated** role (intentional, owner-scoped) |
 | RLS enabled | ✅ yes |
 | Owner column | `user_id` |
+| Allowed roles (policies) | `authenticated` |
 | Anonymous access | ❌ none — no GRANT to `anon` |
 | Authenticated access | DELETE,INSERT,SELECT,UPDATE, filtered by RLS |
 | auth.uid() enforcement | ✅ every client policy is scoped to `auth.uid()` (or denies outright) |
+| Row-scope verification | ⚠️ NOT_VERIFIED (no live probe in this run) |
 
 **GRANT statements**
 
@@ -238,9 +244,11 @@ CREATE POLICY "own msg all"
 | pg_graphql exposure | reachable by the **authenticated** role (intentional, owner-scoped) |
 | RLS enabled | ✅ yes |
 | Owner column | `user_id` |
+| Allowed roles (policies) | `authenticated` |
 | Anonymous access | ❌ none — no GRANT to `anon` |
 | Authenticated access | DELETE,INSERT,SELECT,UPDATE, filtered by RLS |
 | auth.uid() enforcement | ✅ every client policy is scoped to `auth.uid()` (or denies outright) |
+| Row-scope verification | ⚠️ NOT_VERIFIED (no live probe in this run) |
 
 **GRANT statements**
 
@@ -305,9 +313,11 @@ CREATE POLICY "own memories"
 | pg_graphql exposure | reachable by the **authenticated** role (intentional, owner-scoped) |
 | RLS enabled | ✅ yes |
 | Owner column | `user_id` |
+| Allowed roles (policies) | `authenticated` |
 | Anonymous access | ❌ none — no GRANT to `anon` |
 | Authenticated access | DELETE,INSERT,SELECT,UPDATE, filtered by RLS |
 | auth.uid() enforcement | ✅ every client policy is scoped to `auth.uid()` (or denies outright) |
+| Row-scope verification | ⚠️ NOT_VERIFIED (no live probe in this run) |
 
 **GRANT statements**
 
@@ -369,9 +379,11 @@ CREATE POLICY "Users can delete their own missions"
 | pg_graphql exposure | reachable by the **authenticated** role (intentional, owner-scoped) |
 | RLS enabled | ✅ yes |
 | Owner column | `user_id` |
+| Allowed roles (policies) | `anon`, `authenticated` |
 | Anonymous access | ❌ none — no GRANT to `anon` |
 | Authenticated access | SELECT, filtered by RLS |
 | auth.uid() enforcement | ✅ every client policy is scoped to `auth.uid()` (or denies outright) |
+| Row-scope verification | ⚠️ NOT_VERIFIED (no live probe in this run) |
 
 **GRANT statements**
 
@@ -433,9 +445,11 @@ CREATE POLICY "Block client deletes on subscriptions"
 | pg_graphql exposure | reachable by the **authenticated** role (intentional, owner-scoped) |
 | RLS enabled | ✅ yes |
 | Owner column | `user_id` |
+| Allowed roles (policies) | `anon`, `authenticated` |
 | Anonymous access | ❌ none — no GRANT to `anon` |
 | Authenticated access | SELECT, filtered by RLS |
 | auth.uid() enforcement | ✅ every client policy is scoped to `auth.uid()` (or denies outright) |
+| Row-scope verification | ⚠️ NOT_VERIFIED (no live probe in this run) |
 
 **GRANT statements**
 
@@ -497,9 +511,11 @@ CREATE POLICY "Block client deletes on user_xp"
 | pg_graphql exposure | reachable by the **authenticated** role (intentional, owner-scoped) |
 | RLS enabled | ✅ yes |
 | Owner column | `user_id` |
+| Allowed roles (policies) | `anon`, `authenticated` |
 | Anonymous access | ❌ none — no GRANT to `anon` |
 | Authenticated access | SELECT, filtered by RLS |
 | auth.uid() enforcement | ✅ every client policy is scoped to `auth.uid()` (or denies outright) |
+| Row-scope verification | ⚠️ NOT_VERIFIED (no live probe in this run) |
 
 **GRANT statements**
 
@@ -561,9 +577,11 @@ CREATE POLICY "Block client deletes on streaks"
 | pg_graphql exposure | reachable by the **authenticated** role (intentional, owner-scoped) |
 | RLS enabled | ✅ yes |
 | Owner column | `user_id` |
+| Allowed roles (policies) | `authenticated` |
 | Anonymous access | ❌ none — no GRANT to `anon` |
 | Authenticated access | SELECT, filtered by RLS |
 | auth.uid() enforcement | ✅ every client policy is scoped to `auth.uid()` (or denies outright) |
+| Row-scope verification | ⚠️ NOT_VERIFIED (no live probe in this run) |
 
 **GRANT statements**
 
@@ -625,9 +643,11 @@ CREATE POLICY "Badges are not user-writable (delete)"
 | pg_graphql exposure | reachable by the **authenticated** role (intentional, owner-scoped) |
 | RLS enabled | ✅ yes |
 | Owner column | `user_id` |
+| Allowed roles (policies) | `anon`, `authenticated` |
 | Anonymous access | ❌ none — no GRANT to `anon` |
 | Authenticated access | SELECT, filtered by RLS |
 | auth.uid() enforcement | ✅ every client policy is scoped to `auth.uid()` (or denies outright) |
+| Row-scope verification | ⚠️ NOT_VERIFIED (no live probe in this run) |
 
 **GRANT statements**
 
@@ -689,9 +709,11 @@ CREATE POLICY "Block client deletes on usage_daily"
 | pg_graphql exposure | reachable by the **authenticated** role (intentional, owner-scoped) |
 | RLS enabled | ✅ yes |
 | Owner column | `user_id` |
+| Allowed roles (policies) | `authenticated` |
 | Anonymous access | ❌ none — no GRANT to `anon` |
 | Authenticated access | SELECT, filtered by RLS |
 | auth.uid() enforcement | ✅ every client policy is scoped to `auth.uid()` (or denies outright) |
+| Row-scope verification | ⚠️ NOT_VERIFIED (no live probe in this run) |
 
 **GRANT statements**
 
@@ -755,9 +777,11 @@ CREATE POLICY "Block client deletes on xp_events"
 | pg_graphql exposure | **not exposed** to any client role |
 | RLS enabled | ✅ yes |
 | Owner column | `user_id` |
+| Allowed roles (policies) | `authenticated` |
 | Anonymous access | ❌ none — no GRANT to `anon` |
 | Authenticated access | none — no GRANT to `authenticated` |
 | auth.uid() enforcement | ✅ every client policy is scoped to `auth.uid()` (or denies outright) |
+| Row-scope verification | ✅ PASS (live two-user probe) |
 
 **GRANT statements**
 
@@ -803,9 +827,11 @@ CREATE POLICY "auth_audit_owner_select"
 | pg_graphql exposure | **not exposed** to any client role |
 | RLS enabled | ✅ yes |
 | Owner column | `user_id` |
+| Allowed roles (policies) | `authenticated` |
 | Anonymous access | ❌ none — no GRANT to `anon` |
 | Authenticated access | none — no GRANT to `authenticated` |
 | auth.uid() enforcement | ✅ every client policy is scoped to `auth.uid()` (or denies outright) |
+| Row-scope verification | ✅ PASS (live two-user probe) |
 
 **GRANT statements**
 
@@ -867,9 +893,11 @@ CREATE POLICY "block client delete profile gen usage"
 | pg_graphql exposure | **not exposed** to any client role |
 | RLS enabled | ✅ yes |
 | Owner column | `user_id` |
+| Allowed roles (policies) | `authenticated` |
 | Anonymous access | ❌ none — no GRANT to `anon` |
 | Authenticated access | none — no GRANT to `authenticated` |
 | auth.uid() enforcement | ✅ every client policy is scoped to `auth.uid()` (or denies outright) |
+| Row-scope verification | ✅ PASS (live two-user probe) |
 
 **GRANT statements**
 
@@ -931,9 +959,11 @@ CREATE POLICY "block client delete onboarding debug"
 | pg_graphql exposure | **not exposed** to any client role |
 | RLS enabled | ✅ yes |
 | Owner column | `user_id` |
+| Allowed roles (policies) | `authenticated` |
 | Anonymous access | ❌ none — no GRANT to `anon` |
 | Authenticated access | none — no GRANT to `authenticated` |
 | auth.uid() enforcement | ✅ every client policy is scoped to `auth.uid()` (or denies outright) |
+| Row-scope verification | ✅ PASS (live two-user probe) |
 
 **GRANT statements**
 
@@ -995,9 +1025,11 @@ CREATE POLICY "block client delete daily mission debug"
 | pg_graphql exposure | **not exposed** to any client role |
 | RLS enabled | ✅ yes |
 | Owner column | n/a |
+| Allowed roles (policies) | `service_role` |
 | Anonymous access | ❌ none — no GRANT to `anon` |
 | Authenticated access | none — no GRANT to `authenticated` |
 | auth.uid() enforcement | ✅ every client policy is scoped to `auth.uid()` (or denies outright) |
+| Row-scope verification | ✅ PASS (live two-user probe) |
 
 **GRANT statements**
 
@@ -1062,9 +1094,11 @@ CREATE POLICY "service role only"
 | pg_graphql exposure | **not exposed** to any client role |
 | RLS enabled | ✅ yes |
 | Owner column | n/a |
+| Allowed roles (policies) | `anon`, `authenticated` |
 | Anonymous access | ❌ none — no GRANT to `anon` |
 | Authenticated access | none — no GRANT to `authenticated` |
 | auth.uid() enforcement | ✅ every client policy is scoped to `auth.uid()` (or denies outright) |
+| Row-scope verification | ✅ PASS (live two-user probe) |
 
 **GRANT statements**
 

@@ -74,13 +74,20 @@ jobs:
       - run: bun install --frozen-lockfile
       - name: Secret preflight (fail fast)
         run: bun run ci:secrets ssr
-      - name: SSR smoke + protected pages + hydration core flows
-        run: bun run test:ssr
+      - name: SSR smoke + hydration smoke (emits standardized artifacts)
+        run: bun run verify:ssr:artifacts
+      - name: Unit test suite
+        run: bun run test
+      - name: Verify the SSR/hydration artifacts
+        run: bun run verify:artifacts --optional graphql-exposure.json,graphql-row-scope.json,production-smoke.json,mobile-pwa.json,security-findings.json,security-evidence.md,security-evidence.json
       - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: ssr-report
-          path: test-results/
+          path: |
+            test-results/
+            security-artifacts/ssr-smoke.json
+            security-artifacts/hydration-smoke.json
           if-no-files-found: ignore
 
   # ---------------------------------------------------------------- stage 3
@@ -109,12 +116,20 @@ jobs:
         run: bun run verify:rls
       - name: pg_graphql exposure audit (anon + authenticated)
         run: bun run verify:graphql:audit
+      - name: pg_graphql row-scope audit (two-user auth.uid() isolation)
+        run: bun run verify:graphql:row-scope
       - name: Storage bucket policy verification
         run: bun run verify:storage
       - name: Webhook signature / replay / entitlement tests
         run: bunx vitest run tests/unit/payments tests/unit/lemon
       - name: GraphQL exposure contract suite
         run: bun run test:security
+      - name: Security evidence generation (md + json)
+        run: bun run security:evidence
+      - name: Security findings audit (SUPA_pg_graphql_authenticated_table_exposed)
+        run: bun run security:findings
+      - name: Verify the security artifact layout
+        run: bun run verify:artifacts --optional production-smoke.json,ssr-smoke.json,hydration-smoke.json,mobile-pwa.json
 
       - name: Publish the verification summary
         if: always()
@@ -164,6 +179,9 @@ jobs:
           SMOKE_RUN_ID: gate-${{ github.run_id }}-${{ github.run_attempt }}
         run: bunx playwright test tests/playwright/production-smoke.spec.ts
 
+      - name: Mobile PWA standalone smoke
+        run: bun run test:mobile:pwa
+
       - name: Reset the shared E2E identity
         if: always()
         run: bun run e2e:reset-user || true
@@ -179,14 +197,62 @@ jobs:
           path: |
             test-results/
             playwright-report/
+            trace/
+            videos/
+            screenshots/
             security-artifacts/production-smoke.json
+            security-artifacts/mobile-pwa.json
           if-no-files-found: ignore
 
   # ---------------------------------------------------------------- stage 5
+  artifacts:
+    name: Artifact layout enforcement
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    needs: [ssr, security, integration]
+    if: always()
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+      - uses: actions/cache@v4
+        with:
+          path: |
+            node_modules
+            ~/.bun/install/cache
+          key: ${{ runner.os }}-bun-${{ hashFiles('bun.lock', 'bun.lockb', 'package.json') }}
+          restore-keys: ${{ runner.os }}-bun-
+      - run: bun install --frozen-lockfile
+      - name: Collect every stage artifact
+        uses: actions/download-artifact@v4
+        with:
+          path: downloaded-artifacts
+      - name: Merge into the standardized security-artifacts/ layout
+        run: |
+          set -euo pipefail
+          mkdir -p security-artifacts
+          find downloaded-artifacts -type f \
+            \( -name '*.json' -o -name 'security-evidence.md' \) \
+            -path '*security-artifacts*' -exec cp -f {} security-artifacts/ \;
+          ls -la security-artifacts/
+      - name: Verify the standardized artifact layout (release blocking)
+        run: bun run verify:artifacts
+      - name: Publish the artifact summary
+        if: always()
+        run: bun run ci:summary || true
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: release-evidence
+          path: security-artifacts/
+          if-no-files-found: error
+
+  # ---------------------------------------------------------------- stage 6
   merge-gate:
     name: Merge gate
     runs-on: ubuntu-latest
-    needs: [build, ssr, security, integration]
+    needs: [build, ssr, security, integration, artifacts]
     if: always()
     steps:
       - name: Block the merge on any release-blocking failure
@@ -196,8 +262,10 @@ jobs:
           echo "ssr:         ${{ needs.ssr.result }}"
           echo "security:    ${{ needs.security.result }}"
           echo "integration: ${{ needs.integration.result }}"
+          echo "artifacts:   ${{ needs.artifacts.result }}"
           for r in "${{ needs.build.result }}" "${{ needs.ssr.result }}" \
-                   "${{ needs.security.result }}" "${{ needs.integration.result }}"; do
+                   "${{ needs.security.result }}" "${{ needs.integration.result }}" \
+                   "${{ needs.artifacts.result }}"; do
             if [ "$r" != "success" ]; then
               echo "::error::Release gate FAILED — a release-blocking stage did not succeed."
               exit 1
@@ -213,7 +281,11 @@ jobs:
             echo "| Stage | Result |"
             echo "| --- | --- |"
             echo "| Build verification | ${{ needs.build.result }} |"
-            echo "| SSR + hydration | ${{ needs.ssr.result }} |"
-            echo "| Security verification | ${{ needs.security.result }} |"
-            echo "| Integration verification | ${{ needs.integration.result }} |"
+            echo "| SSR smoke + hydration smoke | ${{ needs.ssr.result }} |"
+            echo "| GraphQL exposure + row-scope + storage + findings + evidence | ${{ needs.security.result }} |"
+            echo "| Production smoke + mobile PWA | ${{ needs.integration.result }} |"
+            echo "| Artifact layout enforcement | ${{ needs.artifacts.result }} |"
+            echo ""
+            echo "Artifacts: \`release-evidence\`, \`security-artifacts\`, \`playwright-evidence\`, \`ssr-report\` —"
+            echo "[download from the run summary](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})."
           } >> "$GITHUB_STEP_SUMMARY"

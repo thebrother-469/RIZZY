@@ -57,8 +57,7 @@ type Definition = {
   cta?: (ctx: EmailContext) => { label: string; href: string };
 };
 
-const v = (ctx: EmailContext, key: string, fallback = "") =>
-  String(ctx.data?.[key] ?? fallback);
+const v = (ctx: EmailContext, key: string, fallback = "") => String(ctx.data?.[key] ?? fallback);
 
 const DEFINITIONS: Record<string, Definition> = {
   // ------------------------------------------------------------ onboarding
@@ -157,10 +156,7 @@ const DEFINITIONS: Record<string, Definition> = {
     category: "premium",
     subject: (c) => `Your receipt, ${addressee(c)}`,
     heading: (c) => `Payment received, ${addressee(c)}`,
-    body: (c) => [
-      `Amount: ${v(c, "amount", "—")}.`,
-      `Invoice: ${v(c, "invoiceId", "—")}.`,
-    ],
+    body: (c) => [`Amount: ${v(c, "amount", "—")}.`, `Invoice: ${v(c, "invoiceId", "—")}.`],
     cta: () => ({ label: "View invoice", href: "/app/settings" }),
   },
   "premium-trial": {
@@ -199,10 +195,7 @@ const DEFINITIONS: Record<string, Definition> = {
     category: "notification",
     subject: (c) => `Keep the streak alive, ${addressee(c)}`,
     heading: (c) => `${v(c, "streak", "0")}-day streak on the line, ${addressee(c)}`,
-    body: () => [
-      "Your streak resets at midnight UTC.",
-      "One completed mission keeps it running.",
-    ],
+    body: () => ["Your streak resets at midnight UTC.", "One completed mission keeps it running."],
     cta: () => ({ label: "Save the streak", href: "/app/missions" }),
   },
   "notify-achievement": {

@@ -45,7 +45,7 @@ describe("policy snapshot", () => {
 describe("SQL rendering", () => {
   it("renders an exact CREATE POLICY statement", () => {
     const sql = policySql("missions", "public", table("missions").policies[0]!);
-    expect(sql).toContain("CREATE POLICY \"own missions read\"");
+    expect(sql).toContain('CREATE POLICY "own missions read"');
     expect(sql).toContain("ON public.missions");
     expect(sql).toContain("FOR SELECT");
     expect(sql).toContain("auth.uid()");
@@ -114,7 +114,9 @@ describe("release finding gate", () => {
 
   it("fails when RLS is disabled or anon gains a grant", () => {
     const broken = snapshot.tables.map((t) =>
-      t.table === "chats" ? { ...t, rlsEnabled: false, grants: { ...t.grants, anon: "SELECT" } } : t,
+      t.table === "chats"
+        ? { ...t, rlsEnabled: false, grants: { ...t.grants, anon: "SELECT" } }
+        : t,
     );
     const issues = checkExposureShape(broken);
     expect(issues.some((i) => i.check === "rls")).toBe(true);
