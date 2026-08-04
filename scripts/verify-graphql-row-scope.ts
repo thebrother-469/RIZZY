@@ -202,9 +202,7 @@ export interface Actor {
 }
 
 /** Provisions two disposable, mutually isolated identities. */
-export async function acquireTwoActors(
-  e: E2EEnv,
-): Promise<{ actors: Actor[]; reason?: string }> {
+export async function acquireTwoActors(e: E2EEnv): Promise<{ actors: Actor[]; reason?: string }> {
   if (!e.serviceKey) {
     const grant = await passwordSignIn(e);
     if (grant.session) {
@@ -233,7 +231,8 @@ export async function acquireTwoActors(
 }
 
 export async function releaseActors(actors: Actor[], e: E2EEnv): Promise<void> {
-  for (const a of actors) if (a.disposableUserId && e.serviceKey) await deleteUser(e, a.disposableUserId);
+  for (const a of actors)
+    if (a.disposableUserId && e.serviceKey) await deleteUser(e, a.disposableUserId);
 }
 
 export async function main(): Promise<number> {

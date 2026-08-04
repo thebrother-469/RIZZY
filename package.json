@@ -44,7 +44,10 @@
     "security:evidence": "bun run scripts/generate-security-evidence.ts",
     "security:findings": "bun run scripts/verify-security-findings.ts",
     "verify:graphql:row-scope": "bun run scripts/verify-graphql-row-scope.ts",
-    "test:mobile:pwa": "playwright test tests/playwright/mobile"
+    "test:mobile:pwa": "playwright test tests/playwright/mobile",
+    "verify:artifacts": "bun run scripts/verify-artifact-layout.ts",
+    "verify:ssr:artifacts": "bun run scripts/run-ssr-suites.ts",
+    "gate:artifacts": "bun run security:evidence && bun run security:findings && bun run verify:artifacts"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.4.0",

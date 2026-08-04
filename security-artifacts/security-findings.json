@@ -1,0 +1,80 @@
+{
+  "generatedAt": "2026-08-04T12:20:57.777Z",
+  "project": "jfiojbbrdfgeruborkzx",
+  "snapshotCapturedAt": "2026-08-03T22:36:36.931Z",
+  "findings": [
+    {
+      "internal_id": "SUPA_pg_graphql_authenticated_table_exposed",
+      "title": "pg_graphql exposes user-owned tables to the authenticated role",
+      "severity": "WARN",
+      "disposition": "accepted",
+      "allowlist": [
+        "badges",
+        "chats",
+        "memories",
+        "messages",
+        "missions",
+        "profiles",
+        "streaks",
+        "subscriptions",
+        "usage_daily",
+        "user_xp",
+        "xp_events"
+      ],
+      "exposedTables": [
+        "badges",
+        "chats",
+        "memories",
+        "messages",
+        "missions",
+        "profiles",
+        "streaks",
+        "subscriptions",
+        "usage_daily",
+        "user_xp",
+        "xp_events"
+      ],
+      "unexpectedTables": [],
+      "rlsCoverage": {
+        "profiles": true,
+        "chats": true,
+        "messages": true,
+        "memories": true,
+        "missions": true,
+        "subscriptions": true,
+        "user_xp": true,
+        "streaks": true,
+        "badges": true,
+        "usage_daily": true,
+        "xp_events": true,
+        "auth_audit_logs": true,
+        "profile_gen_usage": true,
+        "onboarding_debug_events": true,
+        "daily_mission_debug_events": true,
+        "lemonsqueezy_webhook_events": true,
+        "paddle_webhook_events": true
+      },
+      "authUidCoverage": {
+        "profiles": true,
+        "chats": true,
+        "messages": true,
+        "memories": true,
+        "missions": true,
+        "subscriptions": true,
+        "user_xp": true,
+        "streaks": true,
+        "badges": true,
+        "usage_daily": true,
+        "xp_events": true,
+        "auth_audit_logs": true,
+        "profile_gen_usage": true,
+        "onboarding_debug_events": true,
+        "daily_mission_debug_events": true,
+        "lemonsqueezy_webhook_events": true,
+        "paddle_webhook_events": true
+      }
+    }
+  ],
+  "status": "PASS",
+  "issues": []
+}

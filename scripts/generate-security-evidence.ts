@@ -19,6 +19,8 @@ import { dirname } from "node:path";
 
 export const SNAPSHOT_PATH = "security/policy-snapshot.json";
 export const EVIDENCE_PATH = "security-artifacts/security-evidence.md";
+export const EVIDENCE_JSON_PATH = "security-artifacts/security-evidence.json";
+export const ROW_SCOPE_PATH = "security-artifacts/graphql-row-scope.json";
 
 export interface PolicyRecord {
   name: string;
@@ -63,7 +65,9 @@ export function policySql(table: string, schema: string, p: PolicyRecord): strin
 export function grantSql(table: string, schema: string, grants: Record<string, string>): string {
   const lines = Object.entries(grants)
     .sort(([a], [b]) => a.localeCompare(b))
-    .map(([role, privs]) => `GRANT ${privs.split(",").join(", ")} ON ${schema}.${table} TO ${role};`);
+    .map(
+      ([role, privs]) => `GRANT ${privs.split(",").join(", ")} ON ${schema}.${table} TO ${role};`,
+    );
   for (const role of ["anon", "authenticated", "service_role"]) {
     if (!grants[role]) lines.push(`-- no privileges granted to ${role}`);
   }
@@ -84,7 +88,7 @@ export function enforcesAuthUid(t: TableRecord): boolean {
   });
 }
 
-export function renderTable(t: TableRecord): string {
+export function renderTable(t: TableRecord, rowScope: string = "NOT_VERIFIED"): string {
   const anonGrant = t.grants["anon"];
   const authGrant = t.grants["authenticated"];
   const section = [
@@ -95,9 +99,16 @@ export function renderTable(t: TableRecord): string {
     `| pg_graphql exposure | ${t.exposure === "authenticated" ? "reachable by the **authenticated** role (intentional, owner-scoped)" : "**not exposed** to any client role"} |`,
     `| RLS enabled | ${t.rlsEnabled ? "✅ yes" : "❌ NO"} |`,
     `| Owner column | ${t.owner ? `\`${t.owner}\`` : "n/a"} |`,
+    `| Allowed roles (policies) | ${
+      [...new Set(t.policies.flatMap((p) => p.roles))]
+        .sort()
+        .map((r) => `\`${r}\``)
+        .join(", ") || "none"
+    } |`,
     `| Anonymous access | ${anonGrant ? `⚠️ ${anonGrant}` : "❌ none — no GRANT to \`anon\`"} |`,
     `| Authenticated access | ${authGrant ? `${authGrant}, filtered by RLS` : "none — no GRANT to `authenticated`"} |`,
     `| auth.uid() enforcement | ${enforcesAuthUid(t) ? "✅ every client policy is scoped to `auth.uid()` (or denies outright)" : "❌ a client policy is not scoped to `auth.uid()`"} |`,
+    `| Row-scope verification | ${rowScope === "PASS" ? "✅ PASS (live two-user probe)" : rowScope === "FAIL" ? "❌ FAIL — cross-user rows returned" : "⚠️ NOT_VERIFIED (no live probe in this run)"} |`,
     "",
     "**GRANT statements**",
     "",
@@ -120,10 +131,16 @@ export function renderTable(t: TableRecord): string {
   return section.join("\n");
 }
 
-export function renderEvidence(s: Snapshot, now = new Date()): string {
+export function renderEvidence(
+  s: Snapshot,
+  now = new Date(),
+  rowScope: Record<string, string> = {},
+): string {
   const exposed = s.tables.filter((t) => t.exposure === "authenticated");
   const serviceOnly = s.tables.filter((t) => t.exposure === "service_only");
   const violations = s.tables.filter((t) => !t.rlsEnabled || !enforcesAuthUid(t));
+  const scopeOf = (t: TableRecord) =>
+    rowScope[t.table] ?? (t.exposure === "authenticated" ? "NOT_VERIFIED" : "PASS");
 
   return [
     "# RIZZGOD AI — Security Evidence Report",
@@ -144,19 +161,19 @@ export function renderEvidence(s: Snapshot, now = new Date()): string {
     `- Tables granting anything to \`anon\`: **${s.tables.filter((t) => t.grants["anon"]).length}**`,
     `- Policy violations detected: **${violations.length}**${violations.length ? ` (${violations.map((v) => v.table).join(", ")})` : ""}`,
     "",
-    "| Table | Exposure | RLS | anon | authenticated | auth.uid() |",
-    "| --- | --- | --- | --- | --- | --- |",
+    "| Table | Exposure | RLS | anon | authenticated | auth.uid() | row scope |",
+    "| --- | --- | --- | --- | --- | --- | --- |",
     ...s.tables.map(
       (t) =>
-        `| \`${t.table}\` | ${t.exposure} | ${t.rlsEnabled ? "✅" : "❌"} | ${t.grants["anon"] ?? "—"} | ${t.grants["authenticated"] ?? "—"} | ${enforcesAuthUid(t) ? "✅" : "❌"} |`,
+        `| \`${t.table}\` | ${t.exposure} | ${t.rlsEnabled ? "✅" : "❌"} | ${t.grants["anon"] ?? "—"} | ${t.grants["authenticated"] ?? "—"} | ${enforcesAuthUid(t) ? "✅" : "❌"} | ${scopeOf(t)} |`,
     ),
     "",
     "## Exposed tables",
     "",
-    ...exposed.map(renderTable),
+    ...exposed.map((t) => renderTable(t, scopeOf(t))),
     "## Service-only tables",
     "",
-    ...serviceOnly.map(renderTable),
+    ...serviceOnly.map((t) => renderTable(t, scopeOf(t))),
     "## Verification",
     "",
     "- `bun run verify:graphql:audit` — live anon/authenticated collection reachability.",
@@ -170,6 +187,113 @@ export function renderEvidence(s: Snapshot, now = new Date()): string {
 export function loadSnapshot(path = SNAPSHOT_PATH): Snapshot {
   if (!existsSync(path)) throw new Error(`missing policy snapshot: ${path}`);
   return JSON.parse(readFileSync(path, "utf8")) as Snapshot;
+}
+
+export type RowScopeStatus = "PASS" | "FAIL" | "NOT_VERIFIED";
+
+/**
+ * Per-table row-scope verdict taken from the live row-scope auditor artifact.
+ * Absent artifact => NOT_VERIFIED (never silently "pass").
+ */
+export function rowScopeStatuses(path = ROW_SCOPE_PATH): Record<string, RowScopeStatus> {
+  if (!existsSync(path)) return {};
+  try {
+    const a = JSON.parse(readFileSync(path, "utf8")) as {
+      scope?: Array<{ table: string; status: RowScopeStatus }>;
+    };
+    const out: Record<string, RowScopeStatus> = {};
+    for (const c of a.scope ?? []) {
+      const prev = out[c.table];
+      out[c.table] =
+        c.status === "FAIL" || prev === "FAIL"
+          ? "FAIL"
+          : c.status === "NOT_VERIFIED" || prev === "NOT_VERIFIED"
+            ? "NOT_VERIFIED"
+            : "PASS";
+    }
+    return out;
+  } catch {
+    return {};
+  }
+}
+
+export interface EvidenceTableJson {
+  table: string;
+  schema: string;
+  exposure: TableRecord["exposure"];
+  graphqlExposed: boolean;
+  rlsEnabled: boolean;
+  ownerColumn: string | null;
+  allowedRoles: string[];
+  grants: Record<string, string>;
+  grantSql: string;
+  policies: Array<{ name: string; cmd: string; roles: string[]; sql: string }>;
+  authUidVerified: boolean;
+  rowScopeStatus: RowScopeStatus;
+}
+
+export interface EvidenceJson {
+  generatedAt: string;
+  project: string | null;
+  snapshotCapturedAt: string;
+  snapshotSource: string;
+  finding: string;
+  summary: {
+    tables: number;
+    graphqlExposed: number;
+    serviceOnly: number;
+    rlsEnabled: number;
+    anonGranted: number;
+    violations: string[];
+    rowScopeVerified: number;
+  };
+  tables: EvidenceTableJson[];
+  status: "PASS" | "FAIL";
+}
+
+export function buildEvidenceJson(
+  s: Snapshot,
+  rowScope: Record<string, RowScopeStatus> = {},
+  now = new Date(),
+): EvidenceJson {
+  const tables: EvidenceTableJson[] = s.tables.map((t) => ({
+    table: t.table,
+    schema: t.schema,
+    exposure: t.exposure,
+    graphqlExposed: t.exposure === "authenticated",
+    rlsEnabled: t.rlsEnabled,
+    ownerColumn: t.owner,
+    allowedRoles: [...new Set(t.policies.flatMap((p) => p.roles))].sort(),
+    grants: t.grants,
+    grantSql: grantSql(t.table, t.schema, t.grants),
+    policies: t.policies.map((p) => ({
+      name: p.name,
+      cmd: p.cmd,
+      roles: p.roles,
+      sql: policySql(t.table, t.schema, p),
+    })),
+    authUidVerified: enforcesAuthUid(t),
+    rowScopeStatus: rowScope[t.table] ?? (t.exposure === "authenticated" ? "NOT_VERIFIED" : "PASS"),
+  }));
+  const violations = tables.filter((t) => !t.rlsEnabled || !t.authUidVerified).map((t) => t.table);
+  return {
+    generatedAt: now.toISOString(),
+    project: s.project,
+    snapshotCapturedAt: s.capturedAt,
+    snapshotSource: s.source,
+    finding: "SUPA_pg_graphql_authenticated_table_exposed",
+    summary: {
+      tables: tables.length,
+      graphqlExposed: tables.filter((t) => t.graphqlExposed).length,
+      serviceOnly: tables.filter((t) => !t.graphqlExposed).length,
+      rlsEnabled: tables.filter((t) => t.rlsEnabled).length,
+      anonGranted: tables.filter((t) => t.grants["anon"]).length,
+      violations,
+      rowScopeVerified: tables.filter((t) => t.rowScopeStatus === "PASS").length,
+    },
+    tables,
+    status: violations.length ? "FAIL" : "PASS",
+  };
 }
 
 /** Refreshes the snapshot from the live database when psql + a URL are bound. */
@@ -202,11 +326,18 @@ export async function refreshSnapshot(path = SNAPSHOT_PATH): Promise<boolean> {
 export async function main(): Promise<number> {
   await refreshSnapshot();
   const snapshot = loadSnapshot();
-  const md = renderEvidence(snapshot);
+  const rowScope = rowScopeStatuses();
+  const md = renderEvidence(snapshot, new Date(), rowScope);
   mkdirSync(dirname(EVIDENCE_PATH), { recursive: true });
   writeFileSync(EVIDENCE_PATH, md);
+  writeFileSync(
+    EVIDENCE_JSON_PATH,
+    `${JSON.stringify(buildEvidenceJson(snapshot, rowScope), null, 2)}\n`,
+  );
   const violations = snapshot.tables.filter((t) => !t.rlsEnabled || !enforcesAuthUid(t));
-  console.log(`security evidence written -> ${EVIDENCE_PATH} (${snapshot.tables.length} tables)`);
+  console.log(
+    `security evidence written -> ${EVIDENCE_PATH} + ${EVIDENCE_JSON_PATH} (${snapshot.tables.length} tables)`,
+  );
   for (const v of violations) console.error(`::error::${v.table} is not fully protected`);
   return violations.length > 0 ? 1 : 0;
 }

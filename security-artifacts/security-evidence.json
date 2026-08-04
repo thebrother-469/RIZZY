@@ -1,0 +1,763 @@
+{
+  "generatedAt": "2026-08-04T12:20:57.705Z",
+  "project": "jfiojbbrdfgeruborkzx",
+  "snapshotCapturedAt": "2026-08-03T22:36:36.931Z",
+  "snapshotSource": "live-query",
+  "finding": "SUPA_pg_graphql_authenticated_table_exposed",
+  "summary": {
+    "tables": 17,
+    "graphqlExposed": 11,
+    "serviceOnly": 6,
+    "rlsEnabled": 17,
+    "anonGranted": 0,
+    "violations": [],
+    "rowScopeVerified": 6
+  },
+  "tables": [
+    {
+      "table": "profiles",
+      "schema": "public",
+      "exposure": "authenticated",
+      "graphqlExposed": true,
+      "rlsEnabled": true,
+      "ownerColumn": "id",
+      "allowedRoles": [
+        "authenticated"
+      ],
+      "grants": {
+        "authenticated": "INSERT,SELECT,UPDATE",
+        "service_role": "DELETE,INSERT,REFERENCES,SELECT,TRIGGER,TRUNCATE,UPDATE"
+      },
+      "grantSql": "GRANT INSERT, SELECT, UPDATE ON public.profiles TO authenticated;\nGRANT DELETE, INSERT, REFERENCES, SELECT, TRIGGER, TRUNCATE, UPDATE ON public.profiles TO service_role;\n-- no privileges granted to anon",
+      "policies": [
+        {
+          "name": "own profile select",
+          "cmd": "SELECT",
+          "roles": [
+            "authenticated"
+          ],
+          "sql": "CREATE POLICY \"own profile select\"\n  ON public.profiles\n  AS PERMISSIVE\n  FOR SELECT\n  TO authenticated\n  USING (( SELECT auth.uid() AS uid) = id);"
+        },
+        {
+          "name": "own profile insert",
+          "cmd": "INSERT",
+          "roles": [
+            "authenticated"
+          ],
+          "sql": "CREATE POLICY \"own profile insert\"\n  ON public.profiles\n  AS PERMISSIVE\n  FOR INSERT\n  TO authenticated\n  WITH CHECK (( SELECT auth.uid() AS uid) = id);"
+        },
+        {
+          "name": "own profile update",
+          "cmd": "UPDATE",
+          "roles": [
+            "authenticated"
+          ],
+          "sql": "CREATE POLICY \"own profile update\"\n  ON public.profiles\n  AS PERMISSIVE\n  FOR UPDATE\n  TO authenticated\n  USING (( SELECT auth.uid() AS uid) = id)\n  WITH CHECK (( SELECT auth.uid() AS uid) = id);"
+        }
+      ],
+      "authUidVerified": true,
+      "rowScopeStatus": "NOT_VERIFIED"
+    },
+    {
+      "table": "chats",
+      "schema": "public",
+      "exposure": "authenticated",
+      "graphqlExposed": true,
+      "rlsEnabled": true,
+      "ownerColumn": "user_id",
+      "allowedRoles": [
+        "authenticated"
+      ],
+      "grants": {
+        "authenticated": "DELETE,INSERT,SELECT,UPDATE",
+        "service_role": "DELETE,INSERT,REFERENCES,SELECT,TRIGGER,TRUNCATE,UPDATE"
+      },
+      "grantSql": "GRANT DELETE, INSERT, SELECT, UPDATE ON public.chats TO authenticated;\nGRANT DELETE, INSERT, REFERENCES, SELECT, TRIGGER, TRUNCATE, UPDATE ON public.chats TO service_role;\n-- no privileges granted to anon",
+      "policies": [
+        {
+          "name": "own chats all",
+          "cmd": "ALL",
+          "roles": [
+            "authenticated"
+          ],
+          "sql": "CREATE POLICY \"own chats all\"\n  ON public.chats\n  AS PERMISSIVE\n  FOR ALL\n  TO authenticated\n  USING (( SELECT auth.uid() AS uid) = user_id)\n  WITH CHECK (( SELECT auth.uid() AS uid) = user_id);"
+        }
+      ],
+      "authUidVerified": true,
+      "rowScopeStatus": "NOT_VERIFIED"
+    },
+    {
+      "table": "messages",
+      "schema": "public",
+      "exposure": "authenticated",
+      "graphqlExposed": true,
+      "rlsEnabled": true,
+      "ownerColumn": "user_id",
+      "allowedRoles": [
+        "authenticated"
+      ],
+      "grants": {
+        "authenticated": "DELETE,INSERT,SELECT,UPDATE",
+        "service_role": "DELETE,INSERT,REFERENCES,SELECT,TRIGGER,TRUNCATE,UPDATE"
+      },
+      "grantSql": "GRANT DELETE, INSERT, SELECT, UPDATE ON public.messages TO authenticated;\nGRANT DELETE, INSERT, REFERENCES, SELECT, TRIGGER, TRUNCATE, UPDATE ON public.messages TO service_role;\n-- no privileges granted to anon",
+      "policies": [
+        {
+          "name": "own msg all",
+          "cmd": "ALL",
+          "roles": [
+            "authenticated"
+          ],
+          "sql": "CREATE POLICY \"own msg all\"\n  ON public.messages\n  AS PERMISSIVE\n  FOR ALL\n  TO authenticated\n  USING (( SELECT auth.uid() AS uid) = user_id)\n  WITH CHECK (( SELECT auth.uid() AS uid) = user_id);"
+        }
+      ],
+      "authUidVerified": true,
+      "rowScopeStatus": "NOT_VERIFIED"
+    },
+    {
+      "table": "memories",
+      "schema": "public",
+      "exposure": "authenticated",
+      "graphqlExposed": true,
+      "rlsEnabled": true,
+      "ownerColumn": "user_id",
+      "allowedRoles": [
+        "authenticated"
+      ],
+      "grants": {
+        "authenticated": "DELETE,INSERT,SELECT,UPDATE",
+        "service_role": "DELETE,INSERT,REFERENCES,SELECT,TRIGGER,TRUNCATE,UPDATE"
+      },
+      "grantSql": "GRANT DELETE, INSERT, SELECT, UPDATE ON public.memories TO authenticated;\nGRANT DELETE, INSERT, REFERENCES, SELECT, TRIGGER, TRUNCATE, UPDATE ON public.memories TO service_role;\n-- no privileges granted to anon",
+      "policies": [
+        {
+          "name": "own memories",
+          "cmd": "ALL",
+          "roles": [
+            "authenticated"
+          ],
+          "sql": "CREATE POLICY \"own memories\"\n  ON public.memories\n  AS PERMISSIVE\n  FOR ALL\n  TO authenticated\n  USING (( SELECT auth.uid() AS uid) = user_id)\n  WITH CHECK (( SELECT auth.uid() AS uid) = user_id);"
+        }
+      ],
+      "authUidVerified": true,
+      "rowScopeStatus": "NOT_VERIFIED"
+    },
+    {
+      "table": "missions",
+      "schema": "public",
+      "exposure": "authenticated",
+      "graphqlExposed": true,
+      "rlsEnabled": true,
+      "ownerColumn": "user_id",
+      "allowedRoles": [
+        "authenticated"
+      ],
+      "grants": {
+        "authenticated": "DELETE,INSERT,SELECT,UPDATE",
+        "service_role": "DELETE,INSERT,REFERENCES,SELECT,TRIGGER,TRUNCATE,UPDATE"
+      },
+      "grantSql": "GRANT DELETE, INSERT, SELECT, UPDATE ON public.missions TO authenticated;\nGRANT DELETE, INSERT, REFERENCES, SELECT, TRIGGER, TRUNCATE, UPDATE ON public.missions TO service_role;\n-- no privileges granted to anon",
+      "policies": [
+        {
+          "name": "own missions read",
+          "cmd": "SELECT",
+          "roles": [
+            "authenticated"
+          ],
+          "sql": "CREATE POLICY \"own missions read\"\n  ON public.missions\n  AS PERMISSIVE\n  FOR SELECT\n  TO authenticated\n  USING (( SELECT auth.uid() AS uid) = user_id);"
+        },
+        {
+          "name": "Users can create their own missions",
+          "cmd": "INSERT",
+          "roles": [
+            "authenticated"
+          ],
+          "sql": "CREATE POLICY \"Users can create their own missions\"\n  ON public.missions\n  AS PERMISSIVE\n  FOR INSERT\n  TO authenticated\n  WITH CHECK ((( SELECT auth.uid() AS uid) = user_id) AND (completed = false) AND (completed_at IS NULL));"
+        },
+        {
+          "name": "Users can update own mission reflection and skip",
+          "cmd": "UPDATE",
+          "roles": [
+            "authenticated"
+          ],
+          "sql": "CREATE POLICY \"Users can update own mission reflection and skip\"\n  ON public.missions\n  AS PERMISSIVE\n  FOR UPDATE\n  TO authenticated\n  USING (( SELECT auth.uid() AS uid) = user_id)\n  WITH CHECK ((( SELECT auth.uid() AS uid) = user_id) AND (completed = ( SELECT m.completed FROM missions m WHERE (m.id = missions.id))) AND (NOT (completed_at IS DISTINCT FROM ( SELECT m.completed_at FROM missions m WHERE (m.id = missions.id)))));"
+        },
+        {
+          "name": "Users can delete their own missions",
+          "cmd": "DELETE",
+          "roles": [
+            "authenticated"
+          ],
+          "sql": "CREATE POLICY \"Users can delete their own missions\"\n  ON public.missions\n  AS PERMISSIVE\n  FOR DELETE\n  TO authenticated\n  USING (( SELECT auth.uid() AS uid) = user_id);"
+        }
+      ],
+      "authUidVerified": true,
+      "rowScopeStatus": "NOT_VERIFIED"
+    },
+    {
+      "table": "subscriptions",
+      "schema": "public",
+      "exposure": "authenticated",
+      "graphqlExposed": true,
+      "rlsEnabled": true,
+      "ownerColumn": "user_id",
+      "allowedRoles": [
+        "anon",
+        "authenticated"
+      ],
+      "grants": {
+        "authenticated": "SELECT",
+        "service_role": "DELETE,INSERT,REFERENCES,SELECT,TRIGGER,TRUNCATE,UPDATE"
+      },
+      "grantSql": "GRANT SELECT ON public.subscriptions TO authenticated;\nGRANT DELETE, INSERT, REFERENCES, SELECT, TRIGGER, TRUNCATE, UPDATE ON public.subscriptions TO service_role;\n-- no privileges granted to anon",
+      "policies": [
+        {
+          "name": "own sub select",
+          "cmd": "SELECT",
+          "roles": [
+            "authenticated"
+          ],
+          "sql": "CREATE POLICY \"own sub select\"\n  ON public.subscriptions\n  AS PERMISSIVE\n  FOR SELECT\n  TO authenticated\n  USING (( SELECT auth.uid() AS uid) = user_id);"
+        },
+        {
+          "name": "Block client inserts on subscriptions",
+          "cmd": "INSERT",
+          "roles": [
+            "anon",
+            "authenticated"
+          ],
+          "sql": "CREATE POLICY \"Block client inserts on subscriptions\"\n  ON public.subscriptions\n  AS RESTRICTIVE\n  FOR INSERT\n  TO anon, authenticated\n  WITH CHECK false;"
+        },
+        {
+          "name": "Block client updates on subscriptions",
+          "cmd": "UPDATE",
+          "roles": [
+            "anon",
+            "authenticated"
+          ],
+          "sql": "CREATE POLICY \"Block client updates on subscriptions\"\n  ON public.subscriptions\n  AS RESTRICTIVE\n  FOR UPDATE\n  TO anon, authenticated\n  USING false\n  WITH CHECK false;"
+        },
+        {
+          "name": "Block client deletes on subscriptions",
+          "cmd": "DELETE",
+          "roles": [
+            "anon",
+            "authenticated"
+          ],
+          "sql": "CREATE POLICY \"Block client deletes on subscriptions\"\n  ON public.subscriptions\n  AS RESTRICTIVE\n  FOR DELETE\n  TO anon, authenticated\n  USING false;"
+        }
+      ],
+      "authUidVerified": true,
+      "rowScopeStatus": "NOT_VERIFIED"
+    },
+    {
+      "table": "user_xp",
+      "schema": "public",
+      "exposure": "authenticated",
+      "graphqlExposed": true,
+      "rlsEnabled": true,
+      "ownerColumn": "user_id",
+      "allowedRoles": [
+        "anon",
+        "authenticated"
+      ],
+      "grants": {
+        "authenticated": "SELECT",
+        "service_role": "DELETE,INSERT,REFERENCES,SELECT,TRIGGER,TRUNCATE,UPDATE"
+      },
+      "grantSql": "GRANT SELECT ON public.user_xp TO authenticated;\nGRANT DELETE, INSERT, REFERENCES, SELECT, TRIGGER, TRUNCATE, UPDATE ON public.user_xp TO service_role;\n-- no privileges granted to anon",
+      "policies": [
+        {
+          "name": "own xp read",
+          "cmd": "SELECT",
+          "roles": [
+            "authenticated"
+          ],
+          "sql": "CREATE POLICY \"own xp read\"\n  ON public.user_xp\n  AS PERMISSIVE\n  FOR SELECT\n  TO authenticated\n  USING (( SELECT auth.uid() AS uid) = user_id);"
+        },
+        {
+          "name": "Block client inserts on user_xp",
+          "cmd": "INSERT",
+          "roles": [
+            "anon",
+            "authenticated"
+          ],
+          "sql": "CREATE POLICY \"Block client inserts on user_xp\"\n  ON public.user_xp\n  AS RESTRICTIVE\n  FOR INSERT\n  TO anon, authenticated\n  WITH CHECK false;"
+        },
+        {
+          "name": "Block client updates on user_xp",
+          "cmd": "UPDATE",
+          "roles": [
+            "anon",
+            "authenticated"
+          ],
+          "sql": "CREATE POLICY \"Block client updates on user_xp\"\n  ON public.user_xp\n  AS RESTRICTIVE\n  FOR UPDATE\n  TO anon, authenticated\n  USING false\n  WITH CHECK false;"
+        },
+        {
+          "name": "Block client deletes on user_xp",
+          "cmd": "DELETE",
+          "roles": [
+            "anon",
+            "authenticated"
+          ],
+          "sql": "CREATE POLICY \"Block client deletes on user_xp\"\n  ON public.user_xp\n  AS RESTRICTIVE\n  FOR DELETE\n  TO anon, authenticated\n  USING false;"
+        }
+      ],
+      "authUidVerified": true,
+      "rowScopeStatus": "NOT_VERIFIED"
+    },
+    {
+      "table": "streaks",
+      "schema": "public",
+      "exposure": "authenticated",
+      "graphqlExposed": true,
+      "rlsEnabled": true,
+      "ownerColumn": "user_id",
+      "allowedRoles": [
+        "anon",
+        "authenticated"
+      ],
+      "grants": {
+        "authenticated": "SELECT",
+        "service_role": "DELETE,INSERT,REFERENCES,SELECT,TRIGGER,TRUNCATE,UPDATE"
+      },
+      "grantSql": "GRANT SELECT ON public.streaks TO authenticated;\nGRANT DELETE, INSERT, REFERENCES, SELECT, TRIGGER, TRUNCATE, UPDATE ON public.streaks TO service_role;\n-- no privileges granted to anon",
+      "policies": [
+        {
+          "name": "own streaks read",
+          "cmd": "SELECT",
+          "roles": [
+            "authenticated"
+          ],
+          "sql": "CREATE POLICY \"own streaks read\"\n  ON public.streaks\n  AS PERMISSIVE\n  FOR SELECT\n  TO authenticated\n  USING (( SELECT auth.uid() AS uid) = user_id);"
+        },
+        {
+          "name": "Block client inserts on streaks",
+          "cmd": "INSERT",
+          "roles": [
+            "anon",
+            "authenticated"
+          ],
+          "sql": "CREATE POLICY \"Block client inserts on streaks\"\n  ON public.streaks\n  AS PERMISSIVE\n  FOR INSERT\n  TO anon, authenticated\n  WITH CHECK false;"
+        },
+        {
+          "name": "Block client updates on streaks",
+          "cmd": "UPDATE",
+          "roles": [
+            "anon",
+            "authenticated"
+          ],
+          "sql": "CREATE POLICY \"Block client updates on streaks\"\n  ON public.streaks\n  AS PERMISSIVE\n  FOR UPDATE\n  TO anon, authenticated\n  USING false\n  WITH CHECK false;"
+        },
+        {
+          "name": "Block client deletes on streaks",
+          "cmd": "DELETE",
+          "roles": [
+            "anon",
+            "authenticated"
+          ],
+          "sql": "CREATE POLICY \"Block client deletes on streaks\"\n  ON public.streaks\n  AS PERMISSIVE\n  FOR DELETE\n  TO anon, authenticated\n  USING false;"
+        }
+      ],
+      "authUidVerified": true,
+      "rowScopeStatus": "NOT_VERIFIED"
+    },
+    {
+      "table": "badges",
+      "schema": "public",
+      "exposure": "authenticated",
+      "graphqlExposed": true,
+      "rlsEnabled": true,
+      "ownerColumn": "user_id",
+      "allowedRoles": [
+        "authenticated"
+      ],
+      "grants": {
+        "authenticated": "SELECT",
+        "service_role": "DELETE,INSERT,REFERENCES,SELECT,TRIGGER,TRUNCATE,UPDATE"
+      },
+      "grantSql": "GRANT SELECT ON public.badges TO authenticated;\nGRANT DELETE, INSERT, REFERENCES, SELECT, TRIGGER, TRUNCATE, UPDATE ON public.badges TO service_role;\n-- no privileges granted to anon",
+      "policies": [
+        {
+          "name": "own badges read",
+          "cmd": "SELECT",
+          "roles": [
+            "authenticated"
+          ],
+          "sql": "CREATE POLICY \"own badges read\"\n  ON public.badges\n  AS PERMISSIVE\n  FOR SELECT\n  TO authenticated\n  USING (user_id = ( SELECT auth.uid() AS uid));"
+        },
+        {
+          "name": "Badges are not user-writable (insert)",
+          "cmd": "INSERT",
+          "roles": [
+            "authenticated"
+          ],
+          "sql": "CREATE POLICY \"Badges are not user-writable (insert)\"\n  ON public.badges\n  AS PERMISSIVE\n  FOR INSERT\n  TO authenticated\n  WITH CHECK false;"
+        },
+        {
+          "name": "Badges are not user-writable (update)",
+          "cmd": "UPDATE",
+          "roles": [
+            "authenticated"
+          ],
+          "sql": "CREATE POLICY \"Badges are not user-writable (update)\"\n  ON public.badges\n  AS PERMISSIVE\n  FOR UPDATE\n  TO authenticated\n  USING false\n  WITH CHECK false;"
+        },
+        {
+          "name": "Badges are not user-writable (delete)",
+          "cmd": "DELETE",
+          "roles": [
+            "authenticated"
+          ],
+          "sql": "CREATE POLICY \"Badges are not user-writable (delete)\"\n  ON public.badges\n  AS PERMISSIVE\n  FOR DELETE\n  TO authenticated\n  USING false;"
+        }
+      ],
+      "authUidVerified": true,
+      "rowScopeStatus": "NOT_VERIFIED"
+    },
+    {
+      "table": "usage_daily",
+      "schema": "public",
+      "exposure": "authenticated",
+      "graphqlExposed": true,
+      "rlsEnabled": true,
+      "ownerColumn": "user_id",
+      "allowedRoles": [
+        "anon",
+        "authenticated"
+      ],
+      "grants": {
+        "authenticated": "SELECT",
+        "service_role": "DELETE,INSERT,REFERENCES,SELECT,TRIGGER,TRUNCATE,UPDATE"
+      },
+      "grantSql": "GRANT SELECT ON public.usage_daily TO authenticated;\nGRANT DELETE, INSERT, REFERENCES, SELECT, TRIGGER, TRUNCATE, UPDATE ON public.usage_daily TO service_role;\n-- no privileges granted to anon",
+      "policies": [
+        {
+          "name": "own usage read",
+          "cmd": "SELECT",
+          "roles": [
+            "authenticated"
+          ],
+          "sql": "CREATE POLICY \"own usage read\"\n  ON public.usage_daily\n  AS PERMISSIVE\n  FOR SELECT\n  TO authenticated\n  USING (( SELECT auth.uid() AS uid) = user_id);"
+        },
+        {
+          "name": "Block client inserts on usage_daily",
+          "cmd": "INSERT",
+          "roles": [
+            "anon",
+            "authenticated"
+          ],
+          "sql": "CREATE POLICY \"Block client inserts on usage_daily\"\n  ON public.usage_daily\n  AS PERMISSIVE\n  FOR INSERT\n  TO anon, authenticated\n  WITH CHECK false;"
+        },
+        {
+          "name": "Block client updates on usage_daily",
+          "cmd": "UPDATE",
+          "roles": [
+            "anon",
+            "authenticated"
+          ],
+          "sql": "CREATE POLICY \"Block client updates on usage_daily\"\n  ON public.usage_daily\n  AS PERMISSIVE\n  FOR UPDATE\n  TO anon, authenticated\n  USING false\n  WITH CHECK false;"
+        },
+        {
+          "name": "Block client deletes on usage_daily",
+          "cmd": "DELETE",
+          "roles": [
+            "anon",
+            "authenticated"
+          ],
+          "sql": "CREATE POLICY \"Block client deletes on usage_daily\"\n  ON public.usage_daily\n  AS PERMISSIVE\n  FOR DELETE\n  TO anon, authenticated\n  USING false;"
+        }
+      ],
+      "authUidVerified": true,
+      "rowScopeStatus": "NOT_VERIFIED"
+    },
+    {
+      "table": "xp_events",
+      "schema": "public",
+      "exposure": "authenticated",
+      "graphqlExposed": true,
+      "rlsEnabled": true,
+      "ownerColumn": "user_id",
+      "allowedRoles": [
+        "authenticated"
+      ],
+      "grants": {
+        "authenticated": "SELECT",
+        "service_role": "DELETE,INSERT,REFERENCES,SELECT,TRIGGER,TRUNCATE,UPDATE"
+      },
+      "grantSql": "GRANT SELECT ON public.xp_events TO authenticated;\nGRANT DELETE, INSERT, REFERENCES, SELECT, TRIGGER, TRUNCATE, UPDATE ON public.xp_events TO service_role;\n-- no privileges granted to anon",
+      "policies": [
+        {
+          "name": "own xp events read",
+          "cmd": "SELECT",
+          "roles": [
+            "authenticated"
+          ],
+          "sql": "CREATE POLICY \"own xp events read\"\n  ON public.xp_events\n  AS PERMISSIVE\n  FOR SELECT\n  TO authenticated\n  USING (( SELECT auth.uid() AS uid) = user_id);"
+        },
+        {
+          "name": "Block client inserts on xp_events",
+          "cmd": "INSERT",
+          "roles": [
+            "authenticated"
+          ],
+          "sql": "CREATE POLICY \"Block client inserts on xp_events\"\n  ON public.xp_events\n  AS PERMISSIVE\n  FOR INSERT\n  TO authenticated\n  WITH CHECK false;"
+        },
+        {
+          "name": "Block client updates on xp_events",
+          "cmd": "UPDATE",
+          "roles": [
+            "authenticated"
+          ],
+          "sql": "CREATE POLICY \"Block client updates on xp_events\"\n  ON public.xp_events\n  AS PERMISSIVE\n  FOR UPDATE\n  TO authenticated\n  USING false\n  WITH CHECK false;"
+        },
+        {
+          "name": "Block client deletes on xp_events",
+          "cmd": "DELETE",
+          "roles": [
+            "authenticated"
+          ],
+          "sql": "CREATE POLICY \"Block client deletes on xp_events\"\n  ON public.xp_events\n  AS PERMISSIVE\n  FOR DELETE\n  TO authenticated\n  USING false;"
+        }
+      ],
+      "authUidVerified": true,
+      "rowScopeStatus": "NOT_VERIFIED"
+    },
+    {
+      "table": "auth_audit_logs",
+      "schema": "public",
+      "exposure": "service_only",
+      "graphqlExposed": false,
+      "rlsEnabled": true,
+      "ownerColumn": "user_id",
+      "allowedRoles": [
+        "authenticated"
+      ],
+      "grants": {
+        "service_role": "DELETE,INSERT,REFERENCES,SELECT,TRIGGER,TRUNCATE,UPDATE"
+      },
+      "grantSql": "GRANT DELETE, INSERT, REFERENCES, SELECT, TRIGGER, TRUNCATE, UPDATE ON public.auth_audit_logs TO service_role;\n-- no privileges granted to anon\n-- no privileges granted to authenticated",
+      "policies": [
+        {
+          "name": "auth_audit_owner_select",
+          "cmd": "SELECT",
+          "roles": [
+            "authenticated"
+          ],
+          "sql": "CREATE POLICY \"auth_audit_owner_select\"\n  ON public.auth_audit_logs\n  AS PERMISSIVE\n  FOR SELECT\n  TO authenticated\n  USING (user_id = ( SELECT auth.uid() AS uid));"
+        }
+      ],
+      "authUidVerified": true,
+      "rowScopeStatus": "PASS"
+    },
+    {
+      "table": "profile_gen_usage",
+      "schema": "public",
+      "exposure": "service_only",
+      "graphqlExposed": false,
+      "rlsEnabled": true,
+      "ownerColumn": "user_id",
+      "allowedRoles": [
+        "authenticated"
+      ],
+      "grants": {
+        "service_role": "DELETE,INSERT,REFERENCES,SELECT,TRIGGER,TRUNCATE,UPDATE"
+      },
+      "grantSql": "GRANT DELETE, INSERT, REFERENCES, SELECT, TRIGGER, TRUNCATE, UPDATE ON public.profile_gen_usage TO service_role;\n-- no privileges granted to anon\n-- no privileges granted to authenticated",
+      "policies": [
+        {
+          "name": "own profile gen usage read",
+          "cmd": "SELECT",
+          "roles": [
+            "authenticated"
+          ],
+          "sql": "CREATE POLICY \"own profile gen usage read\"\n  ON public.profile_gen_usage\n  AS PERMISSIVE\n  FOR SELECT\n  TO authenticated\n  USING (( SELECT auth.uid() AS uid) = user_id);"
+        },
+        {
+          "name": "block client insert profile gen usage",
+          "cmd": "INSERT",
+          "roles": [
+            "authenticated"
+          ],
+          "sql": "CREATE POLICY \"block client insert profile gen usage\"\n  ON public.profile_gen_usage\n  AS PERMISSIVE\n  FOR INSERT\n  TO authenticated\n  WITH CHECK false;"
+        },
+        {
+          "name": "block client update profile gen usage",
+          "cmd": "UPDATE",
+          "roles": [
+            "authenticated"
+          ],
+          "sql": "CREATE POLICY \"block client update profile gen usage\"\n  ON public.profile_gen_usage\n  AS PERMISSIVE\n  FOR UPDATE\n  TO authenticated\n  USING false\n  WITH CHECK false;"
+        },
+        {
+          "name": "block client delete profile gen usage",
+          "cmd": "DELETE",
+          "roles": [
+            "authenticated"
+          ],
+          "sql": "CREATE POLICY \"block client delete profile gen usage\"\n  ON public.profile_gen_usage\n  AS PERMISSIVE\n  FOR DELETE\n  TO authenticated\n  USING false;"
+        }
+      ],
+      "authUidVerified": true,
+      "rowScopeStatus": "PASS"
+    },
+    {
+      "table": "onboarding_debug_events",
+      "schema": "public",
+      "exposure": "service_only",
+      "graphqlExposed": false,
+      "rlsEnabled": true,
+      "ownerColumn": "user_id",
+      "allowedRoles": [
+        "authenticated"
+      ],
+      "grants": {
+        "service_role": "DELETE,INSERT,REFERENCES,SELECT,TRIGGER,TRUNCATE,UPDATE"
+      },
+      "grantSql": "GRANT DELETE, INSERT, REFERENCES, SELECT, TRIGGER, TRUNCATE, UPDATE ON public.onboarding_debug_events TO service_role;\n-- no privileges granted to anon\n-- no privileges granted to authenticated",
+      "policies": [
+        {
+          "name": "own onboarding debug read",
+          "cmd": "SELECT",
+          "roles": [
+            "authenticated"
+          ],
+          "sql": "CREATE POLICY \"own onboarding debug read\"\n  ON public.onboarding_debug_events\n  AS PERMISSIVE\n  FOR SELECT\n  TO authenticated\n  USING (user_id = ( SELECT auth.uid() AS uid));"
+        },
+        {
+          "name": "block client insert onboarding debug",
+          "cmd": "INSERT",
+          "roles": [
+            "authenticated"
+          ],
+          "sql": "CREATE POLICY \"block client insert onboarding debug\"\n  ON public.onboarding_debug_events\n  AS PERMISSIVE\n  FOR INSERT\n  TO authenticated\n  WITH CHECK false;"
+        },
+        {
+          "name": "block client update onboarding debug",
+          "cmd": "UPDATE",
+          "roles": [
+            "authenticated"
+          ],
+          "sql": "CREATE POLICY \"block client update onboarding debug\"\n  ON public.onboarding_debug_events\n  AS PERMISSIVE\n  FOR UPDATE\n  TO authenticated\n  USING false\n  WITH CHECK false;"
+        },
+        {
+          "name": "block client delete onboarding debug",
+          "cmd": "DELETE",
+          "roles": [
+            "authenticated"
+          ],
+          "sql": "CREATE POLICY \"block client delete onboarding debug\"\n  ON public.onboarding_debug_events\n  AS PERMISSIVE\n  FOR DELETE\n  TO authenticated\n  USING false;"
+        }
+      ],
+      "authUidVerified": true,
+      "rowScopeStatus": "PASS"
+    },
+    {
+      "table": "daily_mission_debug_events",
+      "schema": "public",
+      "exposure": "service_only",
+      "graphqlExposed": false,
+      "rlsEnabled": true,
+      "ownerColumn": "user_id",
+      "allowedRoles": [
+        "authenticated"
+      ],
+      "grants": {
+        "service_role": "DELETE,INSERT,REFERENCES,SELECT,TRIGGER,TRUNCATE,UPDATE"
+      },
+      "grantSql": "GRANT DELETE, INSERT, REFERENCES, SELECT, TRIGGER, TRUNCATE, UPDATE ON public.daily_mission_debug_events TO service_role;\n-- no privileges granted to anon\n-- no privileges granted to authenticated",
+      "policies": [
+        {
+          "name": "own daily mission debug read",
+          "cmd": "SELECT",
+          "roles": [
+            "authenticated"
+          ],
+          "sql": "CREATE POLICY \"own daily mission debug read\"\n  ON public.daily_mission_debug_events\n  AS PERMISSIVE\n  FOR SELECT\n  TO authenticated\n  USING (user_id = ( SELECT auth.uid() AS uid));"
+        },
+        {
+          "name": "block client insert daily mission debug",
+          "cmd": "INSERT",
+          "roles": [
+            "authenticated"
+          ],
+          "sql": "CREATE POLICY \"block client insert daily mission debug\"\n  ON public.daily_mission_debug_events\n  AS PERMISSIVE\n  FOR INSERT\n  TO authenticated\n  WITH CHECK false;"
+        },
+        {
+          "name": "block client update daily mission debug",
+          "cmd": "UPDATE",
+          "roles": [
+            "authenticated"
+          ],
+          "sql": "CREATE POLICY \"block client update daily mission debug\"\n  ON public.daily_mission_debug_events\n  AS PERMISSIVE\n  FOR UPDATE\n  TO authenticated\n  USING false\n  WITH CHECK false;"
+        },
+        {
+          "name": "block client delete daily mission debug",
+          "cmd": "DELETE",
+          "roles": [
+            "authenticated"
+          ],
+          "sql": "CREATE POLICY \"block client delete daily mission debug\"\n  ON public.daily_mission_debug_events\n  AS PERMISSIVE\n  FOR DELETE\n  TO authenticated\n  USING false;"
+        }
+      ],
+      "authUidVerified": true,
+      "rowScopeStatus": "PASS"
+    },
+    {
+      "table": "lemonsqueezy_webhook_events",
+      "schema": "public",
+      "exposure": "service_only",
+      "graphqlExposed": false,
+      "rlsEnabled": true,
+      "ownerColumn": null,
+      "allowedRoles": [
+        "service_role"
+      ],
+      "grants": {
+        "service_role": "DELETE,INSERT,REFERENCES,SELECT,TRIGGER,TRUNCATE,UPDATE"
+      },
+      "grantSql": "GRANT DELETE, INSERT, REFERENCES, SELECT, TRIGGER, TRUNCATE, UPDATE ON public.lemonsqueezy_webhook_events TO service_role;\n-- no privileges granted to anon\n-- no privileges granted to authenticated",
+      "policies": [
+        {
+          "name": "service role only",
+          "cmd": "ALL",
+          "roles": [
+            "service_role"
+          ],
+          "sql": "CREATE POLICY \"service role only\"\n  ON public.lemonsqueezy_webhook_events\n  AS PERMISSIVE\n  FOR ALL\n  TO service_role\n  USING true\n  WITH CHECK true;"
+        }
+      ],
+      "authUidVerified": true,
+      "rowScopeStatus": "PASS"
+    },
+    {
+      "table": "paddle_webhook_events",
+      "schema": "public",
+      "exposure": "service_only",
+      "graphqlExposed": false,
+      "rlsEnabled": true,
+      "ownerColumn": null,
+      "allowedRoles": [
+        "anon",
+        "authenticated"
+      ],
+      "grants": {
+        "service_role": "DELETE,INSERT,REFERENCES,SELECT,TRIGGER,TRUNCATE,UPDATE"
+      },
+      "grantSql": "GRANT DELETE, INSERT, REFERENCES, SELECT, TRIGGER, TRUNCATE, UPDATE ON public.paddle_webhook_events TO service_role;\n-- no privileges granted to anon\n-- no privileges granted to authenticated",
+      "policies": [
+        {
+          "name": "Deny all client access",
+          "cmd": "ALL",
+          "roles": [
+            "anon",
+            "authenticated"
+          ],
+          "sql": "CREATE POLICY \"Deny all client access\"\n  ON public.paddle_webhook_events\n  AS RESTRICTIVE\n  FOR ALL\n  TO anon, authenticated\n  USING false\n  WITH CHECK false;"
+        }
+      ],
+      "authUidVerified": true,
+      "rowScopeStatus": "PASS"
+    }
+  ],
+  "status": "PASS"
+}

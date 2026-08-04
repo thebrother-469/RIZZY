@@ -1,0 +1,31 @@
+{
+  "generatedAt": "2026-08-04T12:21:01.905Z",
+  "suite": "ssr-smoke",
+  "files": [
+    {
+      "file": "tests/unit/ssr/protected-pages.test.ts",
+      "status": "passed",
+      "tests": 18,
+      "failed": 0
+    },
+    {
+      "file": "tests/unit/ssr/smoke.test.ts",
+      "status": "passed",
+      "tests": 28,
+      "failed": 0
+    },
+    {
+      "file": "tests/unit/ssr/supabase-init-logging.test.ts",
+      "status": "passed",
+      "tests": 3,
+      "failed": 0
+    }
+  ],
+  "failures": [],
+  "summary": {
+    "pass": 49,
+    "fail": 0,
+    "notVerified": 0
+  },
+  "status": "PASS"
+}

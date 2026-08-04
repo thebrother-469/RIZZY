@@ -86,9 +86,7 @@ describe("no hardcoded salutations", () => {
       return statSync(p).isDirectory() ? walk(p) : /\.(ts|tsx)$/.test(p) ? [p] : [];
     });
 
-  const files = walk(join(process.cwd(), "src")).filter(
-    (f) => !ALLOWED.some((a) => f.endsWith(a)),
-  );
+  const files = walk(join(process.cwd(), "src")).filter((f) => !ALLOWED.some((a) => f.endsWith(a)));
 
   it("scans the whole source tree", () => {
     expect(files.length).toBeGreaterThan(50);

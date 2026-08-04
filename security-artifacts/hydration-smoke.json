@@ -1,0 +1,25 @@
+{
+  "generatedAt": "2026-08-04T12:21:01.906Z",
+  "suite": "hydration-smoke",
+  "files": [
+    {
+      "file": "tests/unit/ssr/hydration-core-flows.test.ts",
+      "status": "passed",
+      "tests": 45,
+      "failed": 0
+    },
+    {
+      "file": "tests/unit/ssr/hydration-diagnostics.test.ts",
+      "status": "passed",
+      "tests": 3,
+      "failed": 0
+    }
+  ],
+  "failures": [],
+  "summary": {
+    "pass": 48,
+    "fail": 0,
+    "notVerified": 0
+  },
+  "status": "PASS"
+}

@@ -308,7 +308,14 @@ describe("row-scope classification", () => {
   });
 
   it("reports NOT_VERIFIED when the probe itself errored", () => {
-    const c = evaluateScope("userA", A, "missions", "plain", { errors: [{ message: "boom" }] }, "q");
+    const c = evaluateScope(
+      "userA",
+      A,
+      "missions",
+      "plain",
+      { errors: [{ message: "boom" }] },
+      "q",
+    );
     expect(c.status).toBe("NOT_VERIFIED");
   });
 
@@ -330,7 +337,9 @@ describe("row-scope mocked transport", () => {
         const body = JSON.parse(String(init.body)) as { query: string };
         const collection = /\{ (\w+)\(/.exec(body.query)?.[1] ?? "";
         return {
-          json: async () => ({ data: { [collection]: { edges: [{ node: { user_id: uid, id: uid } }] } } }),
+          json: async () => ({
+            data: { [collection]: { edges: [{ node: { user_id: uid, id: uid } }] } },
+          }),
         };
       }) as unknown as typeof fetch;
 
