@@ -105,7 +105,7 @@ export function renderTable(t: TableRecord, rowScope: string = "NOT_VERIFIED"): 
         .map((r) => `\`${r}\``)
         .join(", ") || "none"
     } |`,
-    `| Anonymous access | ${anonGrant ? `⚠️ ${anonGrant}` : "❌ none — no GRANT to \`anon\`"} |`,
+    `| Anonymous access | ${anonGrant ? `⚠️ ${anonGrant}` : "❌ none — no GRANT to `anon`"} |`,
     `| Authenticated access | ${authGrant ? `${authGrant}, filtered by RLS` : "none — no GRANT to `authenticated`"} |`,
     `| auth.uid() enforcement | ${enforcesAuthUid(t) ? "✅ every client policy is scoped to `auth.uid()` (or denies outright)" : "❌ a client policy is not scoped to `auth.uid()`"} |`,
     `| Row-scope verification | ${rowScope === "PASS" ? "✅ PASS (live two-user probe)" : rowScope === "FAIL" ? "❌ FAIL — cross-user rows returned" : "⚠️ NOT_VERIFIED (no live probe in this run)"} |`,
