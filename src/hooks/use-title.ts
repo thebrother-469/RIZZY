@@ -14,10 +14,11 @@ export function useUserTitle() {
     enabled: Boolean(user?.id),
     staleTime: 5 * 60_000,
     queryFn: async () => {
+      if (!user?.id) return null;
       const { data } = await supabase
         .from("profiles")
         .select("preferred_title, gender, onboarded_at")
-        .eq("id", user!.id)
+        .eq("id", user.id)
         .maybeSingle();
       return (data as TitleProfile) ?? null;
     },
