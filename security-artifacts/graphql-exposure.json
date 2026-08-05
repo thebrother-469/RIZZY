@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-05T00:03:18.224Z",
+  "generatedAt": "2026-08-05T00:10:15.865Z",
   "project": "jfiojbbrdfgeruborkzx",
   "allowlist": {
     "authenticated": [
@@ -81,11 +81,11 @@
       "table": "messages",
       "collection": "messagesCollection",
       "expected": "hidden",
-      "observed": "hidden",
+      "observed": "error",
       "rowCount": null,
-      "status": "PASS",
+      "status": "NOT_VERIFIED",
       "query": "{ messagesCollection(first: 5) { edges { node { nodeId } } } }",
-      "detail": "collection is not exposed (no SELECT grant)"
+      "detail": "NOT VERIFIED: transport error from Supabase, exposure undetermined — {\"code\":\"57014\",\"details\":null,\"hint\":null,\"message\":\"canceling statement due to statement timeout\"}"
     },
     {
       "role": "anon",
@@ -245,9 +245,9 @@
   "authenticated": [],
   "unexpectedExposures": [],
   "summary": {
-    "pass": 17,
+    "pass": 16,
     "fail": 0,
-    "notVerified": 0
+    "notVerified": 1
   },
   "checks": [
     {
@@ -277,11 +277,11 @@
       "table": "messages",
       "collection": "messagesCollection",
       "expected": "hidden",
-      "observed": "hidden",
+      "observed": "error",
       "rowCount": null,
-      "status": "PASS",
+      "status": "NOT_VERIFIED",
       "query": "{ messagesCollection(first: 5) { edges { node { nodeId } } } }",
-      "detail": "collection is not exposed (no SELECT grant)"
+      "detail": "NOT VERIFIED: transport error from Supabase, exposure undetermined — {\"code\":\"57014\",\"details\":null,\"hint\":null,\"message\":\"canceling statement due to statement timeout\"}"
     },
     {
       "role": "anon",
