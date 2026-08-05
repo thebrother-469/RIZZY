@@ -80,6 +80,32 @@ export interface ExposureCheck {
 export interface GraphqlResponse {
   data?: unknown;
   errors?: Array<{ message: string }>;
+  /** PostgREST/Postgres transport errors surface as a bare `{ code, message }`. */
+  code?: string;
+  message?: string;
+}
+
+/**
+ * Postgres/PostgREST transport failures (statement timeout, upstream 5xx,
+ * connection reset). These prove nothing about exposure in either direction,
+ * so they must be reported as NOT_VERIFIED rather than crashing the auditor
+ * or being mis-scored as a PASS/FAIL.
+ */
+const TRANSPORT_ERROR_CODES = new Set(["57014", "53300", "08006", "08003", "XX000"]);
+
+export function isTransportError(res: GraphqlResponse): boolean {
+  if (res.data !== undefined || Array.isArray(res.errors)) return false;
+  if (typeof res.code === "string" && TRANSPORT_ERROR_CODES.has(res.code)) return true;
+  // Any bare `{ message }` body with neither `data` nor `errors` is transport-level.
+  return typeof res.message === "string";
+}
+
+function describeResponse(res: GraphqlResponse): string {
+  try {
+    return JSON.stringify(res.errors ?? res.data ?? res).slice(0, 200);
+  } catch {
+    return "<unserializable response>";
+  }
 }
 
 export function collectionName(table: string): string {
