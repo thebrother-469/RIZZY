@@ -47,80 +47,94 @@ export const Route = createFileRoute("/api/public/lemon-checkout")({
           }
 
           const { createClient } = await import("@supabase/supabase-js");
-        const supabase = createClient(SUPABASE_URL!, SUPABASE_PUBLISHABLE_KEY!, {
-          global: {
-            headers: { Authorization: `Bearer ${token}`, apikey: SUPABASE_PUBLISHABLE_KEY! },
-          },
-          auth: { storage: undefined, persistSession: false, autoRefreshToken: false },
-        });
-        const { data: userData, error: userErr } = await supabase.auth.getUser(token);
-        if (userErr || !userData.user) {
-          return Response.json({ error: "unauthorized", message: "Authentication is required." }, { status: 401 });
-        }
-
-        let body: Record<string, unknown> = {};
-        try {
-          body = await request.json();
-        } catch {
-          /* ignore */
-        }
-        const plan: "pro" | "elite" | null =
-          body?.plan === "elite" ? "elite" : body?.plan === "pro" ? "pro" : null;
-        const returnUrl: string | undefined =
-          typeof body?.returnUrl === "string" ? body.returnUrl : undefined;
-        if (!plan) {
-          return Response.json({ error: "invalid_plan", message: "Select a valid billing plan." }, { status: 400 });
-        }
-
-        const variantId = plan === "elite" ? eliteVariant : proVariant;
-        const origin = new URL(request.url).origin;
-        const successUrl =
-          returnUrl && returnUrl.startsWith(origin) ? returnUrl : `${origin}/app?upgraded=${plan}`;
-
-        const lsRes = await fetch("https://api.lemonsqueezy.com/v1/checkouts", {
-          method: "POST",
-          headers: {
-            Accept: "application/vnd.api+json",
-            "Content-Type": "application/vnd.api+json",
-            Authorization: `Bearer ${apiKey}`,
-          },
-          body: JSON.stringify({
-            data: {
-              type: "checkouts",
-              attributes: {
-                checkout_data: {
-                  email: userData.user.email ?? undefined,
-                  custom: { user_id: userData.user.id, plan },
-                },
-                product_options: {
-                  redirect_url: successUrl,
-                  receipt_button_text: "Return to RizzGod",
-                  receipt_link_url: successUrl,
-                },
-                checkout_options: {
-                  embed: false,
-                  dark: true,
-                },
-              },
-              relationships: {
-                store: { data: { type: "stores", id: String(storeId) } },
-                variant: { data: { type: "variants", id: String(variantId) } },
-              },
+          const supabase = createClient(SUPABASE_URL!, SUPABASE_PUBLISHABLE_KEY!, {
+            global: {
+              headers: { Authorization: `Bearer ${token}`, apikey: SUPABASE_PUBLISHABLE_KEY! },
             },
-          }),
-        });
+            auth: { storage: undefined, persistSession: false, autoRefreshToken: false },
+          });
+          const { data: userData, error: userErr } = await supabase.auth.getUser(token);
+          if (userErr || !userData.user) {
+            return Response.json(
+              { error: "unauthorized", message: "Authentication is required." },
+              { status: 401 },
+            );
+          }
 
-        if (!lsRes.ok) {
-          const errText = await lsRes.text().catch(() => "");
-          console.error("[lemon-checkout] LS API failed", lsRes.status, errText);
-          return Response.json({ error: "checkout_provider_error", message: "Checkout could not be started." }, { status: 502 });
-        }
-        const payload = (await lsRes.json()) as LemonCheckoutResponse;
-        const url: string | undefined = payload?.data?.attributes?.url;
-        if (!url) {
-          console.error("[lemon-checkout] missing checkout url", payload);
-          return Response.json({ error: "checkout_provider_error", message: "Checkout could not be started." }, { status: 502 });
-        }
+          let body: Record<string, unknown> = {};
+          try {
+            body = await request.json();
+          } catch {
+            /* ignore */
+          }
+          const plan: "pro" | "elite" | null =
+            body?.plan === "elite" ? "elite" : body?.plan === "pro" ? "pro" : null;
+          const returnUrl: string | undefined =
+            typeof body?.returnUrl === "string" ? body.returnUrl : undefined;
+          if (!plan) {
+            return Response.json(
+              { error: "invalid_plan", message: "Select a valid billing plan." },
+              { status: 400 },
+            );
+          }
+
+          const variantId = plan === "elite" ? eliteVariant : proVariant;
+          const origin = new URL(request.url).origin;
+          const successUrl =
+            returnUrl && returnUrl.startsWith(origin)
+              ? returnUrl
+              : `${origin}/app?upgraded=${plan}`;
+
+          const lsRes = await fetch("https://api.lemonsqueezy.com/v1/checkouts", {
+            method: "POST",
+            headers: {
+              Accept: "application/vnd.api+json",
+              "Content-Type": "application/vnd.api+json",
+              Authorization: `Bearer ${apiKey}`,
+            },
+            body: JSON.stringify({
+              data: {
+                type: "checkouts",
+                attributes: {
+                  checkout_data: {
+                    email: userData.user.email ?? undefined,
+                    custom: { user_id: userData.user.id, plan },
+                  },
+                  product_options: {
+                    redirect_url: successUrl,
+                    receipt_button_text: "Return to RizzGod",
+                    receipt_link_url: successUrl,
+                  },
+                  checkout_options: {
+                    embed: false,
+                    dark: true,
+                  },
+                },
+                relationships: {
+                  store: { data: { type: "stores", id: String(storeId) } },
+                  variant: { data: { type: "variants", id: String(variantId) } },
+                },
+              },
+            }),
+          });
+
+          if (!lsRes.ok) {
+            const errText = await lsRes.text().catch(() => "");
+            console.error("[lemon-checkout] LS API failed", lsRes.status, errText);
+            return Response.json(
+              { error: "checkout_provider_error", message: "Checkout could not be started." },
+              { status: 502 },
+            );
+          }
+          const payload = (await lsRes.json()) as LemonCheckoutResponse;
+          const url: string | undefined = payload?.data?.attributes?.url;
+          if (!url) {
+            console.error("[lemon-checkout] missing checkout url", payload);
+            return Response.json(
+              { error: "checkout_provider_error", message: "Checkout could not be started." },
+              { status: 502 },
+            );
+          }
           return Response.json({ url });
         } catch (error) {
           console.error("[lemon-checkout] unexpected failure", error);
