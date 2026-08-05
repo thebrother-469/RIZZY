@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-05T00:12:10.865Z",
+  "generatedAt": "2026-08-05T00:15:48.910Z",
   "project": "jfiojbbrdfgeruborkzx",
   "allowlist": {
     "authenticated": [
@@ -292,11 +292,11 @@
       "table": "missions",
       "collection": "missionsCollection",
       "expected": "owner_scoped",
-      "observed": "error",
-      "rowCount": null,
-      "status": "NOT_VERIFIED",
+      "observed": "empty",
+      "rowCount": 0,
+      "status": "PASS",
       "query": "{ missionsCollection(first: 5) { edges { node { nodeId user_id } } } }",
-      "detail": "NOT VERIFIED: transport error from Supabase, exposure undetermined — {\"code\":\"57014\",\"details\":null,\"hint\":null,\"message\":\"canceling statement due to statement timeout\"}"
+      "detail": "reachable and owner-scoped (0 own row(s))"
     },
     {
       "role": "authenticated",
@@ -433,9 +433,9 @@
   ],
   "unexpectedExposures": [],
   "summary": {
-    "pass": 33,
+    "pass": 34,
     "fail": 0,
-    "notVerified": 1
+    "notVerified": 0
   },
   "checks": [
     {
@@ -674,11 +674,11 @@
       "table": "missions",
       "collection": "missionsCollection",
       "expected": "owner_scoped",
-      "observed": "error",
-      "rowCount": null,
-      "status": "NOT_VERIFIED",
+      "observed": "empty",
+      "rowCount": 0,
+      "status": "PASS",
       "query": "{ missionsCollection(first: 5) { edges { node { nodeId user_id } } } }",
-      "detail": "NOT VERIFIED: transport error from Supabase, exposure undetermined — {\"code\":\"57014\",\"details\":null,\"hint\":null,\"message\":\"canceling statement due to statement timeout\"}"
+      "detail": "reachable and owner-scoped (0 own row(s))"
     },
     {
       "role": "authenticated",
