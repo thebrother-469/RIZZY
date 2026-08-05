@@ -155,6 +155,21 @@ export function classify(
   const collection = collectionName(table);
   const hidden = isHidden(res, collection);
   const count = edgeCount(res, collection);
+
+  if (isTransportError(res)) {
+    return {
+      role,
+      table,
+      collection,
+      expected,
+      observed: "error",
+      rowCount: null,
+      status: "NOT_VERIFIED",
+      query,
+      detail: `NOT VERIFIED: transport error from Supabase, exposure undetermined — ${describeResponse(res)}`,
+    };
+  }
+
   const observed: ExposureCheck["observed"] = hidden
     ? "hidden"
     : count === null
@@ -172,7 +187,7 @@ export function classify(
       : observed === "empty"
         ? "collection exposed but RLS returned zero rows"
         : observed === "error"
-          ? `unexpected response: ${JSON.stringify(res.errors ?? res.data).slice(0, 200)}`
+          ? `unexpected response: ${describeResponse(res)}`
           : `EXPOSURE REGRESSION: ${count} row(s) returned to ${role}`;
   } else {
     status = hidden ? "FAIL" : foreignRows > 0 ? "FAIL" : "PASS";
