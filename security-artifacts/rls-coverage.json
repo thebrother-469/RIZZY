@@ -1,0 +1,657 @@
+{
+  "overall": "FAIL",
+  "total": 69,
+  "failures": 3,
+  "missingCoverage": [],
+  "checks": [
+    {
+      "table": "profiles",
+      "operation": "SELECT",
+      "role": "anon",
+      "expected": "deny",
+      "actual": "deny",
+      "status": 401,
+      "result": "PASS"
+    },
+    {
+      "table": "profiles",
+      "operation": "SELECT",
+      "role": "owner",
+      "expected": "allow",
+      "actual": "allow",
+      "status": 200,
+      "note": "status-only: empty result sets are legitimate",
+      "result": "PASS"
+    },
+    {
+      "table": "profiles",
+      "operation": "SELECT",
+      "role": "other",
+      "expected": "deny",
+      "actual": "deny",
+      "status": 200,
+      "result": "PASS"
+    },
+    {
+      "table": "chats",
+      "operation": "SELECT",
+      "role": "anon",
+      "expected": "deny",
+      "actual": "deny",
+      "status": 401,
+      "result": "PASS"
+    },
+    {
+      "table": "chats",
+      "operation": "INSERT",
+      "role": "owner",
+      "expected": "allow",
+      "actual": "allow",
+      "status": 201,
+      "result": "PASS"
+    },
+    {
+      "table": "chats",
+      "operation": "INSERT",
+      "role": "other",
+      "expected": "deny",
+      "actual": "deny",
+      "status": 403,
+      "note": "forged user_id of another account",
+      "result": "PASS"
+    },
+    {
+      "table": "chats",
+      "operation": "SELECT",
+      "role": "owner",
+      "expected": "allow",
+      "actual": "allow",
+      "status": 200,
+      "note": "status-only: empty result sets are legitimate",
+      "result": "PASS"
+    },
+    {
+      "table": "chats",
+      "operation": "SELECT",
+      "role": "other",
+      "expected": "deny",
+      "actual": "deny",
+      "status": 200,
+      "result": "PASS"
+    },
+    {
+      "table": "chats",
+      "operation": "UPDATE",
+      "role": "other",
+      "expected": "deny",
+      "actual": "deny",
+      "status": 200,
+      "result": "PASS"
+    },
+    {
+      "table": "chats",
+      "operation": "DELETE",
+      "role": "other",
+      "expected": "deny",
+      "actual": "deny",
+      "status": 200,
+      "result": "PASS"
+    },
+    {
+      "table": "chats",
+      "operation": "DELETE",
+      "role": "owner",
+      "expected": "allow",
+      "actual": "allow",
+      "status": 200,
+      "result": "PASS"
+    },
+    {
+      "table": "memories",
+      "operation": "SELECT",
+      "role": "anon",
+      "expected": "deny",
+      "actual": "deny",
+      "status": 401,
+      "result": "PASS"
+    },
+    {
+      "table": "memories",
+      "operation": "INSERT",
+      "role": "owner",
+      "expected": "allow",
+      "actual": "allow",
+      "status": 201,
+      "result": "PASS"
+    },
+    {
+      "table": "memories",
+      "operation": "INSERT",
+      "role": "other",
+      "expected": "deny",
+      "actual": "deny",
+      "status": 403,
+      "note": "forged user_id of another account",
+      "result": "PASS"
+    },
+    {
+      "table": "memories",
+      "operation": "SELECT",
+      "role": "owner",
+      "expected": "allow",
+      "actual": "allow",
+      "status": 200,
+      "note": "status-only: empty result sets are legitimate",
+      "result": "PASS"
+    },
+    {
+      "table": "memories",
+      "operation": "SELECT",
+      "role": "other",
+      "expected": "deny",
+      "actual": "deny",
+      "status": 200,
+      "result": "PASS"
+    },
+    {
+      "table": "memories",
+      "operation": "UPDATE",
+      "role": "other",
+      "expected": "deny",
+      "actual": "deny",
+      "status": 200,
+      "result": "PASS"
+    },
+    {
+      "table": "memories",
+      "operation": "DELETE",
+      "role": "other",
+      "expected": "deny",
+      "actual": "deny",
+      "status": 200,
+      "result": "PASS"
+    },
+    {
+      "table": "memories",
+      "operation": "DELETE",
+      "role": "owner",
+      "expected": "allow",
+      "actual": "allow",
+      "status": 200,
+      "result": "PASS"
+    },
+    {
+      "table": "missions",
+      "operation": "SELECT",
+      "role": "anon",
+      "expected": "deny",
+      "actual": "deny",
+      "status": 401,
+      "result": "PASS"
+    },
+    {
+      "table": "missions",
+      "operation": "INSERT",
+      "role": "owner",
+      "expected": "allow",
+      "actual": "allow",
+      "status": 201,
+      "result": "PASS"
+    },
+    {
+      "table": "missions",
+      "operation": "INSERT",
+      "role": "other",
+      "expected": "deny",
+      "actual": "deny",
+      "status": 403,
+      "note": "forged user_id of another account",
+      "result": "PASS"
+    },
+    {
+      "table": "missions",
+      "operation": "SELECT",
+      "role": "owner",
+      "expected": "allow",
+      "actual": "allow",
+      "status": 200,
+      "note": "status-only: empty result sets are legitimate",
+      "result": "PASS"
+    },
+    {
+      "table": "missions",
+      "operation": "SELECT",
+      "role": "other",
+      "expected": "deny",
+      "actual": "deny",
+      "status": 200,
+      "result": "PASS"
+    },
+    {
+      "table": "missions",
+      "operation": "UPDATE",
+      "role": "other",
+      "expected": "deny",
+      "actual": "deny",
+      "status": 500,
+      "result": "PASS"
+    },
+    {
+      "table": "missions",
+      "operation": "DELETE",
+      "role": "other",
+      "expected": "deny",
+      "actual": "deny",
+      "status": 200,
+      "result": "PASS"
+    },
+    {
+      "table": "missions",
+      "operation": "DELETE",
+      "role": "owner",
+      "expected": "allow",
+      "actual": "allow",
+      "status": 200,
+      "result": "PASS"
+    },
+    {
+      "table": "user_xp",
+      "operation": "SELECT",
+      "role": "anon",
+      "expected": "deny",
+      "actual": "deny",
+      "status": 401,
+      "result": "PASS"
+    },
+    {
+      "table": "user_xp",
+      "operation": "SELECT",
+      "role": "owner",
+      "expected": "allow",
+      "actual": "allow",
+      "status": 200,
+      "note": "status-only: empty result sets are legitimate",
+      "result": "PASS"
+    },
+    {
+      "table": "user_xp",
+      "operation": "SELECT",
+      "role": "other",
+      "expected": "deny",
+      "actual": "deny",
+      "status": 200,
+      "result": "PASS"
+    },
+    {
+      "table": "streaks",
+      "operation": "SELECT",
+      "role": "anon",
+      "expected": "deny",
+      "actual": "deny",
+      "status": 401,
+      "result": "PASS"
+    },
+    {
+      "table": "streaks",
+      "operation": "SELECT",
+      "role": "owner",
+      "expected": "allow",
+      "actual": "allow",
+      "status": 200,
+      "note": "status-only: empty result sets are legitimate",
+      "result": "PASS"
+    },
+    {
+      "table": "streaks",
+      "operation": "SELECT",
+      "role": "other",
+      "expected": "deny",
+      "actual": "deny",
+      "status": 200,
+      "result": "PASS"
+    },
+    {
+      "table": "badges",
+      "operation": "SELECT",
+      "role": "anon",
+      "expected": "deny",
+      "actual": "deny",
+      "status": 401,
+      "result": "PASS"
+    },
+    {
+      "table": "badges",
+      "operation": "SELECT",
+      "role": "owner",
+      "expected": "allow",
+      "actual": "allow",
+      "status": 200,
+      "note": "status-only: empty result sets are legitimate",
+      "result": "PASS"
+    },
+    {
+      "table": "badges",
+      "operation": "SELECT",
+      "role": "other",
+      "expected": "deny",
+      "actual": "deny",
+      "status": 200,
+      "result": "PASS"
+    },
+    {
+      "table": "subscriptions",
+      "operation": "SELECT",
+      "role": "anon",
+      "expected": "deny",
+      "actual": "deny",
+      "status": 401,
+      "result": "PASS"
+    },
+    {
+      "table": "subscriptions",
+      "operation": "SELECT",
+      "role": "owner",
+      "expected": "allow",
+      "actual": "allow",
+      "status": 200,
+      "note": "status-only: empty result sets are legitimate",
+      "result": "PASS"
+    },
+    {
+      "table": "subscriptions",
+      "operation": "SELECT",
+      "role": "other",
+      "expected": "deny",
+      "actual": "deny",
+      "status": 200,
+      "result": "PASS"
+    },
+    {
+      "table": "usage_daily",
+      "operation": "SELECT",
+      "role": "anon",
+      "expected": "deny",
+      "actual": "deny",
+      "status": 401,
+      "result": "PASS"
+    },
+    {
+      "table": "usage_daily",
+      "operation": "SELECT",
+      "role": "owner",
+      "expected": "allow",
+      "actual": "allow",
+      "status": 200,
+      "note": "status-only: empty result sets are legitimate",
+      "result": "PASS"
+    },
+    {
+      "table": "usage_daily",
+      "operation": "SELECT",
+      "role": "other",
+      "expected": "deny",
+      "actual": "deny",
+      "status": 200,
+      "result": "PASS"
+    },
+    {
+      "table": "xp_events",
+      "operation": "SELECT",
+      "role": "anon",
+      "expected": "deny",
+      "actual": "deny",
+      "status": 401,
+      "result": "PASS"
+    },
+    {
+      "table": "xp_events",
+      "operation": "SELECT",
+      "role": "owner",
+      "expected": "allow",
+      "actual": "allow",
+      "status": 200,
+      "note": "status-only: empty result sets are legitimate",
+      "result": "PASS"
+    },
+    {
+      "table": "xp_events",
+      "operation": "SELECT",
+      "role": "other",
+      "expected": "deny",
+      "actual": "deny",
+      "status": 200,
+      "result": "PASS"
+    },
+    {
+      "table": "profile_gen_usage",
+      "operation": "SELECT",
+      "role": "anon",
+      "expected": "deny",
+      "actual": "deny",
+      "status": 401,
+      "result": "PASS"
+    },
+    {
+      "table": "profile_gen_usage",
+      "operation": "SELECT",
+      "role": "owner",
+      "expected": "allow",
+      "actual": "deny",
+      "status": 403,
+      "note": "status-only: empty result sets are legitimate",
+      "result": "FAIL"
+    },
+    {
+      "table": "profile_gen_usage",
+      "operation": "SELECT",
+      "role": "other",
+      "expected": "deny",
+      "actual": "deny",
+      "status": 403,
+      "result": "PASS"
+    },
+    {
+      "table": "auth_audit_logs",
+      "operation": "SELECT",
+      "role": "anon",
+      "expected": "deny",
+      "actual": "deny",
+      "status": 401,
+      "result": "PASS"
+    },
+    {
+      "table": "auth_audit_logs",
+      "operation": "SELECT",
+      "role": "owner",
+      "expected": "allow",
+      "actual": "deny",
+      "status": 403,
+      "note": "status-only: empty result sets are legitimate",
+      "result": "FAIL"
+    },
+    {
+      "table": "auth_audit_logs",
+      "operation": "SELECT",
+      "role": "other",
+      "expected": "deny",
+      "actual": "deny",
+      "status": 403,
+      "result": "PASS"
+    },
+    {
+      "table": "lemonsqueezy_webhook_events",
+      "operation": "SELECT",
+      "role": "anon",
+      "expected": "deny",
+      "actual": "deny",
+      "status": 401,
+      "note": "service-only table",
+      "result": "PASS"
+    },
+    {
+      "table": "lemonsqueezy_webhook_events",
+      "operation": "SELECT",
+      "role": "owner",
+      "expected": "deny",
+      "actual": "deny",
+      "status": 403,
+      "note": "service-only table",
+      "result": "PASS"
+    },
+    {
+      "table": "paddle_webhook_events",
+      "operation": "SELECT",
+      "role": "anon",
+      "expected": "deny",
+      "actual": "deny",
+      "status": 401,
+      "note": "service-only table",
+      "result": "PASS"
+    },
+    {
+      "table": "paddle_webhook_events",
+      "operation": "SELECT",
+      "role": "owner",
+      "expected": "deny",
+      "actual": "deny",
+      "status": 403,
+      "note": "service-only table",
+      "result": "PASS"
+    },
+    {
+      "table": "onboarding_debug_events",
+      "operation": "SELECT",
+      "role": "anon",
+      "expected": "deny",
+      "actual": "deny",
+      "status": 401,
+      "note": "service-only table",
+      "result": "PASS"
+    },
+    {
+      "table": "onboarding_debug_events",
+      "operation": "SELECT",
+      "role": "owner",
+      "expected": "deny",
+      "actual": "deny",
+      "status": 403,
+      "note": "service-only table",
+      "result": "PASS"
+    },
+    {
+      "table": "daily_mission_debug_events",
+      "operation": "SELECT",
+      "role": "anon",
+      "expected": "deny",
+      "actual": "deny",
+      "status": 401,
+      "note": "service-only table",
+      "result": "PASS"
+    },
+    {
+      "table": "daily_mission_debug_events",
+      "operation": "SELECT",
+      "role": "owner",
+      "expected": "deny",
+      "actual": "deny",
+      "status": 403,
+      "note": "service-only table",
+      "result": "PASS"
+    },
+    {
+      "table": "award_xp",
+      "operation": "RPC",
+      "role": "anon",
+      "expected": "deny",
+      "actual": "deny",
+      "status": 401,
+      "result": "PASS"
+    },
+    {
+      "table": "award_xp",
+      "operation": "RPC",
+      "role": "other",
+      "expected": "deny",
+      "actual": "deny",
+      "status": 403,
+      "note": "_caller_id impersonation attempt",
+      "result": "PASS"
+    },
+    {
+      "table": "award_badge",
+      "operation": "RPC",
+      "role": "anon",
+      "expected": "deny",
+      "actual": "deny",
+      "status": 401,
+      "result": "PASS"
+    },
+    {
+      "table": "award_badge",
+      "operation": "RPC",
+      "role": "other",
+      "expected": "deny",
+      "actual": "deny",
+      "status": 403,
+      "note": "_caller_id impersonation attempt",
+      "result": "PASS"
+    },
+    {
+      "table": "get_profile_gen_usage_today",
+      "operation": "RPC",
+      "role": "anon",
+      "expected": "deny",
+      "actual": "deny",
+      "status": 401,
+      "result": "PASS"
+    },
+    {
+      "table": "get_profile_gen_usage_today",
+      "operation": "RPC",
+      "role": "other",
+      "expected": "deny",
+      "actual": "deny",
+      "status": 403,
+      "note": "_caller_id impersonation attempt",
+      "result": "PASS"
+    },
+    {
+      "table": "consume_profile_gen_quota",
+      "operation": "RPC",
+      "role": "anon",
+      "expected": "deny",
+      "actual": "deny",
+      "status": 401,
+      "result": "PASS"
+    },
+    {
+      "table": "consume_profile_gen_quota",
+      "operation": "RPC",
+      "role": "other",
+      "expected": "deny",
+      "actual": "deny",
+      "status": 403,
+      "note": "_caller_id impersonation attempt",
+      "result": "PASS"
+    },
+    {
+      "table": "complete_mission",
+      "operation": "RPC",
+      "role": "other",
+      "expected": "deny",
+      "actual": "deny",
+      "status": 403,
+      "note": "cross-user mission completion",
+      "result": "PASS"
+    },
+    {
+      "table": "complete_mission",
+      "operation": "RPC",
+      "role": "owner",
+      "expected": "allow",
+      "actual": "deny",
+      "status": 403,
+      "result": "FAIL"
+    }
+  ]
+}

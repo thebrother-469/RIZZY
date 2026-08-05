@@ -1,0 +1,119 @@
+{
+  "overall": "FAIL",
+  "total": 16,
+  "failures": 2,
+  "checks": [
+    {
+      "name": "upload image (owner)",
+      "expected": "allow",
+      "actual": "allow",
+      "status": 200,
+      "result": "PASS"
+    },
+    {
+      "name": "upload text (owner)",
+      "expected": "allow",
+      "actual": "allow",
+      "status": 200,
+      "result": "PASS"
+    },
+    {
+      "name": "upload binary (owner)",
+      "expected": "allow",
+      "actual": "allow",
+      "status": 200,
+      "result": "PASS"
+    },
+    {
+      "name": "oversized upload rejected",
+      "expected": "deny",
+      "actual": "allow",
+      "status": 200,
+      "result": "FAIL"
+    },
+    {
+      "name": "invalid MIME rejected",
+      "expected": "deny",
+      "actual": "allow",
+      "status": 200,
+      "result": "FAIL"
+    },
+    {
+      "name": "upload into another user's prefix rejected",
+      "expected": "deny",
+      "actual": "deny",
+      "status": 400,
+      "result": "PASS"
+    },
+    {
+      "name": "owner reads own object",
+      "expected": "allow",
+      "actual": "allow",
+      "status": 200,
+      "result": "PASS"
+    },
+    {
+      "name": "owner lists own prefix",
+      "expected": "allow",
+      "actual": "allow",
+      "status": 200,
+      "result": "PASS"
+    },
+    {
+      "name": "anon cannot read private object",
+      "expected": "deny",
+      "actual": "deny",
+      "status": 400,
+      "result": "PASS"
+    },
+    {
+      "name": "other user cannot read owner object",
+      "expected": "deny",
+      "actual": "deny",
+      "status": 400,
+      "result": "PASS"
+    },
+    {
+      "name": "signed URL generated",
+      "expected": "allow",
+      "actual": "allow",
+      "status": 200,
+      "result": "PASS"
+    },
+    {
+      "name": "signed URL works before expiry",
+      "expected": "allow",
+      "actual": "allow",
+      "status": 200,
+      "result": "PASS"
+    },
+    {
+      "name": "signed URL rejected after expiry",
+      "expected": "deny",
+      "actual": "deny",
+      "status": 400,
+      "result": "PASS"
+    },
+    {
+      "name": "non-owner cannot delete",
+      "expected": "deny",
+      "actual": "deny",
+      "status": 400,
+      "result": "PASS"
+    },
+    {
+      "name": "owner deletes own object",
+      "expected": "allow",
+      "actual": "allow",
+      "status": 200,
+      "result": "PASS"
+    },
+    {
+      "name": "deleted object is inaccessible",
+      "expected": "deny",
+      "actual": "deny",
+      "status": 400,
+      "result": "PASS"
+    }
+  ]
+}
