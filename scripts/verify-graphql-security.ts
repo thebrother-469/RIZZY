@@ -76,6 +76,21 @@ export function edgeCount(res: GraphqlResponse, collection: string): number | nu
   return Array.isArray(edges) ? edges.length : null;
 }
 
+/**
+ * Postgres/PostgREST transport failures (statement timeout, connection reset)
+ * arrive as a bare `{ code, message }` body with neither `data` nor `errors`.
+ * They prove nothing about exposure, so they must be reported as
+ * NOT_VERIFIED rather than scored as a leak.
+ */
+const TRANSPORT_ERROR_CODES = new Set(["57014", "53300", "08006", "08003", "XX000"]);
+
+export function isTransportError(res: GraphqlResponse): boolean {
+  const r = res as GraphqlResponse & { code?: string; message?: string };
+  if (r.data !== undefined || Array.isArray(r.errors)) return false;
+  if (typeof r.code === "string" && TRANSPORT_ERROR_CODES.has(r.code)) return true;
+  return typeof r.message === "string";
+}
+
 export async function verifyAnonGraphql(
   baseUrl: string,
   anonKey: string,
@@ -85,6 +100,17 @@ export async function verifyAnonGraphql(
   for (const collection of ANON_FORBIDDEN_COLLECTIONS) {
     const query = `{ ${collection} { edges { node { nodeId } } } }`;
     const res = await runGraphql(baseUrl, anonKey, anonKey, query, fetchImpl);
+    if (isTransportError(res)) {
+      results.push({
+        name: `anon pg_graphql: ${collection}`,
+        status: "NOT_VERIFIED",
+        query,
+        evidence: res,
+        detail:
+          "NOT VERIFIED: transport error from Supabase (no GraphQL response) — exposure undetermined",
+      });
+      continue;
+    }
     const hidden = isCollectionHidden(res, collection);
     const count = edgeCount(res, collection);
     results.push({
