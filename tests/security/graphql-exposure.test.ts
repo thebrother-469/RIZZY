@@ -388,5 +388,8 @@ liveScope("LIVE: auth.uid() row isolation", () => {
     );
     expect(anon.filter((c) => c.status === "FAIL")).toEqual([]);
     expect(scope.filter((c) => c.status === "FAIL")).toEqual([]);
-  }, 120_000);
+    // Two disposable identities × every allowlisted collection × four probe
+    // shapes, all over the network against the live project. 120s was too
+    // tight once real credentials were bound and the scope stopped skipping.
+  }, 420_000);
 });
