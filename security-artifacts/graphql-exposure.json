@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-05T00:10:15.865Z",
+  "generatedAt": "2026-08-05T00:12:10.865Z",
   "project": "jfiojbbrdfgeruborkzx",
   "allowlist": {
     "authenticated": [
@@ -81,11 +81,11 @@
       "table": "messages",
       "collection": "messagesCollection",
       "expected": "hidden",
-      "observed": "error",
+      "observed": "hidden",
       "rowCount": null,
-      "status": "NOT_VERIFIED",
+      "status": "PASS",
       "query": "{ messagesCollection(first: 5) { edges { node { nodeId } } } }",
-      "detail": "NOT VERIFIED: transport error from Supabase, exposure undetermined — {\"code\":\"57014\",\"details\":null,\"hint\":null,\"message\":\"canceling statement due to statement timeout\"}"
+      "detail": "collection is not exposed (no SELECT grant)"
     },
     {
       "role": "anon",
@@ -242,10 +242,198 @@
       "detail": "collection is not exposed (no SELECT grant)"
     }
   ],
-  "authenticated": [],
+  "authenticated": [
+    {
+      "role": "authenticated",
+      "table": "profiles",
+      "collection": "profilesCollection",
+      "expected": "owner_scoped",
+      "observed": "rows",
+      "rowCount": 1,
+      "status": "PASS",
+      "query": "{ profilesCollection(first: 5) { edges { node { nodeId id } } } }",
+      "detail": "reachable and owner-scoped (1 own row(s))"
+    },
+    {
+      "role": "authenticated",
+      "table": "chats",
+      "collection": "chatsCollection",
+      "expected": "owner_scoped",
+      "observed": "empty",
+      "rowCount": 0,
+      "status": "PASS",
+      "query": "{ chatsCollection(first: 5) { edges { node { nodeId user_id } } } }",
+      "detail": "reachable and owner-scoped (0 own row(s))"
+    },
+    {
+      "role": "authenticated",
+      "table": "messages",
+      "collection": "messagesCollection",
+      "expected": "owner_scoped",
+      "observed": "empty",
+      "rowCount": 0,
+      "status": "PASS",
+      "query": "{ messagesCollection(first: 5) { edges { node { nodeId user_id } } } }",
+      "detail": "reachable and owner-scoped (0 own row(s))"
+    },
+    {
+      "role": "authenticated",
+      "table": "memories",
+      "collection": "memoriesCollection",
+      "expected": "owner_scoped",
+      "observed": "empty",
+      "rowCount": 0,
+      "status": "PASS",
+      "query": "{ memoriesCollection(first: 5) { edges { node { nodeId user_id } } } }",
+      "detail": "reachable and owner-scoped (0 own row(s))"
+    },
+    {
+      "role": "authenticated",
+      "table": "missions",
+      "collection": "missionsCollection",
+      "expected": "owner_scoped",
+      "observed": "error",
+      "rowCount": null,
+      "status": "NOT_VERIFIED",
+      "query": "{ missionsCollection(first: 5) { edges { node { nodeId user_id } } } }",
+      "detail": "NOT VERIFIED: transport error from Supabase, exposure undetermined — {\"code\":\"57014\",\"details\":null,\"hint\":null,\"message\":\"canceling statement due to statement timeout\"}"
+    },
+    {
+      "role": "authenticated",
+      "table": "subscriptions",
+      "collection": "subscriptionsCollection",
+      "expected": "owner_scoped",
+      "observed": "rows",
+      "rowCount": 1,
+      "status": "PASS",
+      "query": "{ subscriptionsCollection(first: 5) { edges { node { nodeId user_id } } } }",
+      "detail": "reachable and owner-scoped (1 own row(s))"
+    },
+    {
+      "role": "authenticated",
+      "table": "user_xp",
+      "collection": "user_xpCollection",
+      "expected": "owner_scoped",
+      "observed": "rows",
+      "rowCount": 1,
+      "status": "PASS",
+      "query": "{ user_xpCollection(first: 5) { edges { node { nodeId user_id } } } }",
+      "detail": "reachable and owner-scoped (1 own row(s))"
+    },
+    {
+      "role": "authenticated",
+      "table": "streaks",
+      "collection": "streaksCollection",
+      "expected": "owner_scoped",
+      "observed": "rows",
+      "rowCount": 1,
+      "status": "PASS",
+      "query": "{ streaksCollection(first: 5) { edges { node { nodeId user_id } } } }",
+      "detail": "reachable and owner-scoped (1 own row(s))"
+    },
+    {
+      "role": "authenticated",
+      "table": "badges",
+      "collection": "badgesCollection",
+      "expected": "owner_scoped",
+      "observed": "empty",
+      "rowCount": 0,
+      "status": "PASS",
+      "query": "{ badgesCollection(first: 5) { edges { node { nodeId user_id } } } }",
+      "detail": "reachable and owner-scoped (0 own row(s))"
+    },
+    {
+      "role": "authenticated",
+      "table": "usage_daily",
+      "collection": "usage_dailyCollection",
+      "expected": "owner_scoped",
+      "observed": "empty",
+      "rowCount": 0,
+      "status": "PASS",
+      "query": "{ usage_dailyCollection(first: 5) { edges { node { nodeId user_id } } } }",
+      "detail": "reachable and owner-scoped (0 own row(s))"
+    },
+    {
+      "role": "authenticated",
+      "table": "xp_events",
+      "collection": "xp_eventsCollection",
+      "expected": "owner_scoped",
+      "observed": "empty",
+      "rowCount": 0,
+      "status": "PASS",
+      "query": "{ xp_eventsCollection(first: 5) { edges { node { nodeId user_id } } } }",
+      "detail": "reachable and owner-scoped (0 own row(s))"
+    },
+    {
+      "role": "authenticated",
+      "table": "lemonsqueezy_webhook_events",
+      "collection": "lemonsqueezy_webhook_eventsCollection",
+      "expected": "hidden",
+      "observed": "hidden",
+      "rowCount": null,
+      "status": "PASS",
+      "query": "{ lemonsqueezy_webhook_eventsCollection(first: 5) { edges { node { nodeId } } } }",
+      "detail": "collection is not exposed (no SELECT grant)"
+    },
+    {
+      "role": "authenticated",
+      "table": "paddle_webhook_events",
+      "collection": "paddle_webhook_eventsCollection",
+      "expected": "hidden",
+      "observed": "hidden",
+      "rowCount": null,
+      "status": "PASS",
+      "query": "{ paddle_webhook_eventsCollection(first: 5) { edges { node { nodeId } } } }",
+      "detail": "collection is not exposed (no SELECT grant)"
+    },
+    {
+      "role": "authenticated",
+      "table": "auth_audit_logs",
+      "collection": "auth_audit_logsCollection",
+      "expected": "hidden",
+      "observed": "hidden",
+      "rowCount": null,
+      "status": "PASS",
+      "query": "{ auth_audit_logsCollection(first: 5) { edges { node { nodeId } } } }",
+      "detail": "collection is not exposed (no SELECT grant)"
+    },
+    {
+      "role": "authenticated",
+      "table": "onboarding_debug_events",
+      "collection": "onboarding_debug_eventsCollection",
+      "expected": "hidden",
+      "observed": "hidden",
+      "rowCount": null,
+      "status": "PASS",
+      "query": "{ onboarding_debug_eventsCollection(first: 5) { edges { node { nodeId } } } }",
+      "detail": "collection is not exposed (no SELECT grant)"
+    },
+    {
+      "role": "authenticated",
+      "table": "daily_mission_debug_events",
+      "collection": "daily_mission_debug_eventsCollection",
+      "expected": "hidden",
+      "observed": "hidden",
+      "rowCount": null,
+      "status": "PASS",
+      "query": "{ daily_mission_debug_eventsCollection(first: 5) { edges { node { nodeId } } } }",
+      "detail": "collection is not exposed (no SELECT grant)"
+    },
+    {
+      "role": "authenticated",
+      "table": "profile_gen_usage",
+      "collection": "profile_gen_usageCollection",
+      "expected": "hidden",
+      "observed": "hidden",
+      "rowCount": null,
+      "status": "PASS",
+      "query": "{ profile_gen_usageCollection(first: 5) { edges { node { nodeId } } } }",
+      "detail": "collection is not exposed (no SELECT grant)"
+    }
+  ],
   "unexpectedExposures": [],
   "summary": {
-    "pass": 16,
+    "pass": 33,
     "fail": 0,
     "notVerified": 1
   },
@@ -277,11 +465,11 @@
       "table": "messages",
       "collection": "messagesCollection",
       "expected": "hidden",
-      "observed": "error",
+      "observed": "hidden",
       "rowCount": null,
-      "status": "NOT_VERIFIED",
+      "status": "PASS",
       "query": "{ messagesCollection(first: 5) { edges { node { nodeId } } } }",
-      "detail": "NOT VERIFIED: transport error from Supabase, exposure undetermined — {\"code\":\"57014\",\"details\":null,\"hint\":null,\"message\":\"canceling statement due to statement timeout\"}"
+      "detail": "collection is not exposed (no SELECT grant)"
     },
     {
       "role": "anon",
@@ -428,6 +616,193 @@
     },
     {
       "role": "anon",
+      "table": "profile_gen_usage",
+      "collection": "profile_gen_usageCollection",
+      "expected": "hidden",
+      "observed": "hidden",
+      "rowCount": null,
+      "status": "PASS",
+      "query": "{ profile_gen_usageCollection(first: 5) { edges { node { nodeId } } } }",
+      "detail": "collection is not exposed (no SELECT grant)"
+    },
+    {
+      "role": "authenticated",
+      "table": "profiles",
+      "collection": "profilesCollection",
+      "expected": "owner_scoped",
+      "observed": "rows",
+      "rowCount": 1,
+      "status": "PASS",
+      "query": "{ profilesCollection(first: 5) { edges { node { nodeId id } } } }",
+      "detail": "reachable and owner-scoped (1 own row(s))"
+    },
+    {
+      "role": "authenticated",
+      "table": "chats",
+      "collection": "chatsCollection",
+      "expected": "owner_scoped",
+      "observed": "empty",
+      "rowCount": 0,
+      "status": "PASS",
+      "query": "{ chatsCollection(first: 5) { edges { node { nodeId user_id } } } }",
+      "detail": "reachable and owner-scoped (0 own row(s))"
+    },
+    {
+      "role": "authenticated",
+      "table": "messages",
+      "collection": "messagesCollection",
+      "expected": "owner_scoped",
+      "observed": "empty",
+      "rowCount": 0,
+      "status": "PASS",
+      "query": "{ messagesCollection(first: 5) { edges { node { nodeId user_id } } } }",
+      "detail": "reachable and owner-scoped (0 own row(s))"
+    },
+    {
+      "role": "authenticated",
+      "table": "memories",
+      "collection": "memoriesCollection",
+      "expected": "owner_scoped",
+      "observed": "empty",
+      "rowCount": 0,
+      "status": "PASS",
+      "query": "{ memoriesCollection(first: 5) { edges { node { nodeId user_id } } } }",
+      "detail": "reachable and owner-scoped (0 own row(s))"
+    },
+    {
+      "role": "authenticated",
+      "table": "missions",
+      "collection": "missionsCollection",
+      "expected": "owner_scoped",
+      "observed": "error",
+      "rowCount": null,
+      "status": "NOT_VERIFIED",
+      "query": "{ missionsCollection(first: 5) { edges { node { nodeId user_id } } } }",
+      "detail": "NOT VERIFIED: transport error from Supabase, exposure undetermined — {\"code\":\"57014\",\"details\":null,\"hint\":null,\"message\":\"canceling statement due to statement timeout\"}"
+    },
+    {
+      "role": "authenticated",
+      "table": "subscriptions",
+      "collection": "subscriptionsCollection",
+      "expected": "owner_scoped",
+      "observed": "rows",
+      "rowCount": 1,
+      "status": "PASS",
+      "query": "{ subscriptionsCollection(first: 5) { edges { node { nodeId user_id } } } }",
+      "detail": "reachable and owner-scoped (1 own row(s))"
+    },
+    {
+      "role": "authenticated",
+      "table": "user_xp",
+      "collection": "user_xpCollection",
+      "expected": "owner_scoped",
+      "observed": "rows",
+      "rowCount": 1,
+      "status": "PASS",
+      "query": "{ user_xpCollection(first: 5) { edges { node { nodeId user_id } } } }",
+      "detail": "reachable and owner-scoped (1 own row(s))"
+    },
+    {
+      "role": "authenticated",
+      "table": "streaks",
+      "collection": "streaksCollection",
+      "expected": "owner_scoped",
+      "observed": "rows",
+      "rowCount": 1,
+      "status": "PASS",
+      "query": "{ streaksCollection(first: 5) { edges { node { nodeId user_id } } } }",
+      "detail": "reachable and owner-scoped (1 own row(s))"
+    },
+    {
+      "role": "authenticated",
+      "table": "badges",
+      "collection": "badgesCollection",
+      "expected": "owner_scoped",
+      "observed": "empty",
+      "rowCount": 0,
+      "status": "PASS",
+      "query": "{ badgesCollection(first: 5) { edges { node { nodeId user_id } } } }",
+      "detail": "reachable and owner-scoped (0 own row(s))"
+    },
+    {
+      "role": "authenticated",
+      "table": "usage_daily",
+      "collection": "usage_dailyCollection",
+      "expected": "owner_scoped",
+      "observed": "empty",
+      "rowCount": 0,
+      "status": "PASS",
+      "query": "{ usage_dailyCollection(first: 5) { edges { node { nodeId user_id } } } }",
+      "detail": "reachable and owner-scoped (0 own row(s))"
+    },
+    {
+      "role": "authenticated",
+      "table": "xp_events",
+      "collection": "xp_eventsCollection",
+      "expected": "owner_scoped",
+      "observed": "empty",
+      "rowCount": 0,
+      "status": "PASS",
+      "query": "{ xp_eventsCollection(first: 5) { edges { node { nodeId user_id } } } }",
+      "detail": "reachable and owner-scoped (0 own row(s))"
+    },
+    {
+      "role": "authenticated",
+      "table": "lemonsqueezy_webhook_events",
+      "collection": "lemonsqueezy_webhook_eventsCollection",
+      "expected": "hidden",
+      "observed": "hidden",
+      "rowCount": null,
+      "status": "PASS",
+      "query": "{ lemonsqueezy_webhook_eventsCollection(first: 5) { edges { node { nodeId } } } }",
+      "detail": "collection is not exposed (no SELECT grant)"
+    },
+    {
+      "role": "authenticated",
+      "table": "paddle_webhook_events",
+      "collection": "paddle_webhook_eventsCollection",
+      "expected": "hidden",
+      "observed": "hidden",
+      "rowCount": null,
+      "status": "PASS",
+      "query": "{ paddle_webhook_eventsCollection(first: 5) { edges { node { nodeId } } } }",
+      "detail": "collection is not exposed (no SELECT grant)"
+    },
+    {
+      "role": "authenticated",
+      "table": "auth_audit_logs",
+      "collection": "auth_audit_logsCollection",
+      "expected": "hidden",
+      "observed": "hidden",
+      "rowCount": null,
+      "status": "PASS",
+      "query": "{ auth_audit_logsCollection(first: 5) { edges { node { nodeId } } } }",
+      "detail": "collection is not exposed (no SELECT grant)"
+    },
+    {
+      "role": "authenticated",
+      "table": "onboarding_debug_events",
+      "collection": "onboarding_debug_eventsCollection",
+      "expected": "hidden",
+      "observed": "hidden",
+      "rowCount": null,
+      "status": "PASS",
+      "query": "{ onboarding_debug_eventsCollection(first: 5) { edges { node { nodeId } } } }",
+      "detail": "collection is not exposed (no SELECT grant)"
+    },
+    {
+      "role": "authenticated",
+      "table": "daily_mission_debug_events",
+      "collection": "daily_mission_debug_eventsCollection",
+      "expected": "hidden",
+      "observed": "hidden",
+      "rowCount": null,
+      "status": "PASS",
+      "query": "{ daily_mission_debug_eventsCollection(first: 5) { edges { node { nodeId } } } }",
+      "detail": "collection is not exposed (no SELECT grant)"
+    },
+    {
+      "role": "authenticated",
       "table": "profile_gen_usage",
       "collection": "profile_gen_usageCollection",
       "expected": "hidden",
