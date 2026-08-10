@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-10T13:05:11.444Z",
+  "generatedAt": "2026-08-10T13:08:47.757Z",
   "suite": "pwa-standalone-practice",
   "displayMode": "standalone",
   "observations": [],
@@ -9,5 +9,5 @@
     "fail": 0,
     "notVerified": 0
   },
-  "status": "PASS"
+  "status": "NOT_VERIFIED"
 }
