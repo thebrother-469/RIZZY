@@ -1,6 +1,6 @@
 # RIZZGOD AI — Security Evidence Report
 
-Generated: 2026-08-04T21:04:39.964Z
+Generated: 2026-08-10T13:01:08.385Z
 Database snapshot captured: 2026-08-03T22:36:36.931Z (live-query)
 Supabase project: `jfiojbbrdfgeruborkzx`
 
@@ -18,17 +18,17 @@ pg_graphql is listed with the exact SQL that protects it.
 
 | Table | Exposure | RLS | anon | authenticated | auth.uid() | row scope |
 | --- | --- | --- | --- | --- | --- | --- |
-| `profiles` | authenticated | ✅ | — | INSERT,SELECT,UPDATE | ✅ | NOT_VERIFIED |
-| `chats` | authenticated | ✅ | — | DELETE,INSERT,SELECT,UPDATE | ✅ | NOT_VERIFIED |
-| `messages` | authenticated | ✅ | — | DELETE,INSERT,SELECT,UPDATE | ✅ | NOT_VERIFIED |
-| `memories` | authenticated | ✅ | — | DELETE,INSERT,SELECT,UPDATE | ✅ | NOT_VERIFIED |
-| `missions` | authenticated | ✅ | — | DELETE,INSERT,SELECT,UPDATE | ✅ | NOT_VERIFIED |
-| `subscriptions` | authenticated | ✅ | — | SELECT | ✅ | NOT_VERIFIED |
-| `user_xp` | authenticated | ✅ | — | SELECT | ✅ | NOT_VERIFIED |
-| `streaks` | authenticated | ✅ | — | SELECT | ✅ | NOT_VERIFIED |
-| `badges` | authenticated | ✅ | — | SELECT | ✅ | NOT_VERIFIED |
-| `usage_daily` | authenticated | ✅ | — | SELECT | ✅ | NOT_VERIFIED |
-| `xp_events` | authenticated | ✅ | — | SELECT | ✅ | NOT_VERIFIED |
+| `profiles` | authenticated | ✅ | — | INSERT,SELECT,UPDATE | ✅ | PASS |
+| `chats` | authenticated | ✅ | — | DELETE,INSERT,SELECT,UPDATE | ✅ | PASS |
+| `messages` | authenticated | ✅ | — | DELETE,INSERT,SELECT,UPDATE | ✅ | PASS |
+| `memories` | authenticated | ✅ | — | DELETE,INSERT,SELECT,UPDATE | ✅ | PASS |
+| `missions` | authenticated | ✅ | — | DELETE,INSERT,SELECT,UPDATE | ✅ | PASS |
+| `subscriptions` | authenticated | ✅ | — | SELECT | ✅ | PASS |
+| `user_xp` | authenticated | ✅ | — | SELECT | ✅ | PASS |
+| `streaks` | authenticated | ✅ | — | SELECT | ✅ | PASS |
+| `badges` | authenticated | ✅ | — | SELECT | ✅ | PASS |
+| `usage_daily` | authenticated | ✅ | — | SELECT | ✅ | PASS |
+| `xp_events` | authenticated | ✅ | — | SELECT | ✅ | PASS |
 | `auth_audit_logs` | service_only | ✅ | — | — | ✅ | PASS |
 | `profile_gen_usage` | service_only | ✅ | — | — | ✅ | PASS |
 | `onboarding_debug_events` | service_only | ✅ | — | — | ✅ | PASS |
@@ -49,7 +49,7 @@ pg_graphql is listed with the exact SQL that protects it.
 | Anonymous access | ❌ none — no GRANT to `anon` |
 | Authenticated access | INSERT,SELECT,UPDATE, filtered by RLS |
 | auth.uid() enforcement | ✅ every client policy is scoped to `auth.uid()` (or denies outright) |
-| Row-scope verification | ⚠️ NOT_VERIFIED (no live probe in this run) |
+| Row-scope verification | ✅ PASS (live two-user probe) |
 
 **GRANT statements**
 
@@ -110,7 +110,7 @@ CREATE POLICY "own profile update"
 | Anonymous access | ❌ none — no GRANT to `anon` |
 | Authenticated access | DELETE,INSERT,SELECT,UPDATE, filtered by RLS |
 | auth.uid() enforcement | ✅ every client policy is scoped to `auth.uid()` (or denies outright) |
-| Row-scope verification | ⚠️ NOT_VERIFIED (no live probe in this run) |
+| Row-scope verification | ✅ PASS (live two-user probe) |
 
 **GRANT statements**
 
@@ -179,7 +179,7 @@ CREATE POLICY "own chats all"
 | Anonymous access | ❌ none — no GRANT to `anon` |
 | Authenticated access | DELETE,INSERT,SELECT,UPDATE, filtered by RLS |
 | auth.uid() enforcement | ✅ every client policy is scoped to `auth.uid()` (or denies outright) |
-| Row-scope verification | ⚠️ NOT_VERIFIED (no live probe in this run) |
+| Row-scope verification | ✅ PASS (live two-user probe) |
 
 **GRANT statements**
 
@@ -248,7 +248,7 @@ CREATE POLICY "own msg all"
 | Anonymous access | ❌ none — no GRANT to `anon` |
 | Authenticated access | DELETE,INSERT,SELECT,UPDATE, filtered by RLS |
 | auth.uid() enforcement | ✅ every client policy is scoped to `auth.uid()` (or denies outright) |
-| Row-scope verification | ⚠️ NOT_VERIFIED (no live probe in this run) |
+| Row-scope verification | ✅ PASS (live two-user probe) |
 
 **GRANT statements**
 
@@ -317,7 +317,7 @@ CREATE POLICY "own memories"
 | Anonymous access | ❌ none — no GRANT to `anon` |
 | Authenticated access | DELETE,INSERT,SELECT,UPDATE, filtered by RLS |
 | auth.uid() enforcement | ✅ every client policy is scoped to `auth.uid()` (or denies outright) |
-| Row-scope verification | ⚠️ NOT_VERIFIED (no live probe in this run) |
+| Row-scope verification | ✅ PASS (live two-user probe) |
 
 **GRANT statements**
 
@@ -383,7 +383,7 @@ CREATE POLICY "Users can delete their own missions"
 | Anonymous access | ❌ none — no GRANT to `anon` |
 | Authenticated access | SELECT, filtered by RLS |
 | auth.uid() enforcement | ✅ every client policy is scoped to `auth.uid()` (or denies outright) |
-| Row-scope verification | ⚠️ NOT_VERIFIED (no live probe in this run) |
+| Row-scope verification | ✅ PASS (live two-user probe) |
 
 **GRANT statements**
 
@@ -449,7 +449,7 @@ CREATE POLICY "Block client deletes on subscriptions"
 | Anonymous access | ❌ none — no GRANT to `anon` |
 | Authenticated access | SELECT, filtered by RLS |
 | auth.uid() enforcement | ✅ every client policy is scoped to `auth.uid()` (or denies outright) |
-| Row-scope verification | ⚠️ NOT_VERIFIED (no live probe in this run) |
+| Row-scope verification | ✅ PASS (live two-user probe) |
 
 **GRANT statements**
 
@@ -515,7 +515,7 @@ CREATE POLICY "Block client deletes on user_xp"
 | Anonymous access | ❌ none — no GRANT to `anon` |
 | Authenticated access | SELECT, filtered by RLS |
 | auth.uid() enforcement | ✅ every client policy is scoped to `auth.uid()` (or denies outright) |
-| Row-scope verification | ⚠️ NOT_VERIFIED (no live probe in this run) |
+| Row-scope verification | ✅ PASS (live two-user probe) |
 
 **GRANT statements**
 
@@ -581,7 +581,7 @@ CREATE POLICY "Block client deletes on streaks"
 | Anonymous access | ❌ none — no GRANT to `anon` |
 | Authenticated access | SELECT, filtered by RLS |
 | auth.uid() enforcement | ✅ every client policy is scoped to `auth.uid()` (or denies outright) |
-| Row-scope verification | ⚠️ NOT_VERIFIED (no live probe in this run) |
+| Row-scope verification | ✅ PASS (live two-user probe) |
 
 **GRANT statements**
 
@@ -647,7 +647,7 @@ CREATE POLICY "Badges are not user-writable (delete)"
 | Anonymous access | ❌ none — no GRANT to `anon` |
 | Authenticated access | SELECT, filtered by RLS |
 | auth.uid() enforcement | ✅ every client policy is scoped to `auth.uid()` (or denies outright) |
-| Row-scope verification | ⚠️ NOT_VERIFIED (no live probe in this run) |
+| Row-scope verification | ✅ PASS (live two-user probe) |
 
 **GRANT statements**
 
@@ -713,7 +713,7 @@ CREATE POLICY "Block client deletes on usage_daily"
 | Anonymous access | ❌ none — no GRANT to `anon` |
 | Authenticated access | SELECT, filtered by RLS |
 | auth.uid() enforcement | ✅ every client policy is scoped to `auth.uid()` (or denies outright) |
-| Row-scope verification | ⚠️ NOT_VERIFIED (no live probe in this run) |
+| Row-scope verification | ✅ PASS (live two-user probe) |
 
 **GRANT statements**
 

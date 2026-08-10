@@ -44,7 +44,8 @@ export const REQUIRED_ARTIFACTS: ArtifactSpec[] = [
     kind: "json",
     requiredKeys: ["generatedAt", "status", "summary"],
   },
-  { file: "mobile-pwa.json", kind: "json", requiredKeys: ["status", "checks"] },
+  // The PWA suite records per-scenario observations, not generic "checks".
+  { file: "mobile-pwa.json", kind: "json", requiredKeys: ["status", "observations"] },
   {
     file: "security-findings.json",
     kind: "json",

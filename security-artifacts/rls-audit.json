@@ -1,8 +1,8 @@
 {
-  "overall": "PASS_WITH_NOT_VERIFIED",
+  "overall": "PASS",
   "total": 72,
   "failures": 0,
-  "notVerified": 1,
+  "notVerified": 0,
   "missingCoverage": [],
   "checks": [
     {
@@ -233,9 +233,9 @@
       "operation": "UPDATE",
       "role": "other",
       "expected": "deny",
-      "actual": "unknown",
-      "status": 500,
-      "result": "NOT_VERIFIED"
+      "actual": "deny",
+      "status": 200,
+      "result": "PASS"
     },
     {
       "table": "missions",

@@ -25,22 +25,41 @@ import {
 interface Check {
   name: string;
   expected: "allow" | "deny";
-  actual: "allow" | "deny";
+  actual: "allow" | "deny" | "unknown";
   status: number;
-  result: "PASS" | "FAIL";
+  result: "PASS" | "FAIL" | "NOT_VERIFIED";
 }
 const checks: Check[] = [];
+
+/** Transport failures prove nothing about the policy under test. */
+const isTransport = (status: number) => status === 0 || status === 408 || status >= 500;
+
 const record = (
   name: string,
   expected: "allow" | "deny",
   status: number,
   allowed = status < 300,
 ) => {
-  const actual = allowed ? "allow" : "deny";
-  checks.push({ name, expected, actual, status, result: expected === actual ? "PASS" : "FAIL" });
+  const actual: Check["actual"] = isTransport(status) ? "unknown" : allowed ? "allow" : "deny";
+  checks.push({
+    name,
+    expected,
+    actual,
+    status,
+    result: actual === "unknown" ? "NOT_VERIFIED" : expected === actual ? "PASS" : "FAIL",
+  });
 };
 
-const MAX_BYTES = 10 * 1024 * 1024;
+/** Must mirror the bucket configuration and src/lib/attachments.ts. */
+const MAX_BYTES = 50 * 1024 * 1024;
+const REQUIRED_MIMES = [
+  "image/jpeg",
+  "image/png",
+  "image/webp",
+  "video/mp4",
+  "application/pdf",
+  "text/plain",
+];
 
 function storage(e: E2EEnv, path: string, token: string | null, init: RequestInit = {}) {
   return fetch(`${e.url!.replace(/\/$/, "")}/storage/v1${path}`, {
@@ -78,6 +97,35 @@ async function main() {
     );
   }
 
+  // --- Bucket configuration (the enforcement point for size + MIME) ---
+  const bucketRes = await fetch(`${e.url!.replace(/\/$/, "")}/storage/v1/bucket/uploads`, {
+    headers: { apikey: e.serviceKey!, Authorization: `Bearer ${e.serviceKey!}` },
+  });
+  const bucket = (await bucketRes.json().catch(() => ({}))) as {
+    public?: boolean;
+    file_size_limit?: number | null;
+    allowed_mime_types?: string[] | null;
+  };
+  record(
+    "bucket is private",
+    "deny",
+    bucketRes.ok ? 200 : bucketRes.status,
+    bucket.public === true,
+  );
+  record(
+    `bucket enforces a size limit (<= ${MAX_BYTES} bytes)`,
+    "allow",
+    bucketRes.status,
+    typeof bucket.file_size_limit === "number" && bucket.file_size_limit <= MAX_BYTES,
+  );
+  const mimes = bucket.allowed_mime_types ?? [];
+  record(
+    "bucket enforces a MIME allowlist",
+    "allow",
+    bucketRes.status,
+    mimes.length > 0 && REQUIRED_MIMES.every((m) => mimes.includes(m)),
+  );
+
   const a = disposableIdentity("storage-a");
   const b = disposableIdentity("storage-b");
   const ua = await ensureUser(e, a.email, a.password);
@@ -113,22 +161,13 @@ async function main() {
     record(
       "upload binary (owner)",
       "allow",
-      await upload(
-        e,
-        tokenA,
-        `${base}.bin`,
-        new Uint8Array(1024).fill(7),
-        "application/octet-stream",
-      ),
+      await upload(e, tokenA, `${base}.pdf`, new Uint8Array(1024).fill(7), "application/pdf"),
     );
-    const oversize = await upload(
-      e,
-      tokenA,
-      `${base}-big.bin`,
-      new Uint8Array(MAX_BYTES + 1024),
-      "application/octet-stream",
+    record(
+      "unlisted MIME (octet-stream) rejected",
+      "deny",
+      await upload(e, tokenA, `${base}.bin`, new Uint8Array(64), "application/octet-stream"),
     );
-    record("oversized upload rejected", "deny", oversize);
     const badMime = await upload(
       e,
       tokenA,
@@ -199,7 +238,7 @@ async function main() {
     );
 
     // cleanup remaining fixtures
-    for (const ext of ["txt", "bin"]) {
+    for (const ext of ["txt", "pdf"]) {
       await storage(e, `/object/uploads/${base}.${ext}`, tokenA, { method: "DELETE" });
     }
   } finally {
@@ -208,11 +247,13 @@ async function main() {
   }
 
   const failures = checks.filter((c) => c.result === "FAIL");
+  const notVerified = checks.filter((c) => c.result === "NOT_VERIFIED");
   emit(
     {
-      overall: failures.length ? "FAIL" : "PASS",
+      overall: failures.length ? "FAIL" : notVerified.length ? "PASS_WITH_NOT_VERIFIED" : "PASS",
       total: checks.length,
       failures: failures.length,
+      notVerified: notVerified.length,
       checks,
     },
     failures.length ? 1 : 0,
@@ -222,6 +263,7 @@ async function main() {
 function emit(report: unknown, code: number): never {
   mkdirSync("security-artifacts", { recursive: true });
   writeFileSync("security-artifacts/storage-coverage.json", JSON.stringify(report, null, 2));
+  writeFileSync("security-artifacts/storage-audit.json", JSON.stringify(report, null, 2));
   console.log(JSON.stringify(report, null, 2));
   process.exit(code);
 }
