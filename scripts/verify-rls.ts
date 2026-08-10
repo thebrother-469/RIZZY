@@ -36,24 +36,46 @@ interface Check {
   operation: Op;
   role: Role;
   expected: "allow" | "deny";
-  actual: "allow" | "deny";
+  actual: "allow" | "deny" | "unknown";
   status: number;
-  result: "PASS" | "FAIL";
+  result: "PASS" | "FAIL" | "NOT_VERIFIED";
   note?: string;
 }
 
 const checks: Check[] = [];
 
 function record(c: Omit<Check, "result">) {
-  checks.push({ ...c, result: c.expected === c.actual ? "PASS" : "FAIL" });
+  const result: Check["result"] =
+    c.actual === "unknown" ? "NOT_VERIFIED" : c.expected === c.actual ? "PASS" : "FAIL";
+  checks.push({ ...c, result });
 }
 
-function isAllowed(status: number, body: unknown): boolean {
-  if (status === 401 || status === 403 || status === 404) return false;
-  if (status >= 400) return false;
+/**
+ * Transport-level failures (network drop, gateway error, statement timeout)
+ * prove nothing about the policy under test and must never be scored as a
+ * security PASS or FAIL.
+ */
+function isTransport(status: number, body: unknown): boolean {
+  if (status === 0 || status === 408 || status === 429) return true;
+  if (status >= 500) return true;
+  const code = (body as { code?: string } | null)?.code;
+  return code === "57014" || code === "08006" || code === "53300";
+}
+
+/** allow | deny | unknown for a response where denial is meaningful. */
+function outcome(status: number, body: unknown): "allow" | "deny" | "unknown" {
+  if (isTransport(status, body)) return "unknown";
+  // 401/403 (permission denied), 404 (no grant/route) => denial.
+  if (status >= 400) return "deny";
   // PostgREST silently returns [] when RLS filters everything out.
-  if (Array.isArray(body) && body.length === 0) return false;
-  return true;
+  if (Array.isArray(body) && body.length === 0) return "deny";
+  return "allow";
+}
+
+/** Status-only variant: an empty array is a legitimate allow. */
+function statusOutcome(status: number, body: unknown): "allow" | "deny" | "unknown" {
+  if (isTransport(status, body)) return "unknown";
+  return status < 300 ? "allow" : "deny";
 }
 
 async function rest(
@@ -81,6 +103,8 @@ const TABLES: {
   owner: string;
   row?: (uid: string) => Record<string, unknown>;
   writable: boolean;
+  /** false => no client grant by design; the app reads it server-side only. */
+  clientReadable?: boolean;
 }[] = [
   { name: "profiles", owner: "id", writable: false },
   {
@@ -107,8 +131,10 @@ const TABLES: {
   { name: "subscriptions", owner: "user_id", writable: false },
   { name: "usage_daily", owner: "user_id", writable: false },
   { name: "xp_events", owner: "user_id", writable: false },
-  { name: "profile_gen_usage", owner: "user_id", writable: false },
-  { name: "auth_audit_logs", owner: "user_id", writable: false },
+  // Quota ledger + audit trail carry no client grants: the app reads them
+  // through service-role server functions, so a direct client read must fail.
+  { name: "profile_gen_usage", owner: "user_id", writable: false, clientReadable: false },
+  { name: "auth_audit_logs", owner: "user_id", writable: false, clientReadable: false },
 ];
 
 /** Tables no client role may ever read. */
