@@ -195,7 +195,7 @@ async function main() {
         operation: "SELECT",
         role: "anon",
         expected: "deny",
-        actual: isAllowed(anonRead.status, anonRead.body) ? "allow" : "deny",
+        actual: outcome(anonRead.status, anonRead.body),
         status: anonRead.status,
       });
 
@@ -212,7 +212,7 @@ async function main() {
           operation: "INSERT",
           role: "owner",
           expected: "allow",
-          actual: ins.status < 300 ? "allow" : "deny",
+          actual: statusOutcome(ins.status, ins.body),
           status: ins.status,
         });
 
@@ -226,23 +226,41 @@ async function main() {
           operation: "INSERT",
           role: "other",
           expected: "deny",
-          actual: forged.status < 300 ? "allow" : "deny",
+          actual: statusOutcome(forged.status, forged.body),
           status: forged.status,
           note: "forged user_id of another account",
         });
       }
 
-      // owner SELECT of own rows.
+      // owner SELECT of own rows. Tables without a client grant must deny.
       const ownRead = await rest(e, tokenA, `/${t.name}?${t.owner}=eq.${uidA}&select=*`);
+      const clientReadable = t.clientReadable !== false;
       record({
         table: t.name,
         operation: "SELECT",
         role: "owner",
-        expected: "allow",
-        actual: ownRead.status < 300 ? "allow" : "deny",
+        expected: clientReadable ? "allow" : "deny",
+        actual: statusOutcome(ownRead.status, ownRead.body),
         status: ownRead.status,
-        note: "status-only: empty result sets are legitimate",
+        note: clientReadable
+          ? "status-only: empty result sets are legitimate"
+          : "no client grant by design; read server-side via service role",
       });
+
+      // Service role must still reach the table, otherwise the server-side
+      // feature that owns it is broken rather than merely locked down.
+      if (!clientReadable) {
+        const svcRead = await rest(e, e.serviceKey!, `/${t.name}?select=*&limit=1`);
+        record({
+          table: t.name,
+          operation: "SELECT",
+          role: "owner",
+          expected: "allow",
+          actual: statusOutcome(svcRead.status, svcRead.body),
+          status: svcRead.status,
+          note: "service-role read path",
+        });
+      }
 
       // cross-user SELECT must return nothing.
       const crossRead = await rest(e, tokenB, `/${t.name}?${t.owner}=eq.${uidA}&select=*`);
@@ -251,7 +269,7 @@ async function main() {
         operation: "SELECT",
         role: "other",
         expected: "deny",
-        actual: isAllowed(crossRead.status, crossRead.body) ? "allow" : "deny",
+        actual: outcome(crossRead.status, crossRead.body),
         status: crossRead.status,
       });
 
