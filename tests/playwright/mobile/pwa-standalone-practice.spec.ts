@@ -45,7 +45,14 @@ function writeArtifact(blockers: string[]) {
       fail,
       notVerified: notVerified + blockers.length,
     },
-    status: fail > 0 ? "FAIL" : blockers.length || notVerified ? "NOT_VERIFIED" : "PASS",
+    // Zero observations means the suite never ran (e.g. the browser failed to
+    // launch). That is NOT_VERIFIED — never a silent pass.
+    status:
+      fail > 0
+        ? "FAIL"
+        : blockers.length || notVerified || observations.length === 0
+          ? "NOT_VERIFIED"
+          : "PASS",
   };
   mkdirSync("security-artifacts", { recursive: true });
   writeFileSync(ARTIFACT, `${JSON.stringify(artifact, null, 2)}\n`);
