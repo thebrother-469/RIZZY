@@ -330,8 +330,9 @@ async function main() {
       }
     }
 
-    // RPCs: anonymous invocation is always denied; a signed-in caller may
-    // never act on behalf of another user id via the _caller_id argument.
+    // RPCs are service-mediated: no client role holds EXECUTE, so anonymous
+    // AND signed-in direct invocation must both be denied, while the
+    // service-role path (used by the server functions) must succeed.
     for (const rpc of RPCS) {
       const anonCall = await rest(e, null, `/rpc/${rpc.name}`, {
         method: "POST",
@@ -342,7 +343,7 @@ async function main() {
         operation: "RPC",
         role: "anon",
         expected: "deny",
-        actual: anonCall.status < 300 ? "allow" : "deny",
+        actual: statusOutcome(anonCall.status, anonCall.body),
         status: anonCall.status,
       });
 
@@ -351,6 +352,18 @@ async function main() {
         body: JSON.stringify({ ...rpc.args, _caller_id: uidA }),
       });
       const body = JSON.stringify(impersonation.body ?? "");
+      if (isTransport(impersonation.status, impersonation.body)) {
+        record({
+          table: rpc.name,
+          operation: "RPC",
+          role: "other",
+          expected: "deny",
+          actual: "unknown",
+          status: impersonation.status,
+          note: "_caller_id impersonation attempt",
+        });
+        continue;
+      }
       // Denied outright, or a no-op (null) result: either way user B gained nothing.
       const gained = impersonation.status < 300 && body !== "null" && body !== '""';
       record({
@@ -382,7 +395,7 @@ async function main() {
         operation: "RPC",
         role: "other",
         expected: "deny",
-        actual: hijack.status < 300 ? "allow" : "deny",
+        actual: statusOutcome(hijack.status, hijack.body),
         status: hijack.status,
         note: "cross-user mission completion",
       });
@@ -394,9 +407,25 @@ async function main() {
         table: "complete_mission",
         operation: "RPC",
         role: "owner",
-        expected: "allow",
-        actual: ownComplete.status < 300 ? "allow" : "deny",
+        expected: "deny",
+        actual: statusOutcome(ownComplete.status, ownComplete.body),
         status: ownComplete.status,
+        note: "direct client RPC has no EXECUTE grant; app calls it server-side",
+      });
+
+      // The real application path: service role completing the owner's mission.
+      const svcComplete = await rest(e, e.serviceKey!, "/rpc/complete_mission", {
+        method: "POST",
+        body: JSON.stringify({ _mission_id: missionId, _caller_id: uidA }),
+      });
+      record({
+        table: "complete_mission",
+        operation: "RPC",
+        role: "owner",
+        expected: "allow",
+        actual: statusOutcome(svcComplete.status, svcComplete.body),
+        status: svcComplete.status,
+        note: "service-role mission completion (application path)",
       });
       await rest(e, tokenA, `/missions?id=eq.${missionId}`, { method: "DELETE" });
     }
@@ -406,14 +435,16 @@ async function main() {
   }
 
   const failures = checks.filter((c) => c.result === "FAIL");
+  const notVerified = checks.filter((c) => c.result === "NOT_VERIFIED");
   const coveredTables = new Set(checks.map((c) => c.table));
   const missingCoverage = [...TABLES.map((t) => t.name), ...SERVICE_ONLY].filter(
     (t) => !coveredTables.has(t),
   );
   emit({
-    overall: failures.length ? "FAIL" : "PASS",
+    overall: failures.length ? "FAIL" : notVerified.length ? "PASS_WITH_NOT_VERIFIED" : "PASS",
     total: checks.length,
     failures: failures.length,
+    notVerified: notVerified.length,
     missingCoverage,
     checks,
   });
@@ -422,7 +453,9 @@ async function main() {
 
 function emit(report: unknown) {
   mkdirSync("security-artifacts", { recursive: true });
-  writeFileSync("security-artifacts/rls-coverage.json", JSON.stringify(report, null, 2));
+  const json = JSON.stringify(report, null, 2);
+  writeFileSync("security-artifacts/rls-coverage.json", json);
+  writeFileSync("security-artifacts/rls-audit.json", json);
   console.log(JSON.stringify(report, null, 2));
 }
 
