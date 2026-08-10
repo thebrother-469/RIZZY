@@ -284,7 +284,7 @@ async function main() {
           operation: "UPDATE",
           role: "other",
           expected: "deny",
-          actual: isAllowed(crossUpdate.status, crossUpdate.body) ? "allow" : "deny",
+          actual: outcome(crossUpdate.status, crossUpdate.body),
           status: crossUpdate.status,
         });
 
@@ -296,7 +296,7 @@ async function main() {
           operation: "DELETE",
           role: "other",
           expected: "deny",
-          actual: isAllowed(crossDelete.status, crossDelete.body) ? "allow" : "deny",
+          actual: outcome(crossDelete.status, crossDelete.body),
           status: crossDelete.status,
         });
 
@@ -306,7 +306,7 @@ async function main() {
           operation: "DELETE",
           role: "owner",
           expected: "allow",
-          actual: ownDelete.status < 300 ? "allow" : "deny",
+          actual: statusOutcome(ownDelete.status, ownDelete.body),
           status: ownDelete.status,
         });
       }
@@ -323,7 +323,7 @@ async function main() {
           operation: "SELECT",
           role,
           expected: "deny",
-          actual: isAllowed(res.status, res.body) ? "allow" : "deny",
+          actual: outcome(res.status, res.body),
           status: res.status,
           note: "service-only table",
         });
