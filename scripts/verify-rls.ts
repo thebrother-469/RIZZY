@@ -36,24 +36,46 @@ interface Check {
   operation: Op;
   role: Role;
   expected: "allow" | "deny";
-  actual: "allow" | "deny";
+  actual: "allow" | "deny" | "unknown";
   status: number;
-  result: "PASS" | "FAIL";
+  result: "PASS" | "FAIL" | "NOT_VERIFIED";
   note?: string;
 }
 
 const checks: Check[] = [];
 
 function record(c: Omit<Check, "result">) {
-  checks.push({ ...c, result: c.expected === c.actual ? "PASS" : "FAIL" });
+  const result: Check["result"] =
+    c.actual === "unknown" ? "NOT_VERIFIED" : c.expected === c.actual ? "PASS" : "FAIL";
+  checks.push({ ...c, result });
 }
 
-function isAllowed(status: number, body: unknown): boolean {
-  if (status === 401 || status === 403 || status === 404) return false;
-  if (status >= 400) return false;
+/**
+ * Transport-level failures (network drop, gateway error, statement timeout)
+ * prove nothing about the policy under test and must never be scored as a
+ * security PASS or FAIL.
+ */
+function isTransport(status: number, body: unknown): boolean {
+  if (status === 0 || status === 408 || status === 429) return true;
+  if (status >= 500) return true;
+  const code = (body as { code?: string } | null)?.code;
+  return code === "57014" || code === "08006" || code === "53300";
+}
+
+/** allow | deny | unknown for a response where denial is meaningful. */
+function outcome(status: number, body: unknown): "allow" | "deny" | "unknown" {
+  if (isTransport(status, body)) return "unknown";
+  // 401/403 (permission denied), 404 (no grant/route) => denial.
+  if (status >= 400) return "deny";
   // PostgREST silently returns [] when RLS filters everything out.
-  if (Array.isArray(body) && body.length === 0) return false;
-  return true;
+  if (Array.isArray(body) && body.length === 0) return "deny";
+  return "allow";
+}
+
+/** Status-only variant: an empty array is a legitimate allow. */
+function statusOutcome(status: number, body: unknown): "allow" | "deny" | "unknown" {
+  if (isTransport(status, body)) return "unknown";
+  return status < 300 ? "allow" : "deny";
 }
 
 async function rest(
@@ -81,6 +103,8 @@ const TABLES: {
   owner: string;
   row?: (uid: string) => Record<string, unknown>;
   writable: boolean;
+  /** false => no client grant by design; the app reads it server-side only. */
+  clientReadable?: boolean;
 }[] = [
   { name: "profiles", owner: "id", writable: false },
   {
@@ -107,8 +131,10 @@ const TABLES: {
   { name: "subscriptions", owner: "user_id", writable: false },
   { name: "usage_daily", owner: "user_id", writable: false },
   { name: "xp_events", owner: "user_id", writable: false },
-  { name: "profile_gen_usage", owner: "user_id", writable: false },
-  { name: "auth_audit_logs", owner: "user_id", writable: false },
+  // Quota ledger + audit trail carry no client grants: the app reads them
+  // through service-role server functions, so a direct client read must fail.
+  { name: "profile_gen_usage", owner: "user_id", writable: false, clientReadable: false },
+  { name: "auth_audit_logs", owner: "user_id", writable: false, clientReadable: false },
 ];
 
 /** Tables no client role may ever read. */
@@ -169,7 +195,7 @@ async function main() {
         operation: "SELECT",
         role: "anon",
         expected: "deny",
-        actual: isAllowed(anonRead.status, anonRead.body) ? "allow" : "deny",
+        actual: outcome(anonRead.status, anonRead.body),
         status: anonRead.status,
       });
 
@@ -186,7 +212,7 @@ async function main() {
           operation: "INSERT",
           role: "owner",
           expected: "allow",
-          actual: ins.status < 300 ? "allow" : "deny",
+          actual: statusOutcome(ins.status, ins.body),
           status: ins.status,
         });
 
@@ -200,23 +226,41 @@ async function main() {
           operation: "INSERT",
           role: "other",
           expected: "deny",
-          actual: forged.status < 300 ? "allow" : "deny",
+          actual: statusOutcome(forged.status, forged.body),
           status: forged.status,
           note: "forged user_id of another account",
         });
       }
 
-      // owner SELECT of own rows.
+      // owner SELECT of own rows. Tables without a client grant must deny.
       const ownRead = await rest(e, tokenA, `/${t.name}?${t.owner}=eq.${uidA}&select=*`);
+      const clientReadable = t.clientReadable !== false;
       record({
         table: t.name,
         operation: "SELECT",
         role: "owner",
-        expected: "allow",
-        actual: ownRead.status < 300 ? "allow" : "deny",
+        expected: clientReadable ? "allow" : "deny",
+        actual: statusOutcome(ownRead.status, ownRead.body),
         status: ownRead.status,
-        note: "status-only: empty result sets are legitimate",
+        note: clientReadable
+          ? "status-only: empty result sets are legitimate"
+          : "no client grant by design; read server-side via service role",
       });
+
+      // Service role must still reach the table, otherwise the server-side
+      // feature that owns it is broken rather than merely locked down.
+      if (!clientReadable) {
+        const svcRead = await rest(e, e.serviceKey!, `/${t.name}?select=*&limit=1`);
+        record({
+          table: t.name,
+          operation: "SELECT",
+          role: "owner",
+          expected: "allow",
+          actual: statusOutcome(svcRead.status, svcRead.body),
+          status: svcRead.status,
+          note: "service-role read path",
+        });
+      }
 
       // cross-user SELECT must return nothing.
       const crossRead = await rest(e, tokenB, `/${t.name}?${t.owner}=eq.${uidA}&select=*`);
@@ -225,7 +269,7 @@ async function main() {
         operation: "SELECT",
         role: "other",
         expected: "deny",
-        actual: isAllowed(crossRead.status, crossRead.body) ? "allow" : "deny",
+        actual: outcome(crossRead.status, crossRead.body),
         status: crossRead.status,
       });
 
@@ -240,7 +284,7 @@ async function main() {
           operation: "UPDATE",
           role: "other",
           expected: "deny",
-          actual: isAllowed(crossUpdate.status, crossUpdate.body) ? "allow" : "deny",
+          actual: outcome(crossUpdate.status, crossUpdate.body),
           status: crossUpdate.status,
         });
 
@@ -252,7 +296,7 @@ async function main() {
           operation: "DELETE",
           role: "other",
           expected: "deny",
-          actual: isAllowed(crossDelete.status, crossDelete.body) ? "allow" : "deny",
+          actual: outcome(crossDelete.status, crossDelete.body),
           status: crossDelete.status,
         });
 
@@ -262,7 +306,7 @@ async function main() {
           operation: "DELETE",
           role: "owner",
           expected: "allow",
-          actual: ownDelete.status < 300 ? "allow" : "deny",
+          actual: statusOutcome(ownDelete.status, ownDelete.body),
           status: ownDelete.status,
         });
       }
@@ -279,15 +323,16 @@ async function main() {
           operation: "SELECT",
           role,
           expected: "deny",
-          actual: isAllowed(res.status, res.body) ? "allow" : "deny",
+          actual: outcome(res.status, res.body),
           status: res.status,
           note: "service-only table",
         });
       }
     }
 
-    // RPCs: anonymous invocation is always denied; a signed-in caller may
-    // never act on behalf of another user id via the _caller_id argument.
+    // RPCs are service-mediated: no client role holds EXECUTE, so anonymous
+    // AND signed-in direct invocation must both be denied, while the
+    // service-role path (used by the server functions) must succeed.
     for (const rpc of RPCS) {
       const anonCall = await rest(e, null, `/rpc/${rpc.name}`, {
         method: "POST",
@@ -298,7 +343,7 @@ async function main() {
         operation: "RPC",
         role: "anon",
         expected: "deny",
-        actual: anonCall.status < 300 ? "allow" : "deny",
+        actual: statusOutcome(anonCall.status, anonCall.body),
         status: anonCall.status,
       });
 
@@ -307,6 +352,18 @@ async function main() {
         body: JSON.stringify({ ...rpc.args, _caller_id: uidA }),
       });
       const body = JSON.stringify(impersonation.body ?? "");
+      if (isTransport(impersonation.status, impersonation.body)) {
+        record({
+          table: rpc.name,
+          operation: "RPC",
+          role: "other",
+          expected: "deny",
+          actual: "unknown",
+          status: impersonation.status,
+          note: "_caller_id impersonation attempt",
+        });
+        continue;
+      }
       // Denied outright, or a no-op (null) result: either way user B gained nothing.
       const gained = impersonation.status < 300 && body !== "null" && body !== '""';
       record({
@@ -338,7 +395,7 @@ async function main() {
         operation: "RPC",
         role: "other",
         expected: "deny",
-        actual: hijack.status < 300 ? "allow" : "deny",
+        actual: statusOutcome(hijack.status, hijack.body),
         status: hijack.status,
         note: "cross-user mission completion",
       });
@@ -350,9 +407,25 @@ async function main() {
         table: "complete_mission",
         operation: "RPC",
         role: "owner",
-        expected: "allow",
-        actual: ownComplete.status < 300 ? "allow" : "deny",
+        expected: "deny",
+        actual: statusOutcome(ownComplete.status, ownComplete.body),
         status: ownComplete.status,
+        note: "direct client RPC has no EXECUTE grant; app calls it server-side",
+      });
+
+      // The real application path: service role completing the owner's mission.
+      const svcComplete = await rest(e, e.serviceKey!, "/rpc/complete_mission", {
+        method: "POST",
+        body: JSON.stringify({ _mission_id: missionId, _caller_id: uidA }),
+      });
+      record({
+        table: "complete_mission",
+        operation: "RPC",
+        role: "owner",
+        expected: "allow",
+        actual: statusOutcome(svcComplete.status, svcComplete.body),
+        status: svcComplete.status,
+        note: "service-role mission completion (application path)",
       });
       await rest(e, tokenA, `/missions?id=eq.${missionId}`, { method: "DELETE" });
     }
@@ -362,14 +435,16 @@ async function main() {
   }
 
   const failures = checks.filter((c) => c.result === "FAIL");
+  const notVerified = checks.filter((c) => c.result === "NOT_VERIFIED");
   const coveredTables = new Set(checks.map((c) => c.table));
   const missingCoverage = [...TABLES.map((t) => t.name), ...SERVICE_ONLY].filter(
     (t) => !coveredTables.has(t),
   );
   emit({
-    overall: failures.length ? "FAIL" : "PASS",
+    overall: failures.length ? "FAIL" : notVerified.length ? "PASS_WITH_NOT_VERIFIED" : "PASS",
     total: checks.length,
     failures: failures.length,
+    notVerified: notVerified.length,
     missingCoverage,
     checks,
   });
@@ -378,7 +453,9 @@ async function main() {
 
 function emit(report: unknown) {
   mkdirSync("security-artifacts", { recursive: true });
-  writeFileSync("security-artifacts/rls-coverage.json", JSON.stringify(report, null, 2));
+  const json = JSON.stringify(report, null, 2);
+  writeFileSync("security-artifacts/rls-coverage.json", json);
+  writeFileSync("security-artifacts/rls-audit.json", json);
   console.log(JSON.stringify(report, null, 2));
 }
 
