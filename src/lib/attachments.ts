@@ -21,18 +21,26 @@ export const MAX_FILES = 8;
 
 export type PlanTier = "free" | "pro" | "elite";
 
+/**
+ * Hard ceiling enforced by Supabase Storage on the `uploads` bucket. The
+ * platform rejects any per-bucket limit above this, so no plan tier can
+ * advertise more than the bucket will actually accept.
+ */
+export const STORAGE_MAX_MB = 50;
+
 /** Per-plan upload ceilings (MB). Adaptive client-side compression still applies to images. */
 export const PLAN_LIMITS_MB: Record<PlanTier, Record<AttachmentKind, number>> = {
-  free: { image: 100, video: 100, document: 100 },
-  pro: { image: 500, video: 500, document: 500 },
-  elite: { image: 1024, video: 1024, document: 1024 },
+  free: { image: 25, video: 25, document: 25 },
+  pro: { image: 50, video: 50, document: 50 },
+  elite: { image: 50, video: 50, document: 50 },
 };
 
 /** Legacy export kept for backwards-compat with any code that reads MAX_SIZE_MB directly. */
 export const MAX_SIZE_MB = PLAN_LIMITS_MB.free;
 
 export function getLimitMb(kind: AttachmentKind, plan: PlanTier = "free"): number {
-  return PLAN_LIMITS_MB[plan]?.[kind] ?? PLAN_LIMITS_MB.free[kind];
+  const limit = PLAN_LIMITS_MB[plan]?.[kind] ?? PLAN_LIMITS_MB.free[kind];
+  return Math.min(limit, STORAGE_MAX_MB);
 }
 
 export const IMAGE_EXT = ["jpg", "jpeg", "png", "webp", "gif", "heic", "heif", "avif"];

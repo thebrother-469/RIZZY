@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-04T21:04:39.969Z",
+  "generatedAt": "2026-08-10T13:01:08.390Z",
   "project": "jfiojbbrdfgeruborkzx",
   "snapshotCapturedAt": "2026-08-03T22:36:36.931Z",
   "snapshotSource": "live-query",
@@ -11,7 +11,7 @@
     "rlsEnabled": 17,
     "anonGranted": 0,
     "violations": [],
-    "rowScopeVerified": 6
+    "rowScopeVerified": 17
   },
   "tables": [
     {
@@ -56,7 +56,7 @@
         }
       ],
       "authUidVerified": true,
-      "rowScopeStatus": "NOT_VERIFIED"
+      "rowScopeStatus": "PASS"
     },
     {
       "table": "chats",
@@ -84,7 +84,7 @@
         }
       ],
       "authUidVerified": true,
-      "rowScopeStatus": "NOT_VERIFIED"
+      "rowScopeStatus": "PASS"
     },
     {
       "table": "messages",
@@ -112,7 +112,7 @@
         }
       ],
       "authUidVerified": true,
-      "rowScopeStatus": "NOT_VERIFIED"
+      "rowScopeStatus": "PASS"
     },
     {
       "table": "memories",
@@ -140,7 +140,7 @@
         }
       ],
       "authUidVerified": true,
-      "rowScopeStatus": "NOT_VERIFIED"
+      "rowScopeStatus": "PASS"
     },
     {
       "table": "missions",
@@ -192,7 +192,7 @@
         }
       ],
       "authUidVerified": true,
-      "rowScopeStatus": "NOT_VERIFIED"
+      "rowScopeStatus": "PASS"
     },
     {
       "table": "subscriptions",
@@ -248,7 +248,7 @@
         }
       ],
       "authUidVerified": true,
-      "rowScopeStatus": "NOT_VERIFIED"
+      "rowScopeStatus": "PASS"
     },
     {
       "table": "user_xp",
@@ -304,7 +304,7 @@
         }
       ],
       "authUidVerified": true,
-      "rowScopeStatus": "NOT_VERIFIED"
+      "rowScopeStatus": "PASS"
     },
     {
       "table": "streaks",
@@ -360,7 +360,7 @@
         }
       ],
       "authUidVerified": true,
-      "rowScopeStatus": "NOT_VERIFIED"
+      "rowScopeStatus": "PASS"
     },
     {
       "table": "badges",
@@ -412,7 +412,7 @@
         }
       ],
       "authUidVerified": true,
-      "rowScopeStatus": "NOT_VERIFIED"
+      "rowScopeStatus": "PASS"
     },
     {
       "table": "usage_daily",
@@ -468,7 +468,7 @@
         }
       ],
       "authUidVerified": true,
-      "rowScopeStatus": "NOT_VERIFIED"
+      "rowScopeStatus": "PASS"
     },
     {
       "table": "xp_events",
@@ -520,7 +520,7 @@
         }
       ],
       "authUidVerified": true,
-      "rowScopeStatus": "NOT_VERIFIED"
+      "rowScopeStatus": "PASS"
     },
     {
       "table": "auth_audit_logs",
