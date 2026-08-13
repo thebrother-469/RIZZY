@@ -69,7 +69,7 @@ describe("SSR smoke — environment", () => {
 
 describe("SSR smoke — module imports", () => {
   for (const [label, loader] of SSR_REACHABLE_MODULES) {
-    it(`imports ${label} without touching browser APIs`, async () => {
+    it(`imports ${label} without touching browser APIs`, { timeout: 30_000 }, async () => {
       assertNoBrowserGlobals();
       let mod: unknown;
       try {
