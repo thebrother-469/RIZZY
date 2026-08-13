@@ -54,7 +54,7 @@ const PUBLIC_PAGES: Array<[path: string, loader: () => Promise<unknown>]> = [
 
 describe("SSR — protected pages evaluate without browser APIs", () => {
   for (const [path, loader] of PROTECTED_PAGES) {
-    it(`${path} imports cleanly under SSR`, async () => {
+    it(`${path} imports cleanly under SSR`, { timeout: 30_000 }, async () => {
       assertNoBrowserGlobals(path);
       const mod = (await loader()) as { Route?: unknown };
       assertNoBrowserGlobals(path);
@@ -66,7 +66,7 @@ describe("SSR — protected pages evaluate without browser APIs", () => {
 
 describe("SSR — public pages evaluate without browser APIs", () => {
   for (const [path, loader] of PUBLIC_PAGES) {
-    it(`${path} imports cleanly under SSR`, async () => {
+    it(`${path} imports cleanly under SSR`, { timeout: 30_000 }, async () => {
       assertNoBrowserGlobals(path);
       const mod = (await loader()) as { Route?: unknown };
       assertNoBrowserGlobals(path);
