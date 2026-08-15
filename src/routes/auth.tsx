@@ -77,17 +77,61 @@ function AuthPage() {
     setGoogleLoading(true);
 
     try {
-      const { error } = await supabase.auth.signInWithOAuth({
+      const origin = window.location.origin;
+      const redirectTo = `${origin}/auth-callback`;
+
+      // Open the popup synchronously (inside the click) so popup blockers allow it.
+      const popup = window.open("about:blank", "rizzgod-google-oauth", "width=480,height=640");
+
+      const { data, error } = await supabase.auth.signInWithOAuth({
         provider: "google",
-        options: {
-          redirectTo: `${window.location.origin}/app`,
-        },
+        options: { redirectTo, skipBrowserRedirect: true },
       });
 
-      if (error) {
-        toast.error(friendlyAuthError(error.message));
+      if (error || !data?.url) {
+        popup?.close();
+        toast.error(friendlyAuthError(error?.message ?? ""));
         setGoogleLoading(false);
+        return;
       }
+
+      if (!popup || popup.closed) {
+        // Popup blocked — fall back to a normal redirect in this tab.
+        window.location.assign(data.url);
+        return;
+      }
+
+      popup.location.replace(data.url);
+
+      const cleanup = () => {
+        window.removeEventListener("message", onMessage);
+        window.clearInterval(closedTimer);
+      };
+
+      const complete = async () => {
+        cleanup();
+        const { data: sessionData } = await supabase.auth.getSession();
+        if (sessionData.session) {
+          toast.success("You're in. Welcome to the brotherhood.");
+          nav({ to: redirectTarget });
+        } else {
+          setGoogleLoading(false);
+        }
+      };
+
+      const onMessage = (event: MessageEvent) => {
+        if (event.origin !== origin) return;
+        const payload = event.data as { type?: string } | null;
+        if (payload?.type !== "rizzgod:oauth") return;
+        void complete();
+      };
+
+      window.addEventListener("message", onMessage);
+
+      // Handles the user closing/cancelling the popup manually.
+      const closedTimer = window.setInterval(() => {
+        if (popup.closed) void complete();
+      }, 500);
     } catch (e: unknown) {
       toast.error(friendlyAuthError(errorMessage(e, "")));
       setGoogleLoading(false);
