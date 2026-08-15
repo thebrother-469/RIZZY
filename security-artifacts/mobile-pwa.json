@@ -1,13 +1,122 @@
 {
-  "generatedAt": "2026-08-15T00:39:43.806Z",
+  "generatedAt": "2026-08-15T00:41:28.319Z",
   "suite": "pwa-standalone-practice",
   "displayMode": "standalone",
-  "observations": [],
+  "observations": [
+    {
+      "device": "iPhone 14 Pro (notch)",
+      "scenario": "first render",
+      "status": "PASS",
+      "detail": "composer at y=578"
+    },
+    {
+      "device": "iPhone 14 Pro (notch)",
+      "scenario": "keyboard open",
+      "status": "PASS",
+      "detail": "composer at y=281"
+    },
+    {
+      "device": "iPhone 14 Pro (notch)",
+      "scenario": "keyboard closed",
+      "status": "PASS",
+      "detail": "composer at y=578"
+    },
+    {
+      "device": "iPhone 14 Pro (notch)",
+      "scenario": "after refresh",
+      "status": "PASS",
+      "detail": "composer at y=578"
+    },
+    {
+      "device": "iPhone 14 Pro (notch)",
+      "scenario": "landscape",
+      "status": "PASS",
+      "detail": "composer at y=311"
+    },
+    {
+      "device": "iPhone 14 Pro (notch)",
+      "scenario": "back to portrait",
+      "status": "PASS",
+      "detail": "composer at y=578"
+    },
+    {
+      "device": "Pixel 7 (gesture nav)",
+      "scenario": "first render",
+      "status": "PASS",
+      "detail": "composer at y=757"
+    },
+    {
+      "device": "Pixel 7 (gesture nav)",
+      "scenario": "keyboard open",
+      "status": "PASS",
+      "detail": "composer at y=379"
+    },
+    {
+      "device": "Pixel 7 (gesture nav)",
+      "scenario": "keyboard closed",
+      "status": "PASS",
+      "detail": "composer at y=757"
+    },
+    {
+      "device": "Pixel 7 (gesture nav)",
+      "scenario": "after refresh",
+      "status": "PASS",
+      "detail": "composer at y=757"
+    },
+    {
+      "device": "Pixel 7 (gesture nav)",
+      "scenario": "landscape",
+      "status": "PASS",
+      "detail": "composer at y=326"
+    },
+    {
+      "device": "Pixel 7 (gesture nav)",
+      "scenario": "back to portrait",
+      "status": "PASS",
+      "detail": "composer at y=757"
+    },
+    {
+      "device": "small mobile",
+      "scenario": "first render",
+      "status": "PASS",
+      "detail": "composer at y=466"
+    },
+    {
+      "device": "small mobile",
+      "scenario": "keyboard open",
+      "status": "PASS",
+      "detail": "composer at y=210"
+    },
+    {
+      "device": "small mobile",
+      "scenario": "keyboard closed",
+      "status": "PASS",
+      "detail": "composer at y=466"
+    },
+    {
+      "device": "small mobile",
+      "scenario": "after refresh",
+      "status": "PASS",
+      "detail": "composer at y=466"
+    },
+    {
+      "device": "small mobile",
+      "scenario": "landscape",
+      "status": "PASS",
+      "detail": "composer at y=218"
+    },
+    {
+      "device": "small mobile",
+      "scenario": "back to portrait",
+      "status": "PASS",
+      "detail": "composer at y=466"
+    }
+  ],
   "blockers": [],
   "summary": {
-    "pass": 0,
+    "pass": 18,
     "fail": 0,
     "notVerified": 0
   },
-  "status": "NOT_VERIFIED"
+  "status": "PASS"
 }
