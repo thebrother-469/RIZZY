@@ -13,6 +13,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AiDatingGuideRouteImport } from './routes/ai-dating-guide'
 import { Route as AppRouteImport } from './routes/app'
 import { Route as AuthRouteImport } from './routes/auth'
+import { Route as AuthCallbackRouteImport } from './routes/auth-callback'
 import { Route as DatingProfileGeneratorRouteImport } from './routes/dating-profile-generator'
 import { Route as FlirtyTextMessagesRouteImport } from './routes/flirty-text-messages'
 import { Route as HingeOpenersRouteImport } from './routes/hinge-openers'
@@ -63,6 +64,11 @@ const AppRoute = AppRouteImport.update({
 const AuthRoute = AuthRouteImport.update({
   id: '/auth',
   path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthCallbackRoute = AuthCallbackRouteImport.update({
+  id: '/auth-callback',
+  path: '/auth-callback',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DatingProfileGeneratorRoute = DatingProfileGeneratorRouteImport.update({
@@ -229,6 +235,7 @@ export interface FileRoutesByFullPath {
   '/ai-dating-guide': typeof AiDatingGuideRoute
   '/app': typeof AppRouteWithChildren
   '/auth': typeof AuthRoute
+  '/auth-callback': typeof AuthCallbackRoute
   '/dating-profile-generator': typeof DatingProfileGeneratorRoute
   '/flirty-text-messages': typeof FlirtyTextMessagesRoute
   '/hinge-openers': typeof HingeOpenersRoute
@@ -265,6 +272,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/ai-dating-guide': typeof AiDatingGuideRoute
   '/auth': typeof AuthRoute
+  '/auth-callback': typeof AuthCallbackRoute
   '/dating-profile-generator': typeof DatingProfileGeneratorRoute
   '/flirty-text-messages': typeof FlirtyTextMessagesRoute
   '/hinge-openers': typeof HingeOpenersRoute
@@ -303,6 +311,7 @@ export interface FileRoutesById {
   '/ai-dating-guide': typeof AiDatingGuideRoute
   '/app': typeof AppRouteWithChildren
   '/auth': typeof AuthRoute
+  '/auth-callback': typeof AuthCallbackRoute
   '/dating-profile-generator': typeof DatingProfileGeneratorRoute
   '/flirty-text-messages': typeof FlirtyTextMessagesRoute
   '/hinge-openers': typeof HingeOpenersRoute
@@ -342,6 +351,7 @@ export interface FileRouteTypes {
     | '/ai-dating-guide'
     | '/app'
     | '/auth'
+    | '/auth-callback'
     | '/dating-profile-generator'
     | '/flirty-text-messages'
     | '/hinge-openers'
@@ -378,6 +388,7 @@ export interface FileRouteTypes {
     | '/'
     | '/ai-dating-guide'
     | '/auth'
+    | '/auth-callback'
     | '/dating-profile-generator'
     | '/flirty-text-messages'
     | '/hinge-openers'
@@ -415,6 +426,7 @@ export interface FileRouteTypes {
     | '/ai-dating-guide'
     | '/app'
     | '/auth'
+    | '/auth-callback'
     | '/dating-profile-generator'
     | '/flirty-text-messages'
     | '/hinge-openers'
@@ -453,6 +465,7 @@ export interface RootRouteChildren {
   AiDatingGuideRoute: typeof AiDatingGuideRoute
   AppRoute: typeof AppRouteWithChildren
   AuthRoute: typeof AuthRoute
+  AuthCallbackRoute: typeof AuthCallbackRoute
   DatingProfileGeneratorRoute: typeof DatingProfileGeneratorRoute
   FlirtyTextMessagesRoute: typeof FlirtyTextMessagesRoute
   HingeOpenersRoute: typeof HingeOpenersRoute
@@ -503,6 +516,13 @@ declare module '@tanstack/react-router' {
       path: '/auth'
       fullPath: '/auth'
       preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/auth-callback': {
+      id: '/auth-callback'
+      path: '/auth-callback'
+      fullPath: '/auth-callback'
+      preLoaderRoute: typeof AuthCallbackRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/dating-profile-generator': {
@@ -760,6 +780,7 @@ const rootRouteChildren: RootRouteChildren = {
   AiDatingGuideRoute: AiDatingGuideRoute,
   AppRoute: AppRouteWithChildren,
   AuthRoute: AuthRoute,
+  AuthCallbackRoute: AuthCallbackRoute,
   DatingProfileGeneratorRoute: DatingProfileGeneratorRoute,
   FlirtyTextMessagesRoute: FlirtyTextMessagesRoute,
   HingeOpenersRoute: HingeOpenersRoute,

@@ -13,6 +13,7 @@ import { test, expect, devices, type Page } from "@playwright/test";
 import { mkdirSync, writeFileSync } from "node:fs";
 import { checkRequiredSecrets } from "../_helpers/preflight";
 import { probeAuthenticatedRun, signInAsE2EUser } from "../_helpers/sign-in";
+import { ensureOnboarded } from "../_helpers/onboarding";
 
 const ARTIFACT = "security-artifacts/mobile-pwa.json";
 
@@ -119,7 +120,7 @@ test.describe("PWA standalone — practice composer", () => {
 
   test.beforeAll(async () => {
     if (!pre.ok) blocker = pre.reason;
-    else blocker = await probeAuthenticatedRun();
+    else blocker = (await probeAuthenticatedRun()) ?? (await ensureOnboarded());
     if (blocker)
       record({ device: "-", scenario: "suite", status: "NOT_VERIFIED", detail: blocker });
   });
