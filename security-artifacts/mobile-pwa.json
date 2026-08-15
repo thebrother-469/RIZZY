@@ -1,13 +1,20 @@
 {
-  "generatedAt": "2026-08-13T09:06:49.989Z",
+  "generatedAt": "2026-08-15T00:37:55.465Z",
   "suite": "pwa-standalone-practice",
   "displayMode": "standalone",
-  "observations": [],
+  "observations": [
+    {
+      "device": "small mobile",
+      "scenario": "first render",
+      "status": "PASS",
+      "detail": "composer at y=466"
+    }
+  ],
   "blockers": [],
   "summary": {
-    "pass": 0,
+    "pass": 1,
     "fail": 0,
     "notVerified": 0
   },
-  "status": "NOT_VERIFIED"
+  "status": "PASS"
 }
