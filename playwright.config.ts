@@ -21,7 +21,8 @@ const baseURL =
 export default defineConfig({
   testDir: "tests",
 
-  testMatch: ["**/*.spec.ts"],
+  // Only browser suites — tests/unit and tests/api belong to Vitest.
+  testMatch: ["playwright/**/*.spec.ts", "e2e/**/*.spec.ts"],
 
   timeout: 60_000,
 

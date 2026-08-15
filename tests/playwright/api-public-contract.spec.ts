@@ -64,7 +64,7 @@ test.describe("public API surface: discovered from src/routes/api/public/", () =
   // (or a clear "skipped" marker) is attached to the HTML report and
   // surfaced in the GitHub Actions job summary so operators never lose
   // the correlation trail on a failing probe.
-  test.afterEach(async (_fixtures, info) => {
+  test.afterEach(async ({}, info) => {
     if (info.status !== "failed" && info.status !== "timedOut") return;
     const ann = [...info.annotations].reverse().find((a) => a.type === "trace-ids");
     let ids: { requestId?: string | null; traceId?: string | null; traceparent?: string | null } =
