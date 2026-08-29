@@ -166,7 +166,12 @@ function instrument(page: Page): void {
     if (msg.type() === "error") consoleErrors.push(msg.text().slice(0, 400));
   });
   page.on("requestfailed", (req) => {
-    networkFailures.push(`${req.method()} ${req.url()} — ${req.failure()?.errorText ?? "failed"}`);
+    const errorText = req.failure()?.errorText ?? "failed";
+    // net::ERR_ABORTED means the browser cancelled an in-flight request because
+    // the page navigated away (module prefetches, route chunks). That is not a
+    // product failure, so it must not fail the release gate.
+    if (errorText.includes("ERR_ABORTED")) return;
+    networkFailures.push(`${req.method()} ${req.url()} — ${errorText}`);
   });
   page.on("response", (res) => {
     if (res.status() >= 500) networkFailures.push(`${res.status()} ${res.url()}`);
