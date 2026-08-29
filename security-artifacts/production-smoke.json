@@ -1,11 +1,11 @@
 {
-  "generatedAt": "2026-08-29T14:54:12.255Z",
-  "runId": "smoke-mtei45g4",
+  "generatedAt": "2026-08-29T14:55:21.554Z",
+  "runId": "smoke-mtei5n1h",
   "status": "PASS",
-  "userId": "4636d48b-9a05-434e-b8bf-70b86f57230b",
-  "storagePrefix": "e2e/smoke-mtei45g4",
+  "userId": "49a79d54-873a-44e4-a137-34774066f284",
+  "storagePrefix": "e2e/smoke-mtei5n1h",
   "timings": {
-    "totalMs": 1163,
+    "totalMs": 1006,
     "stages": {}
   },
   "completedStages": [],
