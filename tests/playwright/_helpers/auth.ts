@@ -209,21 +209,28 @@ export async function collectRealtime(
   const e = env();
   await page.evaluate(
     async ([url, key, tbl, col, uid]) => {
-      const w = window as unknown as { __rtEvents?: unknown[]; __rtReady?: boolean };
+      const w = window as unknown as {
+        __rtEvents?: unknown[];
+        __rtReady?: boolean;
+        __rtStatus?: string;
+      };
       w.__rtEvents = [];
       const { createClient } = await import(
         /* @vite-ignore */ "https://esm.sh/@supabase/supabase-js@2"
       );
-      const client = createClient(url, key);
       const raw = window.localStorage.getItem(
         Object.keys(window.localStorage).find((k) => k.endsWith("-auth-token")) ?? "",
       );
-      if (raw) {
-        const s = JSON.parse(raw);
-        await client.auth.setSession({
-          access_token: s.access_token,
-          refresh_token: s.refresh_token,
-        });
+      const token: string | undefined = raw ? JSON.parse(raw).access_token : undefined;
+
+      // Realtime enforces RLS on postgres_changes, so the socket must carry the
+      // user's JWT *before* the channel joins — otherwise it subscribes as anon
+      // and silently receives nothing.
+      const client = createClient(url, key, {
+        global: token ? { headers: { Authorization: `Bearer ${token}` } } : {},
+      });
+      if (token) {
+        await client.realtime.setAuth(token);
       }
       client
         .channel(`e2e-${tbl}`)
@@ -233,6 +240,7 @@ export async function collectRealtime(
           (payload: unknown) => w.__rtEvents!.push(payload),
         )
         .subscribe((status: string) => {
+          w.__rtStatus = status;
           if (status === "SUBSCRIBED") w.__rtReady = true;
         });
     },
