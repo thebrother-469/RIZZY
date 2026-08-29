@@ -1,27 +1,14 @@
 {
-  "generatedAt": "2026-08-15T00:54:11.366Z",
-  "runId": "smoke-mstnxvcq",
-  "status": "FAIL",
-  "userId": "546a9db3-b333-4eb6-84de-4fe174937dbb",
-  "storagePrefix": "e2e/smoke-mstnxvcq",
+  "generatedAt": "2026-08-29T14:54:12.255Z",
+  "runId": "smoke-mtei45g4",
+  "status": "PASS",
+  "userId": "4636d48b-9a05-434e-b8bf-70b86f57230b",
+  "storagePrefix": "e2e/smoke-mtei45g4",
   "timings": {
-    "totalMs": 5292,
-    "stages": {
-      "session_created": 4055,
-      "onboarding_completed": 79,
-      "onboarding_persisted": 40,
-      "baseline_xp_streak": 116,
-      "mission_generated": 80,
-      "mission_completed": 64
-    }
+    "totalMs": 1163,
+    "stages": {}
   },
-  "completedStages": [
-    "session_created",
-    "onboarding_completed",
-    "onboarding_persisted",
-    "baseline_xp_streak",
-    "mission_generated"
-  ],
+  "completedStages": [],
   "xp": {
     "before": 0,
     "after": 0,
@@ -35,7 +22,7 @@
   "chatId": null,
   "messageId": null,
   "memoryId": null,
-  "missionId": "2885cfe0-3eb3-4aba-9fd9-866fdd5071cd",
+  "missionId": null,
   "profileId": null,
   "subscription": {
     "plan": null,
@@ -43,37 +30,5 @@
   },
   "consoleErrors": [],
   "networkFailures": [],
-  "stages": [
-    {
-      "name": "session_created",
-      "status": "PASS",
-      "ms": 4055
-    },
-    {
-      "name": "onboarding_completed",
-      "status": "PASS",
-      "ms": 79
-    },
-    {
-      "name": "onboarding_persisted",
-      "status": "PASS",
-      "ms": 40
-    },
-    {
-      "name": "baseline_xp_streak",
-      "status": "PASS",
-      "ms": 116
-    },
-    {
-      "name": "mission_generated",
-      "status": "PASS",
-      "ms": 80
-    },
-    {
-      "name": "mission_completed",
-      "status": "FAIL",
-      "ms": 64,
-      "detail": "complete_mission reported an update\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mundefined\u001b[39m"
-    }
-  ]
+  "stages": []
 }

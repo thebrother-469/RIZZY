@@ -12,7 +12,7 @@ type Plan = import("@/lib/lemon").Plan;
 export const Route = createFileRoute("/api/public/lemon-webhook")({
   server: {
     handlers: {
-      POST: async ({ request }) => {
+      POST: async ({ request }: { request: Request }) => {
         const secret = process.env.LEMONSQUEEZY_WEBHOOK_SECRET;
         const proVariant = process.env.LEMONSQUEEZY_PRO_VARIANT_ID ?? "";
         const eliteVariant = process.env.LEMONSQUEEZY_ELITE_VARIANT_ID ?? "";

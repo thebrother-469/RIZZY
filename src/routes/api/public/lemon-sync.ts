@@ -22,7 +22,7 @@ function timingSafeEqualStr(a: string, b: string): boolean {
 export const Route = createFileRoute("/api/public/lemon-sync")({
   server: {
     handlers: {
-      POST: async ({ request }) => {
+      POST: async ({ request }: { request: Request }) => {
         const apiKey = process.env.LEMONSQUEEZY_API_KEY;
         const proVariant = process.env.LEMONSQUEEZY_PRO_VARIANT_ID ?? "";
         const eliteVariant = process.env.LEMONSQUEEZY_ELITE_VARIANT_ID ?? "";

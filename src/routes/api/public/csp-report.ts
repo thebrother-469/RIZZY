@@ -21,7 +21,7 @@ function pickNum(v: unknown): number | undefined {
 export const Route = createFileRoute("/api/public/csp-report")({
   server: {
     handlers: {
-      POST: async ({ request }) => {
+      POST: async ({ request }: { request: Request }) => {
         try {
           const len = Number(request.headers.get("content-length") ?? "0");
           if (len > MAX_BYTES) return new Response(null, { status: 204 });
