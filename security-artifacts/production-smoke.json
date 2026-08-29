@@ -1,25 +1,38 @@
 {
-  "generatedAt": "2026-08-29T15:01:23.759Z",
-  "runId": "smoke-mteick7t",
+  "generatedAt": "2026-08-29T15:02:59.158Z",
+  "runId": "smoke-mteif1vo",
   "status": "FAIL",
-  "userId": "86c5b724-9153-47dc-83b8-48a47cb2fbed",
-  "storagePrefix": "e2e/smoke-mteick7t",
+  "userId": "251d16a4-a627-4697-b821-f26e3e8d09dd",
+  "storagePrefix": "e2e/smoke-mteif1vo",
   "timings": {
-    "totalMs": 40278,
+    "totalMs": 19474,
     "stages": {
-      "session_created": 1058,
-      "onboarding_completed": 289,
-      "onboarding_persisted": 109,
-      "baseline_xp_streak": 183,
-      "mission_generated": 120,
-      "mission_completed": 68,
-      "xp_awarded": 163,
-      "streak_increased": 93,
-      "coach_opened": 907,
-      "chat_created": 71,
-      "realtime_subscribed": 2150,
-      "message_sent": 196,
-      "realtime_delivered": 29934
+      "session_created": 1715,
+      "onboarding_completed": 357,
+      "onboarding_persisted": 194,
+      "baseline_xp_streak": 134,
+      "mission_generated": 83,
+      "mission_completed": 123,
+      "xp_awarded": 111,
+      "streak_increased": 53,
+      "coach_opened": 882,
+      "chat_created": 103,
+      "realtime_subscribed": 1330,
+      "message_sent": 64,
+      "realtime_delivered": 1241,
+      "message_persisted": 61,
+      "memory_saved": 56,
+      "memory_retrieved": 45,
+      "profile_generated": 343,
+      "profile_persisted": 42,
+      "dashboard_persisted_after_refresh": 780,
+      "mission_xp_streak_persisted": 191,
+      "logged_out": 3325,
+      "logged_back_in": 3040,
+      "state_survives_relogin": 369,
+      "subscription_state": 48,
+      "no_console_errors": 6,
+      "no_network_failures": 14
     }
   },
   "completedStages": [
@@ -34,7 +47,20 @@
     "coach_opened",
     "chat_created",
     "realtime_subscribed",
-    "message_sent"
+    "message_sent",
+    "realtime_delivered",
+    "message_persisted",
+    "memory_saved",
+    "memory_retrieved",
+    "profile_generated",
+    "profile_persisted",
+    "dashboard_persisted_after_refresh",
+    "mission_xp_streak_persisted",
+    "logged_out",
+    "logged_back_in",
+    "state_survives_relogin",
+    "subscription_state",
+    "no_console_errors"
   ],
   "xp": {
     "before": 0,
@@ -46,137 +72,244 @@
     "after": 1,
     "delta": 1
   },
-  "chatId": "7773a55a-f0ee-445e-889c-f70608f76863",
-  "messageId": "8650a4b7-8ea8-4387-a811-6fa7167597fe",
-  "memoryId": null,
-  "missionId": "e4de43e7-8fe1-434b-998d-62a4979d26f2",
-  "profileId": null,
+  "chatId": "c358e135-8aee-4477-be36-6d7ebf97b979",
+  "messageId": "ad4b25cc-6652-45fa-9f53-2e42aef32b12",
+  "memoryId": "943838c3-0ef1-4a5c-bc2b-cc751e844efe",
+  "missionId": "cb9b8c32-b3aa-42be-82ff-406eb8fbbc4f",
+  "profileId": "32928fc7-a97a-43f3-acdd-70273f31ec07",
   "subscription": {
-    "plan": null,
+    "plan": "free",
     "status": null
   },
   "consoleErrors": [],
   "networkFailures": [
-    "GET http://127.0.0.1:8080/node_modules/@tanstack/start-client-core/dist/esm/createServerFn.js?v=e8d56a15 — net::ERR_ABORTED",
-    "GET http://127.0.0.1:8080/node_modules/@tanstack/start-client-core/dist/esm/safeObjectMerge.js?v=e8d56a15 — net::ERR_ABORTED",
-    "GET http://127.0.0.1:8080/node_modules/.vite/deps/@tanstack_react-query.js?v=e8d56a15 — net::ERR_ABORTED",
-    "GET http://127.0.0.1:8080/src/routes/app.chat.tsx — net::ERR_ABORTED",
-    "GET http://127.0.0.1:8080/node_modules/@tanstack/start-client-core/node_modules/@tanstack/router-core/dist/esm/manifest.js?v=e8d56a15 — net::ERR_ABORTED",
-    "GET http://127.0.0.1:8080/node_modules/@tanstack/start-client-core/node_modules/@tanstack/router-core/dist/esm/new-process-route-tree.js?v=e8d56a15 — net::ERR_ABORTED",
-    "GET http://127.0.0.1:8080/node_modules/@tanstack/start-client-core/node_modules/@tanstack/router-core/dist/esm/ssr/serializer/RawStream.js?v=e8d56a15 — net::ERR_ABORTED",
-    "GET http://127.0.0.1:8080/src/routes/dating-profile-generator.tsx — net::ERR_ABORTED",
+    "GET http://127.0.0.1:8080/node_modules/@tanstack/router-core/dist/esm/ssr/serializer/ShallowErrorPlugin.js?v=e8d56a15 — net::ERR_ABORTED",
     "GET http://127.0.0.1:8080/src/routes/app.settings.tsx — net::ERR_ABORTED",
-    "GET http://127.0.0.1:8080/node_modules/@tanstack/start-client-core/node_modules/@tanstack/router-core/dist/esm/ssr/serializer/seroval-plugins.js?v=e8d56a15 — net::ERR_ABORTED",
-    "GET http://127.0.0.1:8080/node_modules/@tanstack/start-client-core/node_modules/@tanstack/router-core/dist/esm/config.js?v=e8d56a15 — net::ERR_ABORTED",
-    "GET http://127.0.0.1:8080/src/routes/index.tsx — net::ERR_ABORTED",
-    "GET http://127.0.0.1:8080/src/routes/tinder-openers.tsx — net::ERR_ABORTED",
-    "GET http://127.0.0.1:8080/src/routes/reset-password.tsx — net::ERR_ABORTED",
-    "GET http://127.0.0.1:8080/node_modules/@tanstack/start-client-core/node_modules/@tanstack/router-core/dist/esm/lru-cache.js?v=e8d56a15 — net::ERR_ABORTED",
-    "GET http://127.0.0.1:8080/src/routes/app.coach.tsx — net::ERR_ABORTED",
-    "GET http://127.0.0.1:8080/node_modules/@tanstack/start-client-core/node_modules/@tanstack/router-core/dist/esm/isServer/development.js?v=e8d56a15 — net::ERR_ABORTED",
-    "GET http://127.0.0.1:8080/src/integrations/supabase/client.ts — net::ERR_ABORTED",
-    "GET http://127.0.0.1:8080/src/routes/app.index.tsx — net::ERR_ABORTED",
-    "GET http://127.0.0.1:8080/src/routes/auth-callback.tsx — net::ERR_ABORTED",
-    "GET http://127.0.0.1:8080/src/routes/privacy.tsx — net::ERR_ABORTED",
-    "GET http://127.0.0.1:8080/src/routes/app.profile-generator.tsx — net::ERR_ABORTED",
-    "GET http://127.0.0.1:8080/node_modules/@tanstack/start-client-core/dist/esm/createCsrfMiddleware.js?v=e8d56a15 — net::ERR_ABORTED",
-    "GET http://127.0.0.1:8080/node_modules/@tanstack/start-client-core/dist/esm/getRouterInstance.js?v=e8d56a15 — net::ERR_ABORTED",
-    "GET http://127.0.0.1:8080/node_modules/@tanstack/start-client-core/node_modules/@tanstack/router-core/dist/esm/route.js?v=e8d56a15 — net::ERR_ABORTED",
-    "GET http://127.0.0.1:8080/src/routes/flirty-text-messages.tsx — net::ERR_ABORTED",
-    "GET http://127.0.0.1:8080/node_modules/@tanstack/start-fn-stubs/dist/esm/index.js?v=e8d56a15 — net::ERR_ABORTED",
-    "GET http://127.0.0.1:8080/node_modules/@tanstack/start-client-core/dist/esm/createMiddleware.js?v=e8d56a15 — net::ERR_ABORTED",
-    "GET http://127.0.0.1:8080/src/routes/ai-dating-guide.tsx — net::ERR_ABORTED",
-    "GET http://127.0.0.1:8080/src/routes/app.tsx — net::ERR_ABORTED",
-    "GET http://127.0.0.1:8080/node_modules/@tanstack/start-client-core/node_modules/@tanstack/router-core/dist/esm/ssr/ssr-match-id.js?v=e8d56a15 — net::ERR_ABORTED",
-    "GET http://127.0.0.1:8080/src/routes/app.coaches.tsx — net::ERR_ABORTED",
-    "GET http://127.0.0.1:8080/src/routes/app.missions.tsx — net::ERR_ABORTED",
-    "GET http://127.0.0.1:8080/node_modules/@tanstack/start-client-core/dist/esm/getGlobalStartContext.js?v=e8d56a15 — net::ERR_ABORTED",
-    "GET http://127.0.0.1:8080/node_modules/@tanstack/react-start-client/node_modules/@tanstack/router-core/dist/esm/isServer/development.js?v=e8d56a15 — net::ERR_ABORTED",
-    "GET http://127.0.0.1:8080/node_modules/@tanstack/start-client-core/node_modules/@tanstack/router-core/dist/esm/Matches.js?v=e8d56a15 — net::ERR_ABORTED",
-    "GET http://127.0.0.1:8080/node_modules/@tanstack/start-client-core/dist/esm/client-rpc/frame-decoder.js?v=e8d56a15 — net::ERR_ABORTED",
-    "GET http://127.0.0.1:8080/node_modules/@tanstack/start-client-core/dist/esm/createStart.js?v=e8d56a15 — net::ERR_ABORTED",
+    "GET http://127.0.0.1:8080/src/assets/og-image.jpg.asset.json?import — net::ERR_ABORTED",
+    "GET http://127.0.0.1:8080/node_modules/.vite/deps/@supabase_supabase-js.js?v=e8d56a15 — net::ERR_ABORTED",
+    "GET http://127.0.0.1:8080/node_modules/@tanstack/start-client-core/node_modules/@tanstack/router-core/dist/esm/new-process-route-tree.js?v=e8d56a15 — net::ERR_ABORTED",
+    "GET http://127.0.0.1:8080/node_modules/@tanstack/router-core/dist/esm/lru-cache.js?v=e8d56a15 — net::ERR_ABORTED",
     "GET http://127.0.0.1:8080/src/routes/app.memory.tsx — net::ERR_ABORTED",
-    "GET http://127.0.0.1:8080/node_modules/@tanstack/start-client-core/dist/esm/getDefaultSerovalPlugins.js?v=e8d56a15 — net::ERR_ABORTED",
-    "GET http://127.0.0.1:8080/src/routes/app.onboarding.tsx — net::ERR_ABORTED",
-    "GET http://127.0.0.1:8080/src/routes/__root.tsx — net::ERR_ABORTED",
-    "GET http://127.0.0.1:8080/src/routes/app.roleplay.tsx — net::ERR_ABORTED",
-    "GET http://127.0.0.1:8080/src/routes/[.]lovable.oauth.consent.tsx — net::ERR_ABORTED",
-    "GET http://127.0.0.1:8080/src/routes/refund-policy.tsx — net::ERR_ABORTED",
-    "GET http://127.0.0.1:8080/node_modules/seroval-plugins/dist/dev/web-43VA2W_p.js?v=e8d56a15 — net::ERR_ABORTED",
-    "GET http://127.0.0.1:8080/node_modules/@tanstack/start-client-core/node_modules/@tanstack/router-core/dist/esm/ssr/serializer/transformer.js?v=e8d56a15 — net::ERR_ABORTED",
-    "GET http://127.0.0.1:8080/node_modules/@tanstack/start-client-core/node_modules/@tanstack/router-core/dist/esm/searchMiddleware.js?v=e8d56a15 — net::ERR_ABORTED",
-    "GET http://127.0.0.1:8080/src/routes/hinge-openers.tsx — net::ERR_ABORTED",
-    "GET http://127.0.0.1:8080/src/routes/terms.tsx — net::ERR_ABORTED",
+    "GET http://127.0.0.1:8080/src/routes/app.missions.tsx — net::ERR_ABORTED",
+    "GET http://127.0.0.1:8080/src/lib/errors.ts — net::ERR_ABORTED",
     "GET http://127.0.0.1:8080/src/routes/pricing.tsx — net::ERR_ABORTED",
+    "GET http://127.0.0.1:8080/node_modules/@tanstack/start-client-core/node_modules/@tanstack/router-core/dist/esm/lru-cache.js?v=e8d56a15 — net::ERR_ABORTED",
+    "GET http://127.0.0.1:8080/src/routes/dating-profile-generator.tsx?tsr-shared=1 — net::ERR_ABORTED",
+    "GET http://127.0.0.1:8080/node_modules/seroval-plugins/dist/dev/web.js?v=e8d56a15 — net::ERR_ABORTED",
+    "GET http://127.0.0.1:8080/src/routes/app.roleplay.tsx — net::ERR_ABORTED",
+    "GET http://127.0.0.1:8080/src/routes/app.onboarding.tsx — net::ERR_ABORTED",
+    "GET http://127.0.0.1:8080/src/routes/privacy.tsx — net::ERR_ABORTED",
+    "GET http://127.0.0.1:8080/src/routes/refund-policy.tsx — net::ERR_ABORTED",
+    "GET http://127.0.0.1:8080/node_modules/@tanstack/start-client-core/dist/esm/createStart.js?v=e8d56a15 — net::ERR_ABORTED",
+    "GET http://127.0.0.1:8080/src/lib/hydration-diagnostics.ts — net::ERR_ABORTED",
+    "GET http://127.0.0.1:8080/node_modules/@tanstack/start-client-core/node_modules/@tanstack/router-core/dist/esm/isServer/development.js?v=e8d56a15 — net::ERR_ABORTED",
+    "GET http://127.0.0.1:8080/node_modules/@tanstack/start-client-core/node_modules/@tanstack/router-core/dist/esm/ssr/serializer/ShallowErrorPlugin.js?v=e8d56a15 — net::ERR_ABORTED",
+    "GET http://127.0.0.1:8080/node_modules/@tanstack/start-client-core/dist/esm/client-rpc/frame-decoder.js?v=e8d56a15 — net::ERR_ABORTED",
+    "GET http://127.0.0.1:8080/node_modules/@tanstack/start-client-core/node_modules/@tanstack/router-core/dist/esm/ssr/constants.js?v=e8d56a15 — net::ERR_ABORTED",
+    "GET http://127.0.0.1:8080/node_modules/.vite/deps/@vercel_analytics_react.js?v=e8d56a15 — net::ERR_ABORTED",
+    "GET http://127.0.0.1:8080/node_modules/@tanstack/start-client-core/dist/esm/getDefaultSerovalPlugins.js?v=e8d56a15 — net::ERR_ABORTED",
+    "GET http://127.0.0.1:8080/node_modules/@tanstack/router-core/dist/esm/ssr/ssr-match-id.js?v=e8d56a15 — net::ERR_ABORTED",
+    "GET http://127.0.0.1:8080/src/routes/app.coach.tsx — net::ERR_ABORTED",
+    "GET http://127.0.0.1:8080/src/styles.css?url — net::ERR_ABORTED",
+    "GET http://127.0.0.1:8080/src/routes/app.profile-generator.tsx — net::ERR_ABORTED",
+    "GET http://127.0.0.1:8080/src/routes/app.index.tsx — net::ERR_ABORTED",
+    "GET http://127.0.0.1:8080/node_modules/@tanstack/react-start-client/node_modules/@tanstack/router-core/dist/esm/isServer/development.js?v=e8d56a15 — net::ERR_ABORTED",
+    "GET http://127.0.0.1:8080/src/routes/reset-password.tsx — net::ERR_ABORTED",
+    "GET http://127.0.0.1:8080/node_modules/@tanstack/start-fn-stubs/dist/esm/index.js?v=e8d56a15 — net::ERR_ABORTED",
     "GET http://127.0.0.1:8080/src/routes/app.roast.tsx — net::ERR_ABORTED",
-    "GET http://127.0.0.1:8080/src/routes/auth.tsx — net::ERR_ABORTED"
+    "GET http://127.0.0.1:8080/src/routes/[.]lovable.oauth.consent.tsx — net::ERR_ABORTED",
+    "GET http://127.0.0.1:8080/node_modules/.vite/deps/@tanstack_react-query.js?v=e8d56a15 — net::ERR_ABORTED",
+    "GET http://127.0.0.1:8080/src/routes/app.coaches.tsx — net::ERR_ABORTED",
+    "GET http://127.0.0.1:8080/src/integrations/supabase/previewAuthStorage.ts — net::ERR_ABORTED",
+    "GET http://127.0.0.1:8080/node_modules/@tanstack/router-core/dist/esm/new-process-route-tree.js?v=e8d56a15 — net::ERR_ABORTED",
+    "GET http://127.0.0.1:8080/node_modules/seroval/dist/dev/index.js?v=e8d56a15 — net::ERR_ABORTED",
+    "GET http://127.0.0.1:8080/src/routes/tinder-openers.tsx — net::ERR_ABORTED",
+    "GET http://127.0.0.1:8080/node_modules/@tanstack/start-client-core/dist/esm/createServerFn.js?v=e8d56a15 — net::ERR_ABORTED",
+    "GET http://127.0.0.1:8080/node_modules/@tanstack/start-client-core/dist/esm/createMiddleware.js?v=e8d56a15 — net::ERR_ABORTED",
+    "GET http://127.0.0.1:8080/node_modules/@tanstack/start-client-core/dist/esm/safeObjectMerge.js?v=e8d56a15 — net::ERR_ABORTED",
+    "GET http://127.0.0.1:8080/node_modules/.vite/deps/sonner.js?v=e8d56a15 — net::ERR_ABORTED",
+    "GET http://127.0.0.1:8080/src/routes/terms.tsx — net::ERR_ABORTED",
+    "GET http://127.0.0.1:8080/node_modules/@tanstack/start-client-core/dist/esm/createCsrfMiddleware.js?v=e8d56a15 — net::ERR_ABORTED",
+    "GET http://127.0.0.1:8080/src/routes/ai-dating-guide.tsx?tsr-shared=1 — net::ERR_ABORTED",
+    "GET http://127.0.0.1:8080/node_modules/@tanstack/start-client-core/dist/esm/getGlobalStartContext.js?v=e8d56a15 — net::ERR_ABORTED",
+    "GET http://127.0.0.1:8080/src/routes/hinge-openers.tsx — net::ERR_ABORTED",
+    "GET http://127.0.0.1:8080/node_modules/@tanstack/start-client-core/dist/esm/getRouterInstance.js?v=e8d56a15 — net::ERR_ABORTED",
+    "GET http://127.0.0.1:8080/src/routes/flirty-text-messages.tsx — net::ERR_ABORTED",
+    "GET http://127.0.0.1:8080/node_modules/@tanstack/router-core/dist/esm/ssr/constants.js?v=e8d56a15 — net::ERR_ABORTED",
+    "GET http://127.0.0.1:8080/src/routes/app.chat.tsx — net::ERR_ABORTED",
+    "GET http://127.0.0.1:8080/node_modules/.vite/deps/@vercel_speed-insights_react.js?v=e8d56a15 — net::ERR_ABORTED",
+    "GET http://127.0.0.1:8080/node_modules/@tanstack/react-router/dist/esm/index.dev.js?v=e8d56a15 — net::ERR_ABORTED",
+    "GET http://127.0.0.1:8080/node_modules/.vite/deps/react_jsx-runtime.js?v=e8d56a15 — net::ERR_ABORTED",
+    "GET http://127.0.0.1:8080/node_modules/.vite/deps/react-dom_client.js?v=e8d56a15 — net::ERR_ABORTED",
+    "GET http://127.0.0.1:8080/node_modules/@tanstack/start-client-core/dist/esm/client/hydrateStart.js?v=e8d56a15 — net::ERR_ABORTED",
+    "GET http://127.0.0.1:8080/node_modules/@tanstack/react-router/dist/esm/Match.js?v=e8d56a15 — net::ERR_ABORTED",
+    "GET http://127.0.0.1:8080/node_modules/@tanstack/react-router/dist/esm/useMatch.js?v=e8d56a15 — net::ERR_ABORTED",
+    "GET http://127.0.0.1:8080/node_modules/@tanstack/react-router/dist/esm/utils.js?v=e8d56a15 — net::ERR_ABORTED",
+    "GET http://127.0.0.1:8080/node_modules/@tanstack/react-router/dist/esm/useParams.js?v=e8d56a15 — net::ERR_ABORTED",
+    "GET http://127.0.0.1:8080/node_modules/@tanstack/react-router/dist/esm/awaited.js?v=e8d56a15 — net::ERR_ABORTED",
+    "GET http://127.0.0.1:8080/node_modules/@tanstack/react-router/dist/esm/ClientOnly.js?v=e8d56a15 — net::ERR_ABORTED",
+    "GET http://127.0.0.1:8080/node_modules/@tanstack/react-router/dist/esm/not-found.js?v=e8d56a15 — net::ERR_ABORTED",
+    "GET http://127.0.0.1:8080/node_modules/@tanstack/react-router/dist/esm/useCanGoBack.js?v=e8d56a15 — net::ERR_ABORTED",
+    "GET http://127.0.0.1:8080/node_modules/@tanstack/react-router/dist/esm/Asset.js?v=e8d56a15 — net::ERR_ABORTED",
+    "GET http://127.0.0.1:8080/node_modules/@tanstack/react-router/dist/esm/useSearch.js?v=e8d56a15 — net::ERR_ABORTED",
+    "GET http://127.0.0.1:8080/node_modules/@tanstack/react-router/dist/esm/index.js?v=e8d56a15 — net::ERR_ABORTED",
+    "GET http://127.0.0.1:8080/node_modules/@tanstack/react-router/dist/esm/useNavigate.js?v=e8d56a15 — net::ERR_ABORTED",
+    "GET http://127.0.0.1:8080/node_modules/@tanstack/react-router/dist/esm/ScrollRestoration.js?v=e8d56a15 — net::ERR_ABORTED",
+    "GET http://127.0.0.1:8080/node_modules/.vite/deps/react_jsx-runtime.js?v=e8d56a15 — net::ERR_ABORTED",
+    "GET http://127.0.0.1:8080/node_modules/@tanstack/react-router/dist/esm/useBlocker.js?v=e8d56a15 — net::ERR_ABORTED",
+    "GET http://127.0.0.1:8080/node_modules/@tanstack/react-router/dist/esm/ScriptOnce.js?v=e8d56a15 — net::ERR_ABORTED",
+    "GET http://127.0.0.1:8080/node_modules/@tanstack/react-router/dist/esm/route.js?v=e8d56a15 — net::ERR_ABORTED",
+    "GET http://127.0.0.1:8080/node_modules/@tanstack/react-router/dist/esm/useRouteContext.js?v=e8d56a15 — net::ERR_ABORTED",
+    "GET http://127.0.0.1:8080/node_modules/@tanstack/react-router/dist/esm/headContentUtils.js?v=e8d56a15 — net::ERR_ABORTED",
+    "GET http://127.0.0.1:8080/node_modules/@tanstack/react-router/dist/esm/useLoaderData.js?v=e8d56a15 — net::ERR_ABORTED",
+    "GET http://127.0.0.1:8080/node_modules/@tanstack/start-client-core/dist/esm/client/hydrateStart.js?v=e8d56a15 — net::ERR_ABORTED",
+    "GET http://127.0.0.1:8080/node_modules/@tanstack/react-router/dist/esm/CatchBoundary.js?v=e8d56a15 — net::ERR_ABORTED",
+    "GET http://127.0.0.1:8080/node_modules/@tanstack/react-router/dist/esm/useRouterState.js?v=e8d56a15 — net::ERR_ABORTED",
+    "GET http://127.0.0.1:8080/node_modules/@tanstack/react-router/dist/esm/Matches.js?v=e8d56a15 — net::ERR_ABORTED",
+    "GET http://127.0.0.1:8080/node_modules/@tanstack/react-router/dist/esm/router.js?v=e8d56a15 — net::ERR_ABORTED",
+    "GET http://127.0.0.1:8080/node_modules/@tanstack/react-router/dist/esm/lazyRouteComponent.js?v=e8d56a15 — net::ERR_ABORTED",
+    "GET http://127.0.0.1:8080/node_modules/@tanstack/react-router/dist/esm/fileRoute.js?v=e8d56a15 — net::ERR_ABORTED",
+    "GET http://127.0.0.1:8080/node_modules/@tanstack/react-router/dist/esm/link.js?v=e8d56a15 — net::ERR_ABORTED",
+    "GET http://127.0.0.1:8080/node_modules/.vite/deps/react-dom_client.js?v=e8d56a15 — net::ERR_ABORTED",
+    "GET http://127.0.0.1:8080/node_modules/@tanstack/react-router/dist/esm/HeadContent.dev.js?v=e8d56a15 — net::ERR_ABORTED",
+    "GET http://127.0.0.1:8080/node_modules/@tanstack/react-router/dist/esm/useLocation.js?v=e8d56a15 — net::ERR_ABORTED",
+    "GET http://127.0.0.1:8080/node_modules/@tanstack/react-router/dist/esm/useRouter.js?v=e8d56a15 — net::ERR_ABORTED",
+    "GET http://127.0.0.1:8080/node_modules/@tanstack/react-router/dist/esm/RouterProvider.js?v=e8d56a15 — net::ERR_ABORTED",
+    "GET http://127.0.0.1:8080/node_modules/@tanstack/react-router/dist/esm/Scripts.js?v=e8d56a15 — net::ERR_ABORTED",
+    "GET http://127.0.0.1:8080/node_modules/@tanstack/react-router/dist/esm/useLoaderDeps.js?v=e8d56a15 — net::ERR_ABORTED",
+    "GET http://127.0.0.1:8080/node_modules/.vite/deps/lucide-react.js?v=e8d56a15 — net::ERR_ABORTED"
   ],
   "stages": [
     {
       "name": "session_created",
       "status": "PASS",
-      "ms": 1058
+      "ms": 1715
     },
     {
       "name": "onboarding_completed",
       "status": "PASS",
-      "ms": 289
+      "ms": 357
     },
     {
       "name": "onboarding_persisted",
       "status": "PASS",
-      "ms": 109
+      "ms": 194
     },
     {
       "name": "baseline_xp_streak",
       "status": "PASS",
-      "ms": 183
+      "ms": 134
     },
     {
       "name": "mission_generated",
       "status": "PASS",
-      "ms": 120
+      "ms": 83
     },
     {
       "name": "mission_completed",
       "status": "PASS",
-      "ms": 68
+      "ms": 123
     },
     {
       "name": "xp_awarded",
       "status": "PASS",
-      "ms": 163
+      "ms": 111
     },
     {
       "name": "streak_increased",
       "status": "PASS",
-      "ms": 93
+      "ms": 53
     },
     {
       "name": "coach_opened",
       "status": "PASS",
-      "ms": 907
+      "ms": 882
     },
     {
       "name": "chat_created",
       "status": "PASS",
-      "ms": 71
+      "ms": 103
     },
     {
       "name": "realtime_subscribed",
       "status": "PASS",
-      "ms": 2150
+      "ms": 1330
     },
     {
       "name": "message_sent",
       "status": "PASS",
-      "ms": 196
+      "ms": 64
     },
     {
       "name": "realtime_delivered",
+      "status": "PASS",
+      "ms": 1241
+    },
+    {
+      "name": "message_persisted",
+      "status": "PASS",
+      "ms": 61
+    },
+    {
+      "name": "memory_saved",
+      "status": "PASS",
+      "ms": 56
+    },
+    {
+      "name": "memory_retrieved",
+      "status": "PASS",
+      "ms": 45
+    },
+    {
+      "name": "profile_generated",
+      "status": "PASS",
+      "ms": 343
+    },
+    {
+      "name": "profile_persisted",
+      "status": "PASS",
+      "ms": 42
+    },
+    {
+      "name": "dashboard_persisted_after_refresh",
+      "status": "PASS",
+      "ms": 780
+    },
+    {
+      "name": "mission_xp_streak_persisted",
+      "status": "PASS",
+      "ms": 191
+    },
+    {
+      "name": "logged_out",
+      "status": "PASS",
+      "ms": 3325
+    },
+    {
+      "name": "logged_back_in",
+      "status": "PASS",
+      "ms": 3040
+    },
+    {
+      "name": "state_survives_relogin",
+      "status": "PASS",
+      "ms": 369
+    },
+    {
+      "name": "subscription_state",
+      "status": "PASS",
+      "ms": 48
+    },
+    {
+      "name": "no_console_errors",
+      "status": "PASS",
+      "ms": 6
+    },
+    {
+      "name": "no_network_failures",
       "status": "FAIL",
-      "ms": 29934,
-      "detail": "\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeGreaterThan\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: > \u001b[32m0\u001b[39m\nReceived:   \u001b[31m0\u001b[39m\n\nCall Log:\n- Timeout 30000ms exceeded while waiting on the predicate"
+      "ms": 14,
+      "detail": "network failures: GET http://127.0.0.1:8080/node_modules/@tanstack/router-core/dist/esm/ssr/serializer/ShallowErrorPlugin.js?v=e8d56a15 — net::ERR_ABORTED | GET http://127.0.0.1:8080/src/routes/app.settings.tsx — net::ERR_ABORTED | GET http://127.0.0.1:8080/src/assets/og-image.jpg.asset.json?import — net::ERR_ABORTED | GET http://127.0.0.1:8080/node_modules/.vite/deps/@supabase_supabase-js.js?v=e8d56a15 — net::ERR_ABORTED | GET http://127.0.0.1:8080/node_modules/@tanstack/start-client-core/node_modules/@tanstack/router-core/dist/esm/new-process-route-tree.js?v=e8d56a15 — net::ERR_ABORTED | GET http://127.0.0.1:8080/node_modules/@tanstack/router-core/dist/esm/lru-cache.js?v=e8d56a15 — net::ERR_ABORTED | GET http://127.0.0.1:8080/src/routes/app.memory.tsx — net::ERR_ABORTED | GET http://127.0.0.1:8080/src/routes/app.missions.tsx — net::ERR_ABORTED | GET http://127.0.0.1:8080/src/lib/errors.ts — net::ERR_ABORTED | GET http://127.0.0.1:8080/src/routes/pricing.tsx — net::ERR_ABORTED | GET http://127.0.0.1:8080/node_modules/@tanstack/start-client-core/node_modules/@tanstack/router-core/dist/esm/lru-cache.js?v=e8d56a15 — net::ERR_ABORTED | GET http://127.0.0.1:8080/src/routes/dating-profile-generator.tsx?tsr-shared=1 — net::ERR_ABORTED | GET http://127.0.0.1:8080/node_modules/seroval-plugins/dist/dev/web.js?v=e8d56a15 — net::ERR_ABORTED | GET http://127.0.0.1:8080/src/routes/app.roleplay.tsx — net::ERR_ABORTED | GET http://127.0.0.1:8080/src/routes/app.onboarding.tsx — net::ERR_ABORTED | GET http://127.0.0.1:8080/src/routes/privacy.tsx — net::ERR_ABORTED | GET http://127.0.0.1:8080/src/routes/refund-policy.tsx — net::ERR_ABORTED | GET http://127.0.0.1:8080/node_modules/@tanstack/start-client-core/dist/esm/createStart.js?v=e8d56a15 — net::ERR_ABORTED | GET http://127.0.0.1:8080/src/lib/hydration-diagnostics.ts — net::ERR_ABORTED | GET http://127.0.0.1:8080/node_modules/@tanstack/start-client-core/node_modules/@tanstack/router-core/dist/esm/isServer/development.js?v=e8d56a15 — net::ERR_ABORTED | GET http://127.0.0.1:8080/node_modules/@tanstack/start-client-core/node_modules/@tanstack/router-core/dist/esm/ssr/serializer/ShallowErrorPlugin.js?v=e8d56a15 — net::ERR_ABORTED | GET http://127.0.0.1:8080/node_modules/@tanstack/start-client-core/dist/esm/client-rpc/frame-decoder.js?v=e8d56a15 — net::ERR_ABORTED | GET http://127.0.0.1:8080/node_modules/@tanstack/start-client-core/node_modules/@tanstack/router-core/dist/esm/ssr/constants.js?v=e8d56a15 — net::ERR_ABORTED | GET http://127.0.0.1:8080/node_modules/@tanstack/start-client-core/dist/esm/getDefaultSerovalPlugins.js?v=e8d56a15 — net::ERR_ABORTED | GET http://127.0.0.1:8080/node_modules/@tanstack/router-core/dist/esm/ssr/ssr-match-id.js?v=e8d56a15 — net::ERR_ABORTED | GET http://127.0.0.1:8080/src/routes/app.coach.tsx — net::ERR_ABORTED | GET http://127.0.0.1:8080/src/styles.css?url — net::ERR_ABORTED | GET http://127.0.0.1:8080/src/routes/app.profile-generator.tsx — net::ERR_ABORTED | GET http://127.0.0.1:8080/src/routes/app.index.tsx — net::ERR_ABORTED | GET http://127.0.0.1:8080/node_modules/@tanstack/react-start-client/node_modules/@tanstack/router-core/dist/esm/isServer/development.js?v=e8d56a15 — net::ERR_ABORTED | GET http://127.0.0.1:8080/src/routes/reset-password.tsx — net::ERR_ABORTED | GET http://127.0.0.1:8080/node_modules/@tanstack/start-fn-stubs/dist/esm/index.js?v=e8d56a15 — net::ERR_ABORTED | GET http://127.0.0.1:8080/src/routes/app.roast.tsx — net::ERR_ABORTED | GET http://127.0.0.1:8080/src/routes/[.]lovable.oauth.consent.tsx — net::ERR_ABORTED | GET http://127.0.0.1:8080/node_modules/.vite/deps/@tanstack_react-query.js?v=e8d56a15 — net::ERR_ABORTED | GET http://127.0.0.1:8080/src/routes/app.coaches.tsx — net::ERR_ABORTED | GET http://127.0.0.1:8080/src/integrations/supabase/previewAuthStorage.ts — net::ERR_ABORTED | GET http://127.0.0.1:8080/node_modules/@tanstack/router-core/dist/esm/new-process-route-tree.js?v=e8d56a15 — net::ERR_ABORTED | GET http://127.0.0.1:8080/node_modules/seroval/dist/dev/index.js?v=e8d56a15 — net::ERR_ABORTED | GET http://127.0.0.1:8080/src/routes/tinder-openers.tsx — net::ERR_ABORTED | GET http://127.0.0.1:8080/node_modules/@tanstack/start-client-core/dist/esm/createServerFn.js?v=e8d56a15 — net::ERR_ABORTED | GET http://127.0.0.1:8080/node_modules/@tanstack/start-client-core/dist/esm/createMiddleware.js?v=e8d56a15 — net::ERR_ABORTED | GET http://127.0.0.1:8080/node_modules/@tanstack/start-client-core/dist/esm/safeObjectMerge.js?v=e8d56a15 — net::ERR_ABORTED | GET http://127.0.0.1:8080/node_modules/.vite/deps/sonner.js?v=e8d56a15 — net::ERR_ABORTED | GET http://127.0.0.1:8080/src/routes/terms.tsx — net::ERR_ABORTED | GET http://127.0.0.1:8080/node_modules/@tanstack/start-client-core/dist/esm/createCsrfMiddleware.js?v=e8d56a15 — net::ERR_ABORTED | GET http://127.0.0.1:8080/src/routes/ai-dating-guide.tsx?tsr-shared=1 — net::ERR_ABORTED | GET http://127.0.0.1:8080/node_modules/@tanstack/start-client-core/dist/esm/getGlobalStartContext.js?v=e8d56a15 — net::ERR_ABORTED | GET http://127.0.0.1:8080/src/routes/hinge-openers.tsx — net::ERR_ABORTED | GET http://127.0.0.1:8080/node_modules/@tanstack/start-client-core/dist/esm/getRouterInstance.js?v=e8d56a15 — net::ERR_ABORTED | GET http://127.0.0.1:8080/src/routes/flirty-text-messages.tsx — net::ERR_ABORTED | GET http://127.0.0.1:8080/node_modules/@tanstack/router-core/dist/esm/ssr/constants.js?v=e8d56a15 — net::ERR_ABORTED | GET http://127.0.0.1:8080/src/routes/app.chat.tsx — net::ERR_ABORTED | GET http://127.0.0.1:8080/node_modules/.vite/deps/@vercel_speed-insights_react.js?v=e8d56a15 — net::ERR_ABORTED | GET http://127.0.0.1:8080/node_modules/@tanstack/react-router/dist/esm/index.dev.js?v=e8d56a15 — net::ERR_ABORTED | GET http://127.0.0.1:8080/node_modules/.vite/deps/react_jsx-runtime.js?v=e8d56a15 — net::ERR_ABORTED | GET http://127.0.0.1:8080/node_modules/.vite/deps/react-dom_client.js?v=e8d56a15 — net::ERR_ABORTED | GET http://127.0.0.1:8080/node_modules/@tanstack/start-client-core/dist/esm/client/hydrateStart.js?v=e8d56a15 — net::ERR_ABORTED | GET http://127.0.0.1:8080/node_modules/@tanstack/react-router/dist/esm/Match.js?v=e8d56a15 — net::ERR_ABORTED | GET http://127.0.0.1:8080/node_modules/@tanstack/react-router/dist/esm/useMatch.js?v=e8d56a15 — net::ERR_ABORTED | GET http://127.0.0.1:8080/node_modules/@tanstack/react-router/dist/esm/utils.js?v=e8d56a15 — net::ERR_ABORTED | GET http://127.0.0.1:8080/node_modules/@tanstack/react-router/dist/esm/useParams.js?v=e8d56a15 — net::ERR_ABORTED | GET http://127.0.0.1:8080/node_modules/@tanstack/react-router/dist/esm/awaited.js?v=e8d56a15 — net::ERR_ABORTED | GET http://127.0.0.1:8080/node_modules/@tanstack/react-router/dist/esm/ClientOnly.js?v=e8d56a15 — net::ERR_ABORTED | GET http://127.0.0.1:8080/node_modules/@tanstack/react-router/dist/esm/not-found.js?v=e8d56a15 — net::ERR_ABORTED | GET http://127.0.0.1:8080/node_modules/@tanstack/react-router/dist/esm/useCanGoBack.js?v=e8d56a15 — net::ERR_ABORTED | GET http://127.0.0.1:8080/node_modules/@tanstack/react-router/dist/esm/Asset.js?v=e8d56a15 — net::ERR_ABORTED | GET http://127.0.0.1:8080/node_modules/@tanstack/react-router/dist/esm/useSearch.js?v=e8d56a15 — net::ERR_ABORTED | GET http://127.0.0.1:8080/node_modules/@tanstack/react-router/dist/esm/index.js?v=e8d56a15 — net::ERR_ABORTED | GET http://127.0.0.1:8080/node_modules/@tanstack/react-router/dist/esm/useNavigate.js?v=e8d56a15 — net::ERR_ABORTED | GET http://127.0.0.1:8080/node_modules/@tanstack/react-router/dist/esm/ScrollRestoration.js?v=e8d56a15 — net::ERR_ABORTED | GET http://127.0.0.1:8080/node_modules/.vite/deps/react_jsx-runtime.js?v=e8d56a15 — net::ERR_ABORTED | GET http://127.0.0.1:8080/node_modules/@tanstack/react-router/dist/esm/useBlocker.js?v=e8d56a15 — net::ERR_ABORTED | GET http://127.0.0.1:8080/node_modules/@tanstack/react-router/dist/esm/ScriptOnce.js?v=e8d56a15 — net::ERR_ABORTED | GET http://127.0.0.1:8080/node_modules/@tanstack/react-router/dist/esm/route.js?v=e8d56a15 — net::ERR_ABORTED | GET http://127.0.0.1:8080/node_modules/@tanstack/react-router/dist/esm/useRouteContext.js?v=e8d56a15 — net::ERR_ABORTED | GET http://127.0.0.1:8080/node_modules/@tanstack/react-router/dist/esm/headContentUtils.js?v=e8d56a15 — net::ERR_ABORTED | GET http://127.0.0.1:8080/node_modules/@tanstack/react-router/dist/esm/useLoaderData.js?v=e8d56a15 — net::ERR_ABORTED | GET http://127.0.0.1:8080/node_modules/@tanstack/start-client-core/dist/esm/client/hydrateStart.js?v=e8d56a15 — net::ERR_ABORTED | GET http://127.0.0.1:8080/node_modules/@tanstack/react-router/dist/esm/CatchBoundary.js?v=e8d56a15 — net::ERR_ABORTED | GET http://127.0.0.1:8080/node_modules/@tanstack/react-router/dist/esm/useRouterState.js?v=e8d56a15 — net::ERR_ABORTED | GET http://127.0.0.1:8080/node_modules/@tanstack/react-router/dist/esm/Matches.js?v=e8d56a15 — net::ERR_ABORTED | GET http://127.0.0.1:8080/node_modules/@tanstack/react-router/dist/esm/router.js?v=e8d56a15 — net::ERR_ABORTED | GET http://127.0.0.1:8080/node_modules/@tanstack/react-router/dist/esm/lazyRouteComponent.js?v=e8d56a15 — net::ERR_ABORTED | GET http://127.0.0.1:8080/node_modules/@tanstack/react-router/dist/esm/fileRoute.js?v=e8d56a15 — net::ERR_ABORTED | GET http://127.0.0.1:8080/node_modules/@tanstack/react-router/dist/esm/link.js?v=e8d56a15 — net::ERR_ABORTED | GET http://127.0.0.1:8080/node_modules/.vite/deps/react-dom_client.js?v=e8d56a15 — net::ERR_ABORTED | GET http://127.0.0.1:8080/node_modules/@tanstack/react-router/dist/esm/HeadContent.dev.js?v=e8d56a15 — net::ERR_ABORTED | GET http://127.0.0.1:8080/node_modules/@tanstack/react-router/dist/esm/useLocation.js?v=e8d56a15 — net::ERR_ABORTED | GET http://127.0.0.1:8080/node_modules/@tanstack/react-router/dist/esm/useRouter.js?v=e8d56a15 — net::ERR_ABORTED | GET http://127.0.0.1:8080/node_modules/@tanstack/react-router/dist/esm/RouterProvider.js?v=e8d56a15 — net::ERR_ABORTED | GET http://127.0.0.1:8080/node_modules/@tanstack/react-router/dist/esm/Scripts.js?v=e8d56a15 — net::ERR_ABORTED | GET http://127.0.0.1:8080/node_modules/@tanstack/react-router/dist/esm/useLoaderDeps.js?v=e8d56a15 — net::ERR_ABORTED | GET http://127.0.0.1:8080/node_modules/.vite/deps/lucide-react.js?v=e8d56a15 — net::ERR_ABORTED\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  -  1\u001b[39m\n\u001b[31m+ Received  + 96\u001b[39m\n\n\u001b[32m- Array []\u001b[39m\n\u001b[31m+ Array [\u001b[39m\n\u001b[31m+   \"GET http://127.0.0.1:8080/node_modules/@tanstack/router-core/dist/esm/ssr/serializer/ShallowErrorPlugin.js?v=e8d56a15 — net::ERR_ABORTED\",\u001b[39m\n\u001b[31m+   \"GET http://127.0.0.1:8080/src/routes/app.settings.tsx — net::ERR_ABORTED\",\u001b[39m\n\u001b[31m+   \"GET http://127.0.0.1:8080/src/assets/og-image.jpg.asset.json?import — net::ERR_ABORTED\",\u001b[39m\n\u001b[31m+   \"GET http://127.0.0.1:8080/node_modules/.vite/deps/@supabase_supabase-js.js?v=e8d56a15 — net::ERR_ABORTED\",\u001b[39m\n\u001b[31m+   \"GET http://127.0.0.1:8080/node_modules/@tanstack/start-client-core/node_modules/@tanstack/router-core/dist/esm/new-process-route-tree.js?v=e8d56a15 — net::ERR_ABORTED\",\u001b[39m\n\u001b[31m+   \"GET http://127.0.0.1:8080/node_modules/@tanstack/router-core/dist/esm/lru-cache.js?v=e8d56a15 — net::ERR_ABORTED\",\u001b[39m\n\u001b[31m+   \"GET http://127.0.0.1:8080/src/routes/app.memory.tsx — net::ERR_ABORTED\",\u001b[39m\n\u001b[31m+   \"GET http://127.0.0.1:8080/src/routes/app.missions.tsx — net::ERR_ABORTED\",\u001b[39m\n\u001b[31m+   \"GET http://127.0.0.1:8080/src/lib/errors.ts — net::ERR_ABORTED\",\u001b[39m\n\u001b[31m+   \"GET http://127.0.0.1:8080/src/routes/pricing.tsx — net::ERR_ABORTED\",\u001b[39m\n\u001b[31m+   \"GET http://127.0.0.1:8080/node_modules/@tanstack/start-client-core/node_modules/@tanstack/router-core/dist/esm/lru-cache.js?v=e8d56a15 — net::ERR_ABORTED\",\u001b[39m\n\u001b[31m+   \"GET http://127.0.0.1:8080/src/routes/dating-profile-generator.tsx?tsr-shared=1 — net::ERR_ABORTED\",\u001b[39m\n\u001b[31m+   \"GET http://127.0.0.1:8080/node_modules/seroval-plugins/dist/dev/web.js?v=e8d56a15 — net::ERR_ABORTED\",\u001b[39m\n\u001b[31m+   \"GET http://127.0.0.1:8080/src/routes/app.roleplay.tsx — net::ERR_ABORTED\",\u001b[39m\n\u001b[31m+   \"GET http://127.0.0.1:8080/src/routes/app.onboarding.tsx — net::ERR_ABORTED\",\u001b[39m\n\u001b[31m+   \"GET http://127.0.0.1:8080/src/routes/privacy.tsx — net::ERR_ABORTED\",\u001b[39m\n\u001b[31m+   \"GET http://127.0.0.1:8080/src/routes/refund-policy.tsx — net::ERR_ABORTED\",\u001b[39m\n\u001b[31m+   \"GET http://127.0.0.1:8080/node_modules/@tanstack/start-client-core/dist/esm/createStart.js?v=e8d56a15 — net::ERR_ABORTED\",\u001b[39m\n\u001b[31m+   \"GET http://127.0.0.1:8080/src/lib/hydration-diagnostics.ts — net::ERR_ABORTED\",\u001b[39m\n\u001b[31m+   \"GET http://127.0.0.1:8080/node_modules/@tanstack/start-client-core/node_modules/@tanstack/router-core/dist/esm/isServer/development.js?v=e8d56a15 — net::ERR_ABORTED\",\u001b[39m\n\u001b[31m+   \"GET http://127.0.0.1:8080/node_modules/@tanstack/start-client-core/node_modules/@tanstack/router-core/dist/esm/ssr/serializer/ShallowErrorPlugin.js?v=e8d56a15 — net::ERR_ABORTED\",\u001b[39m\n\u001b[31m+   \"GET http://127.0.0.1:8080/node_modules/@tanstack/start-client-core/dist/esm/client-rpc/frame-decoder.js?v=e8d56a15 — net::ERR_ABORTED\",\u001b[39m\n\u001b[31m+   \"GET http://127.0.0.1:8080/node_modules/@tanstack/start-client-core/node_modules/@tanstack/router-core/dist/esm/ssr/constants.js?v=e8d56a15 — net::ERR_ABORTED\",\u001b[39m\n\u001b[31m+   \"GET http://127.0.0.1:8080/node_modules/@tanstack/start-client-core/dist/esm/getDefaultSerovalPlugins.js?v=e8d56a15 — net::ERR_ABORTED\",\u001b[39m\n\u001b[31m+   \"GET http://127.0.0.1:8080/node_modules/@tanstack/router-core/dist/esm/ssr/ssr-match-id.js?v=e8d56a15 — net::ERR_ABORTED\",\u001b[39m\n\u001b[31m+   \"GET http://127.0.0.1:8080/src/routes/app.coach.tsx — net::ERR_ABORTED\",\u001b[39m\n\u001b[31m+   \"GET http://127.0.0.1:8080/src/styles.css?url — net::ERR_ABORTED\",\u001b[39m\n\u001b[31m+   \"GET http://127.0.0.1:8080/src/routes/app.profile-generator.tsx — net::ERR_ABORTED\",\u001b[39m\n\u001b[31m+   \"GET http://127.0.0.1:8080/src/routes/app.index.tsx — net::ERR_ABORTED\",\u001b[39m\n\u001b[31m+   \"GET http://127.0.0.1:8080/node_modules/@tanstack/react-start-client/node_modules/@tanstack/router-core/dist/esm/isServer/development.js?v=e8d56a15 — net::ERR_ABORTED\",\u001b[39m\n\u001b[31m+   \"GET http://127.0.0.1:8080/src/routes/reset-password.tsx — net::ERR_ABORTED\",\u001b[39m\n\u001b[31m+   \"GET http://127.0.0.1:8080/node_modules/@tanstack/start-fn-stubs/dist/esm/index.js?v=e8d56a15 — net::ERR_ABORTED\",\u001b[39m\n\u001b[31m+   \"GET http://127.0.0.1:8080/src/routes/app.roast.tsx — net::ERR_ABORTED\",\u001b[39m\n\u001b[31m+   \"GET http://127.0.0.1:8080/src/routes/[.]lovable.oauth.consent.tsx — net::ERR_ABORTED\",\u001b[39m\n\u001b[31m+   \"GET http://127.0.0.1:8080/node_modules/.vite/deps/@tanstack_react-query.js?v=e8d56a15 — net::ERR_ABORTED\",\u001b[39m\n\u001b[31m+   \"GET http://127.0.0.1:8080/src/routes/app.coaches.tsx — net::ERR_ABORTED\",\u001b[39m\n\u001b[31m+   \"GET http://127.0.0.1:8080/src/integrations/supabase/previewAuthStorage.ts — net::ERR_ABORTED\",\u001b[39m\n\u001b[31m+   \"GET http://127.0.0.1:8080/node_modules/@tanstack/router-core/dist/esm/new-process-route-tree.js?v=e8d56a15 — net::ERR_ABORTED\",\u001b[39m\n\u001b[31m+   \"GET http://127.0.0.1:8080/node_modules/seroval/dist/dev/index.js?v=e8d56a15 — net::ERR_ABORTED\",\u001b[39m\n\u001b[31m+   \"GET http://127.0.0.1:8080/src/routes/tinder-openers.tsx — net::ERR_ABORTED\",\u001b[39m\n\u001b[31m+   \"GET http://127.0.0.1:8080/node_modules/@tanstack/start-client-core/dist/esm/createServerFn.js?v=e8d56a15 — net::ERR_ABORTED\",\u001b[39m\n\u001b[31m+   \"GET http://127.0.0.1:8080/node_modules/@tanstack/start-client-core/dist/esm/createMiddleware.js?v=e8d56a15 — net::ERR_ABORTED\",\u001b[39m\n\u001b[31m+   \"GET http://127.0.0.1:8080/node_modules/@tanstack/start-client-core/dist/esm/safeObjectMerge.js?v=e8d56a15 — net::ERR_ABORTED\",\u001b[39m\n\u001b[31m+   \"GET http://127.0.0.1:8080/node_modules/.vite/deps/sonner.js?v=e8d56a15 — net::ERR_ABORTED\",\u001b[39m\n\u001b[31m+   \"GET http://127.0.0.1:8080/src/routes/terms.tsx — net::ERR_ABORTED\",\u001b[39m\n\u001b[31m+   \"GET http://127.0.0.1:8080/node_modules/@tanstack/start-client-core/dist/esm/createCsrfMiddleware.js?v=e8d56a15 — net::ERR_ABORTED\",\u001b[39m\n\u001b[31m+   \"GET http://127.0.0.1:8080/src/routes/ai-dating-guide.tsx?tsr-shared=1 — net::ERR_ABORTED\",\u001b[39m\n\u001b[31m+   \"GET http://127.0.0.1:8080/node_modules/@tanstack/start-client-core/dist/esm/getGlobalStartContext.js?v=e8d56a15 — net::ERR_ABORTED\",\u001b[39m\n\u001b[31m+   \"GET http://127.0.0.1:8080/src/routes/hinge-openers.tsx — net::ERR_ABORTED\",\u001b[39m\n\u001b[31m+   \"GET http://127.0.0.1:8080/node_modules/@tanstack/start-client-core/dist/esm/getRouterInstance.js?v=e8d56a15 — net::ERR_ABORTED\",\u001b[39m\n\u001b[31m+   \"GET http://127.0.0.1:8080/src/routes/flirty-text-messages.tsx — net::ERR_ABORTED\",\u001b[39m\n\u001b[31m+   \"GET http://127.0.0.1:8080/node_modules/@tanstack/router-core/dist/esm/ssr/constants.js?v=e8d56a15 — net::ERR_ABORTED\",\u001b[39m\n\u001b[31m+   \"GET http://127.0.0.1:8080/src/routes/app.chat.tsx — net::ERR_ABORTED\",\u001b[39m\n\u001b[31m+   \"GET http://127.0.0.1:8080/node_modules/.vite/deps/@vercel_speed-insights_react.js?v=e8d56a15 — net::ERR_ABORTED\",\u001b[39m\n\u001b[31m+   \"GET http://127.0.0.1:8080/node_modules/@tanstack/react-router/dist/esm/index.dev.js?v=e8d56a15 — net::ERR_ABORTED\",\u001b[39m\n\u001b[31m+   \"GET http://127.0.0.1:8080/node_modules/.vite/deps/react_jsx-runtime.js?v=e8d56a15 — net::ERR_ABORTED\",\u001b[39m\n\u001b[31m+   \"GET http://127.0.0.1:8080/node_modules/.vite/deps/react-dom_client.js?v=e8d56a15 — net::ERR_ABORTED\",\u001b[39m\n\u001b[31m+   \"GET http://127.0.0.1:8080/node_modules/@tanstack/start-client-core/dist/esm/client/hydrateStart.js?v=e8d56a15 — net::ERR_ABORTED\",\u001b[39m\n\u001b[31m+   \"GET http://127.0.0.1:8080/node_modules/@tanstack/react-router/dist/esm/Match.js?v=e8d56a15 — net::ERR_ABORTED\",\u001b[39m\n\u001b[31m+   \"GET http://127.0.0.1:8080/node_modules/@tanstack/react-router/dist/esm/useMatch.js?v=e8d56a15 — net::ERR_ABORTED\",\u001b[39m\n\u001b[31m+   \"GET http://127.0.0.1:8080/node_modules/@tanstack/react-router/dist/esm/utils.js?v=e8d56a15 — net::ERR_ABORTED\",\u001b[39m\n\u001b[31m+   \"GET http://127.0.0.1:8080/node_modules/@tanstack/react-router/dist/esm/useParams.js?v=e8d56a15 — net::ERR_ABORTED\",\u001b[39m\n\u001b[31m+   \"GET http://127.0.0.1:8080/node_modules/@tanstack/react-router/dist/esm/awaited.js?v=e8d56a15 — net::ERR_ABORTED\",\u001b[39m\n\u001b[31m+   \"GET http://127.0.0.1:8080/node_modules/@tanstack/react-router/dist/esm/ClientOnly.js?v=e8d56a15 — net::ERR_ABORTED\",\u001b[39m\n\u001b[31m+   \"GET http://127.0.0.1:8080/node_modules/@tanstack/react-router/dist/esm/not-found.js?v=e8d56a15 — net::ERR_ABORTED\",\u001b[39m\n\u001b[31m+   \"GET http://127.0.0.1:8080/node_modules/@tanstack/react-router/dist/esm/useCanGoBack.js?v=e8d56a15 — net::ERR_ABORTED\",\u001b[39m\n\u001b[31m+   \"GET http://127.0.0.1:8080/node_modules/@tanstack/react-router/dist/esm/Asset.js?v=e8d56a15 — net::ERR_ABORTED\",\u001b[39m\n\u001b[31m+   \"GET http://127.0.0.1:8080/node_modules/@tanstack/react-router/dist/esm/useSearch.js?v=e8d56a15 — net::ERR_ABORTED\",\u001b[39m\n\u001b[31m+   \"GET http://127.0.0.1:8080/node_modules/@tanstack/react-router/dist/esm/index.js?v=e8d56a15 — net::ERR_ABORTED\",\u001b[39m\n\u001b[31m+   \"GET http://127.0.0.1:8080/node_modules/@tanstack/react-router/dist/esm/useNavigate.js?v=e8d56a15 — net::ERR_ABORTED\",\u001b[39m\n\u001b[31m+   \"GET http://127.0.0.1:8080/node_modules/@tanstack/react-router/dist/esm/ScrollRestoration.js?v=e8d56a15 — net::ERR_ABORTED\",\u001b[39m\n\u001b[31m+   \"GET http://127.0.0.1:8080/node_modules/.vite/deps/react_jsx-runtime.js?v=e8d56a15 — net::ERR_ABORTED\",\u001b[39m\n\u001b[31m+   \"GET http://127.0.0.1:8080/node_modules/@tanstack/react-router/dist/esm/useBlocker.js?v=e8d56a15 — net::ERR_ABORTED\",\u001b[39m\n\u001b[31m+   \"GET http://127.0.0.1:8080/node_modules/@tanstack/react-router/dist/esm/ScriptOnce.js?v=e8d56a15 — net::ERR_ABORTED\",\u001b[39m\n\u001b[31m+   \"GET http://127.0.0.1:8080/node_modules/@tanstack/react-router/dist/esm/route.js?v=e8d56a15 — net::ERR_ABORTED\",\u001b[39m\n\u001b[31m+   \"GET http://127.0.0.1:8080/node_modules/@tanstack/react-router/dist/esm/useRouteContext.js?v=e8d56a15 — net::ERR_ABORTED\",\u001b[39m\n\u001b[31m+   \"GET http://127.0.0.1:8080/node_modules/@tanstack/react-router/dist/esm/headContentUtils.js?v=e8d56a15 — net::ERR_ABORTED\",\u001b[39m\n\u001b[31m+   \"GET http://127.0.0.1:8080/node_modules/@tanstack/react-router/dist/esm/useLoaderData.js?v=e8d56a15 — net::ERR_ABORTED\",\u001b[39m\n\u001b[31m+   \"GET http://127.0.0.1:8080/node_modules/@tanstack/start-client-core/dist/esm/client/hydrateStart.js?v=e8d56a15 — net::ERR_ABORTED\",\u001b[39m\n\u001b[31m+   \"GET http://127.0.0.1:8080/node_modules/@tanstack/react-router/dist/esm/CatchBoundary.js?v=e8d56a15 — net::ERR_ABORTED\",\u001b[39m\n\u001b[31m+   \"GET http://127.0.0.1:8080/node_modules/@tanstack/react-router/dist/esm/useRouterState.js?v=e8d56a15 — net::ERR_ABORTED\",\u001b[39m\n\u001b[31m+   \"GET http://127.0.0.1:8080/node_modules/@tanstack/react-router/dist/esm/Matches.js?v=e8d56a15 — net::ERR_ABORTED\",\u001b[39m\n\u001b[31m+   \"GET http://127.0.0.1:8080/node_modules/@tanstack/react-router/dist/esm/router.js?v=e8d56a15 — net::ERR_ABORTED\",\u001b[39m\n\u001b[31m+   \"GET http://127.0.0.1:8080/node_modules/@tanstack/react-router/dist/esm/lazyRouteComponent.js?v=e8d56a15 — net::ERR_ABORTED\",\u001b[39m\n\u001b[31m+   \"GET http://127.0.0.1:8080/node_modules/@tanstack/react-router/dist/esm/fileRoute.js?v=e8d56a15 — net::ERR_ABORTED\",\u001b[39m\n\u001b[31m+   \"GET http://127.0.0.1:8080/node_modules/@tanstack/react-router/dist/esm/link.js?v=e8d56a15 — net::ERR_ABORTED\",\u001b[39m\n\u001b[31m+   \"GET http://127.0.0.1:8080/node_modules/.vite/deps/react-dom_client.js?v=e8d56a15 — net::ERR_ABORTED\",\u001b[39m\n\u001b[31m+   \"GET http://127.0.0.1:8080/node_modules/@tanstack/react-router/dist/esm/HeadContent.dev.js?v=e8d56a15 — net::ERR_ABORTED\",\u001b[39m\n\u001b[31m+   \"GET http://127.0.0.1:8080/node_modules/@tanstack/react-router/dist/esm/useLocation.js?v=e8d56a15 — net::ERR_ABORTED\",\u001b[39m\n\u001b[31m+   \"GET http://127.0.0.1:8080/node_modules/@tanstack/react-router/dist/esm/useRouter.js?v=e8d56a15 — net::ERR_ABORTED\",\u001b[39m\n\u001b[31m+   \"GET http://127.0.0.1:8080/node_modules/@tanstack/react-router/dist/esm/RouterProvider.js?v=e8d56a15 — net::ERR_ABORTED\",\u001b[39m\n\u001b[31m+   \"GET http://127.0.0.1:8080/node_modules/@tanstack/react-router/dist/esm/Scripts.js?v=e8d56a15 — net::ERR_ABORTED\",\u001b[39m\n\u001b[31m+   \"GET http://127.0.0.1:8080/node_modules/@tanstack/react-router/dist/esm/useLoaderDeps.js?v=e8d56a15 — net::ERR_ABORTED\",\u001b[39m\n\u001b[31m+   \"GET http://127.0.0.1:8080/node_modules/.vite/deps/lucide-react.js?v=e8d56a15 — net::ERR_ABORTED\",\u001b[39m\n\u001b[31m+ ]\u001b[39m"
     }
   ]
 }
