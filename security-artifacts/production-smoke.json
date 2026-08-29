@@ -1,14 +1,27 @@
 {
-  "generatedAt": "2026-08-29T14:55:21.554Z",
-  "runId": "smoke-mtei5n1h",
-  "status": "PASS",
-  "userId": "49a79d54-873a-44e4-a137-34774066f284",
-  "storagePrefix": "e2e/smoke-mtei5n1h",
+  "generatedAt": "2026-08-29T14:59:25.704Z",
+  "runId": "smoke-mteiascf",
+  "status": "FAIL",
+  "userId": "ef2a5a56-ac99-44a8-bbc9-2619227a8758",
+  "storagePrefix": "e2e/smoke-mteiascf",
   "timings": {
-    "totalMs": 1006,
-    "stages": {}
+    "totalMs": 5001,
+    "stages": {
+      "session_created": 1643,
+      "onboarding_completed": 396,
+      "onboarding_persisted": 65,
+      "baseline_xp_streak": 103,
+      "mission_generated": 76,
+      "mission_completed": 117
+    }
   },
-  "completedStages": [],
+  "completedStages": [
+    "session_created",
+    "onboarding_completed",
+    "onboarding_persisted",
+    "baseline_xp_streak",
+    "mission_generated"
+  ],
   "xp": {
     "before": 0,
     "after": 0,
@@ -22,7 +35,7 @@
   "chatId": null,
   "messageId": null,
   "memoryId": null,
-  "missionId": null,
+  "missionId": "b1d00583-7989-4295-90ba-196aaf93c0d6",
   "profileId": null,
   "subscription": {
     "plan": null,
@@ -30,5 +43,37 @@
   },
   "consoleErrors": [],
   "networkFailures": [],
-  "stages": []
+  "stages": [
+    {
+      "name": "session_created",
+      "status": "PASS",
+      "ms": 1643
+    },
+    {
+      "name": "onboarding_completed",
+      "status": "PASS",
+      "ms": 396
+    },
+    {
+      "name": "onboarding_persisted",
+      "status": "PASS",
+      "ms": 65
+    },
+    {
+      "name": "baseline_xp_streak",
+      "status": "PASS",
+      "ms": 103
+    },
+    {
+      "name": "mission_generated",
+      "status": "PASS",
+      "ms": 76
+    },
+    {
+      "name": "mission_completed",
+      "status": "FAIL",
+      "ms": 117,
+      "detail": "complete_mission reported an update\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mundefined\u001b[39m"
+    }
+  ]
 }
