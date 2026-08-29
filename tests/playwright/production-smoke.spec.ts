@@ -111,6 +111,25 @@ async function rest<T>(path: string, init: RequestInit = {}): Promise<{ status: 
   return { status: res.status, body };
 }
 
+/**
+ * Service-mediated RPC. award_xp / award_badge / complete_mission carry no
+ * EXECUTE grant for `authenticated` by design — the app reaches them only
+ * from server functions running with the service role and an explicit
+ * `_caller_id`. This mirrors that exact production path.
+ */
+async function adminRpc<T>(fn: string, args: Record<string, unknown>): Promise<T> {
+  const res = await fetch(`${env.url!.replace(/\/$/, "")}/rest/v1/rpc/${fn}`, {
+    method: "POST",
+    headers: {
+      apikey: env.serviceKey!,
+      Authorization: `Bearer ${env.serviceKey!}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ ...args, _caller_id: state.userId }),
+  });
+  return (await res.json().catch(() => null)) as T;
+}
+
 async function rpc<T>(fn: string, args: Record<string, unknown>): Promise<T> {
   const { body } = await rest<T>(`/rpc/${fn}`, { method: "POST", body: JSON.stringify(args) });
   return body;
