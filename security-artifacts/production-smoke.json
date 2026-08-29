@@ -1,18 +1,38 @@
 {
-  "generatedAt": "2026-08-15T00:54:11.366Z",
-  "runId": "smoke-mstnxvcq",
-  "status": "FAIL",
-  "userId": "546a9db3-b333-4eb6-84de-4fe174937dbb",
-  "storagePrefix": "e2e/smoke-mstnxvcq",
+  "generatedAt": "2026-08-29T15:04:03.068Z",
+  "runId": "smoke-mteigfm2",
+  "status": "PASS",
+  "userId": "7289bd51-c42c-431a-a772-796e0660a581",
+  "storagePrefix": "e2e/smoke-mteigfm2",
   "timings": {
-    "totalMs": 5292,
+    "totalMs": 18931,
     "stages": {
-      "session_created": 4055,
-      "onboarding_completed": 79,
-      "onboarding_persisted": 40,
-      "baseline_xp_streak": 116,
-      "mission_generated": 80,
-      "mission_completed": 64
+      "session_created": 1289,
+      "onboarding_completed": 389,
+      "onboarding_persisted": 72,
+      "baseline_xp_streak": 98,
+      "mission_generated": 212,
+      "mission_completed": 112,
+      "xp_awarded": 153,
+      "streak_increased": 97,
+      "coach_opened": 563,
+      "chat_created": 131,
+      "realtime_subscribed": 1826,
+      "message_sent": 51,
+      "realtime_delivered": 334,
+      "message_persisted": 55,
+      "memory_saved": 50,
+      "memory_retrieved": 40,
+      "profile_generated": 507,
+      "profile_persisted": 51,
+      "dashboard_persisted_after_refresh": 873,
+      "mission_xp_streak_persisted": 349,
+      "logged_out": 2347,
+      "logged_back_in": 2299,
+      "state_survives_relogin": 538,
+      "subscription_state": 51,
+      "no_console_errors": 6,
+      "no_network_failures": 1
     }
   },
   "completedStages": [
@@ -20,25 +40,46 @@
     "onboarding_completed",
     "onboarding_persisted",
     "baseline_xp_streak",
-    "mission_generated"
+    "mission_generated",
+    "mission_completed",
+    "xp_awarded",
+    "streak_increased",
+    "coach_opened",
+    "chat_created",
+    "realtime_subscribed",
+    "message_sent",
+    "realtime_delivered",
+    "message_persisted",
+    "memory_saved",
+    "memory_retrieved",
+    "profile_generated",
+    "profile_persisted",
+    "dashboard_persisted_after_refresh",
+    "mission_xp_streak_persisted",
+    "logged_out",
+    "logged_back_in",
+    "state_survives_relogin",
+    "subscription_state",
+    "no_console_errors",
+    "no_network_failures"
   ],
   "xp": {
     "before": 0,
-    "after": 0,
-    "delta": 0
+    "after": 50,
+    "delta": 50
   },
   "streak": {
     "before": 0,
-    "after": 0,
-    "delta": 0
+    "after": 1,
+    "delta": 1
   },
-  "chatId": null,
-  "messageId": null,
-  "memoryId": null,
-  "missionId": "2885cfe0-3eb3-4aba-9fd9-866fdd5071cd",
-  "profileId": null,
+  "chatId": "e23015c8-4def-4d9f-965f-a11b31b08236",
+  "messageId": "a25967a1-b1ea-4b76-9936-cba34a60fa0d",
+  "memoryId": "bc31c824-e88c-438d-897f-198e8d7129f4",
+  "missionId": "7cfb8bc5-a271-4b81-8176-4eee9e8cd3e2",
+  "profileId": "954ffcc7-e370-45c3-8c95-6f7d3418264b",
   "subscription": {
-    "plan": null,
+    "plan": "free",
     "status": null
   },
   "consoleErrors": [],
@@ -47,33 +88,132 @@
     {
       "name": "session_created",
       "status": "PASS",
-      "ms": 4055
+      "ms": 1289
     },
     {
       "name": "onboarding_completed",
       "status": "PASS",
-      "ms": 79
+      "ms": 389
     },
     {
       "name": "onboarding_persisted",
       "status": "PASS",
-      "ms": 40
+      "ms": 72
     },
     {
       "name": "baseline_xp_streak",
       "status": "PASS",
-      "ms": 116
+      "ms": 98
     },
     {
       "name": "mission_generated",
       "status": "PASS",
-      "ms": 80
+      "ms": 212
     },
     {
       "name": "mission_completed",
-      "status": "FAIL",
-      "ms": 64,
-      "detail": "complete_mission reported an update\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mundefined\u001b[39m"
+      "status": "PASS",
+      "ms": 112
+    },
+    {
+      "name": "xp_awarded",
+      "status": "PASS",
+      "ms": 153
+    },
+    {
+      "name": "streak_increased",
+      "status": "PASS",
+      "ms": 97
+    },
+    {
+      "name": "coach_opened",
+      "status": "PASS",
+      "ms": 563
+    },
+    {
+      "name": "chat_created",
+      "status": "PASS",
+      "ms": 131
+    },
+    {
+      "name": "realtime_subscribed",
+      "status": "PASS",
+      "ms": 1826
+    },
+    {
+      "name": "message_sent",
+      "status": "PASS",
+      "ms": 51
+    },
+    {
+      "name": "realtime_delivered",
+      "status": "PASS",
+      "ms": 334
+    },
+    {
+      "name": "message_persisted",
+      "status": "PASS",
+      "ms": 55
+    },
+    {
+      "name": "memory_saved",
+      "status": "PASS",
+      "ms": 50
+    },
+    {
+      "name": "memory_retrieved",
+      "status": "PASS",
+      "ms": 40
+    },
+    {
+      "name": "profile_generated",
+      "status": "PASS",
+      "ms": 507
+    },
+    {
+      "name": "profile_persisted",
+      "status": "PASS",
+      "ms": 51
+    },
+    {
+      "name": "dashboard_persisted_after_refresh",
+      "status": "PASS",
+      "ms": 873
+    },
+    {
+      "name": "mission_xp_streak_persisted",
+      "status": "PASS",
+      "ms": 349
+    },
+    {
+      "name": "logged_out",
+      "status": "PASS",
+      "ms": 2347
+    },
+    {
+      "name": "logged_back_in",
+      "status": "PASS",
+      "ms": 2299
+    },
+    {
+      "name": "state_survives_relogin",
+      "status": "PASS",
+      "ms": 538
+    },
+    {
+      "name": "subscription_state",
+      "status": "PASS",
+      "ms": 51
+    },
+    {
+      "name": "no_console_errors",
+      "status": "PASS",
+      "ms": 6
+    },
+    {
+      "name": "no_network_failures",
+      "status": "PASS",
+      "ms": 1
     }
   ]
 }

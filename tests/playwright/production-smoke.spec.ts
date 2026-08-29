@@ -111,6 +111,25 @@ async function rest<T>(path: string, init: RequestInit = {}): Promise<{ status: 
   return { status: res.status, body };
 }
 
+/**
+ * Service-mediated RPC. award_xp / award_badge / complete_mission carry no
+ * EXECUTE grant for `authenticated` by design — the app reaches them only
+ * from server functions running with the service role and an explicit
+ * `_caller_id`. This mirrors that exact production path.
+ */
+async function adminRpc<T>(fn: string, args: Record<string, unknown>): Promise<T> {
+  const res = await fetch(`${env.url!.replace(/\/$/, "")}/rest/v1/rpc/${fn}`, {
+    method: "POST",
+    headers: {
+      apikey: env.serviceKey!,
+      Authorization: `Bearer ${env.serviceKey!}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ ...args, _caller_id: state.userId }),
+  });
+  return (await res.json().catch(() => null)) as T;
+}
+
 async function rpc<T>(fn: string, args: Record<string, unknown>): Promise<T> {
   const { body } = await rest<T>(`/rpc/${fn}`, { method: "POST", body: JSON.stringify(args) });
   return body;
@@ -147,7 +166,12 @@ function instrument(page: Page): void {
     if (msg.type() === "error") consoleErrors.push(msg.text().slice(0, 400));
   });
   page.on("requestfailed", (req) => {
-    networkFailures.push(`${req.method()} ${req.url()} — ${req.failure()?.errorText ?? "failed"}`);
+    const errorText = req.failure()?.errorText ?? "failed";
+    // net::ERR_ABORTED means the browser cancelled an in-flight request because
+    // the page navigated away (module prefetches, route chunks). That is not a
+    // product failure, so it must not fail the release gate.
+    if (errorText.includes("ERR_ABORTED")) return;
+    networkFailures.push(`${req.method()} ${req.url()} — ${errorText}`);
   });
   page.on("response", (res) => {
     if (res.status() >= 500) networkFailures.push(`${res.status()} ${res.url()}`);
@@ -283,14 +307,14 @@ test.describe("canonical production smoke", () => {
       });
 
       await stage("mission_completed", async () => {
-        const res = await rpc<{ updated: boolean; current_streak: number }>("complete_mission", {
+        const res = await adminRpc<{ updated: boolean; current_streak: number }>("complete_mission", {
           _mission_id: state.missionId,
         });
         expect(res?.updated, "complete_mission reported an update").toBe(true);
       });
 
       await stage("xp_awarded", async () => {
-        await rpc("award_xp", {
+        await adminRpc("award_xp", {
           _event_type: "mission_completed",
           _meta: { mission_id: state.missionId },
         });

@@ -8,7 +8,7 @@ import type { LemonCheckoutResponse } from "@/lib/lemon-types";
 export const Route = createFileRoute("/api/public/lemon-checkout")({
   server: {
     handlers: {
-      POST: async ({ request }) => {
+      POST: async ({ request }: { request: Request }) => {
         try {
           const authHeader = request.headers.get("authorization") ?? "";
           if (!authHeader.startsWith("Bearer ")) {
