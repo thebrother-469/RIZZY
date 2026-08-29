@@ -1,18 +1,25 @@
 {
-  "generatedAt": "2026-08-29T14:59:25.704Z",
-  "runId": "smoke-mteiascf",
+  "generatedAt": "2026-08-29T15:01:23.759Z",
+  "runId": "smoke-mteick7t",
   "status": "FAIL",
-  "userId": "ef2a5a56-ac99-44a8-bbc9-2619227a8758",
-  "storagePrefix": "e2e/smoke-mteiascf",
+  "userId": "86c5b724-9153-47dc-83b8-48a47cb2fbed",
+  "storagePrefix": "e2e/smoke-mteick7t",
   "timings": {
-    "totalMs": 5001,
+    "totalMs": 40278,
     "stages": {
-      "session_created": 1643,
-      "onboarding_completed": 396,
-      "onboarding_persisted": 65,
-      "baseline_xp_streak": 103,
-      "mission_generated": 76,
-      "mission_completed": 117
+      "session_created": 1058,
+      "onboarding_completed": 289,
+      "onboarding_persisted": 109,
+      "baseline_xp_streak": 183,
+      "mission_generated": 120,
+      "mission_completed": 68,
+      "xp_awarded": 163,
+      "streak_increased": 93,
+      "coach_opened": 907,
+      "chat_created": 71,
+      "realtime_subscribed": 2150,
+      "message_sent": 196,
+      "realtime_delivered": 29934
     }
   },
   "completedStages": [
@@ -20,60 +27,156 @@
     "onboarding_completed",
     "onboarding_persisted",
     "baseline_xp_streak",
-    "mission_generated"
+    "mission_generated",
+    "mission_completed",
+    "xp_awarded",
+    "streak_increased",
+    "coach_opened",
+    "chat_created",
+    "realtime_subscribed",
+    "message_sent"
   ],
   "xp": {
     "before": 0,
-    "after": 0,
-    "delta": 0
+    "after": 50,
+    "delta": 50
   },
   "streak": {
     "before": 0,
-    "after": 0,
-    "delta": 0
+    "after": 1,
+    "delta": 1
   },
-  "chatId": null,
-  "messageId": null,
+  "chatId": "7773a55a-f0ee-445e-889c-f70608f76863",
+  "messageId": "8650a4b7-8ea8-4387-a811-6fa7167597fe",
   "memoryId": null,
-  "missionId": "b1d00583-7989-4295-90ba-196aaf93c0d6",
+  "missionId": "e4de43e7-8fe1-434b-998d-62a4979d26f2",
   "profileId": null,
   "subscription": {
     "plan": null,
     "status": null
   },
   "consoleErrors": [],
-  "networkFailures": [],
+  "networkFailures": [
+    "GET http://127.0.0.1:8080/node_modules/@tanstack/start-client-core/dist/esm/createServerFn.js?v=e8d56a15 — net::ERR_ABORTED",
+    "GET http://127.0.0.1:8080/node_modules/@tanstack/start-client-core/dist/esm/safeObjectMerge.js?v=e8d56a15 — net::ERR_ABORTED",
+    "GET http://127.0.0.1:8080/node_modules/.vite/deps/@tanstack_react-query.js?v=e8d56a15 — net::ERR_ABORTED",
+    "GET http://127.0.0.1:8080/src/routes/app.chat.tsx — net::ERR_ABORTED",
+    "GET http://127.0.0.1:8080/node_modules/@tanstack/start-client-core/node_modules/@tanstack/router-core/dist/esm/manifest.js?v=e8d56a15 — net::ERR_ABORTED",
+    "GET http://127.0.0.1:8080/node_modules/@tanstack/start-client-core/node_modules/@tanstack/router-core/dist/esm/new-process-route-tree.js?v=e8d56a15 — net::ERR_ABORTED",
+    "GET http://127.0.0.1:8080/node_modules/@tanstack/start-client-core/node_modules/@tanstack/router-core/dist/esm/ssr/serializer/RawStream.js?v=e8d56a15 — net::ERR_ABORTED",
+    "GET http://127.0.0.1:8080/src/routes/dating-profile-generator.tsx — net::ERR_ABORTED",
+    "GET http://127.0.0.1:8080/src/routes/app.settings.tsx — net::ERR_ABORTED",
+    "GET http://127.0.0.1:8080/node_modules/@tanstack/start-client-core/node_modules/@tanstack/router-core/dist/esm/ssr/serializer/seroval-plugins.js?v=e8d56a15 — net::ERR_ABORTED",
+    "GET http://127.0.0.1:8080/node_modules/@tanstack/start-client-core/node_modules/@tanstack/router-core/dist/esm/config.js?v=e8d56a15 — net::ERR_ABORTED",
+    "GET http://127.0.0.1:8080/src/routes/index.tsx — net::ERR_ABORTED",
+    "GET http://127.0.0.1:8080/src/routes/tinder-openers.tsx — net::ERR_ABORTED",
+    "GET http://127.0.0.1:8080/src/routes/reset-password.tsx — net::ERR_ABORTED",
+    "GET http://127.0.0.1:8080/node_modules/@tanstack/start-client-core/node_modules/@tanstack/router-core/dist/esm/lru-cache.js?v=e8d56a15 — net::ERR_ABORTED",
+    "GET http://127.0.0.1:8080/src/routes/app.coach.tsx — net::ERR_ABORTED",
+    "GET http://127.0.0.1:8080/node_modules/@tanstack/start-client-core/node_modules/@tanstack/router-core/dist/esm/isServer/development.js?v=e8d56a15 — net::ERR_ABORTED",
+    "GET http://127.0.0.1:8080/src/integrations/supabase/client.ts — net::ERR_ABORTED",
+    "GET http://127.0.0.1:8080/src/routes/app.index.tsx — net::ERR_ABORTED",
+    "GET http://127.0.0.1:8080/src/routes/auth-callback.tsx — net::ERR_ABORTED",
+    "GET http://127.0.0.1:8080/src/routes/privacy.tsx — net::ERR_ABORTED",
+    "GET http://127.0.0.1:8080/src/routes/app.profile-generator.tsx — net::ERR_ABORTED",
+    "GET http://127.0.0.1:8080/node_modules/@tanstack/start-client-core/dist/esm/createCsrfMiddleware.js?v=e8d56a15 — net::ERR_ABORTED",
+    "GET http://127.0.0.1:8080/node_modules/@tanstack/start-client-core/dist/esm/getRouterInstance.js?v=e8d56a15 — net::ERR_ABORTED",
+    "GET http://127.0.0.1:8080/node_modules/@tanstack/start-client-core/node_modules/@tanstack/router-core/dist/esm/route.js?v=e8d56a15 — net::ERR_ABORTED",
+    "GET http://127.0.0.1:8080/src/routes/flirty-text-messages.tsx — net::ERR_ABORTED",
+    "GET http://127.0.0.1:8080/node_modules/@tanstack/start-fn-stubs/dist/esm/index.js?v=e8d56a15 — net::ERR_ABORTED",
+    "GET http://127.0.0.1:8080/node_modules/@tanstack/start-client-core/dist/esm/createMiddleware.js?v=e8d56a15 — net::ERR_ABORTED",
+    "GET http://127.0.0.1:8080/src/routes/ai-dating-guide.tsx — net::ERR_ABORTED",
+    "GET http://127.0.0.1:8080/src/routes/app.tsx — net::ERR_ABORTED",
+    "GET http://127.0.0.1:8080/node_modules/@tanstack/start-client-core/node_modules/@tanstack/router-core/dist/esm/ssr/ssr-match-id.js?v=e8d56a15 — net::ERR_ABORTED",
+    "GET http://127.0.0.1:8080/src/routes/app.coaches.tsx — net::ERR_ABORTED",
+    "GET http://127.0.0.1:8080/src/routes/app.missions.tsx — net::ERR_ABORTED",
+    "GET http://127.0.0.1:8080/node_modules/@tanstack/start-client-core/dist/esm/getGlobalStartContext.js?v=e8d56a15 — net::ERR_ABORTED",
+    "GET http://127.0.0.1:8080/node_modules/@tanstack/react-start-client/node_modules/@tanstack/router-core/dist/esm/isServer/development.js?v=e8d56a15 — net::ERR_ABORTED",
+    "GET http://127.0.0.1:8080/node_modules/@tanstack/start-client-core/node_modules/@tanstack/router-core/dist/esm/Matches.js?v=e8d56a15 — net::ERR_ABORTED",
+    "GET http://127.0.0.1:8080/node_modules/@tanstack/start-client-core/dist/esm/client-rpc/frame-decoder.js?v=e8d56a15 — net::ERR_ABORTED",
+    "GET http://127.0.0.1:8080/node_modules/@tanstack/start-client-core/dist/esm/createStart.js?v=e8d56a15 — net::ERR_ABORTED",
+    "GET http://127.0.0.1:8080/src/routes/app.memory.tsx — net::ERR_ABORTED",
+    "GET http://127.0.0.1:8080/node_modules/@tanstack/start-client-core/dist/esm/getDefaultSerovalPlugins.js?v=e8d56a15 — net::ERR_ABORTED",
+    "GET http://127.0.0.1:8080/src/routes/app.onboarding.tsx — net::ERR_ABORTED",
+    "GET http://127.0.0.1:8080/src/routes/__root.tsx — net::ERR_ABORTED",
+    "GET http://127.0.0.1:8080/src/routes/app.roleplay.tsx — net::ERR_ABORTED",
+    "GET http://127.0.0.1:8080/src/routes/[.]lovable.oauth.consent.tsx — net::ERR_ABORTED",
+    "GET http://127.0.0.1:8080/src/routes/refund-policy.tsx — net::ERR_ABORTED",
+    "GET http://127.0.0.1:8080/node_modules/seroval-plugins/dist/dev/web-43VA2W_p.js?v=e8d56a15 — net::ERR_ABORTED",
+    "GET http://127.0.0.1:8080/node_modules/@tanstack/start-client-core/node_modules/@tanstack/router-core/dist/esm/ssr/serializer/transformer.js?v=e8d56a15 — net::ERR_ABORTED",
+    "GET http://127.0.0.1:8080/node_modules/@tanstack/start-client-core/node_modules/@tanstack/router-core/dist/esm/searchMiddleware.js?v=e8d56a15 — net::ERR_ABORTED",
+    "GET http://127.0.0.1:8080/src/routes/hinge-openers.tsx — net::ERR_ABORTED",
+    "GET http://127.0.0.1:8080/src/routes/terms.tsx — net::ERR_ABORTED",
+    "GET http://127.0.0.1:8080/src/routes/pricing.tsx — net::ERR_ABORTED",
+    "GET http://127.0.0.1:8080/src/routes/app.roast.tsx — net::ERR_ABORTED",
+    "GET http://127.0.0.1:8080/src/routes/auth.tsx — net::ERR_ABORTED"
+  ],
   "stages": [
     {
       "name": "session_created",
       "status": "PASS",
-      "ms": 1643
+      "ms": 1058
     },
     {
       "name": "onboarding_completed",
       "status": "PASS",
-      "ms": 396
+      "ms": 289
     },
     {
       "name": "onboarding_persisted",
       "status": "PASS",
-      "ms": 65
+      "ms": 109
     },
     {
       "name": "baseline_xp_streak",
       "status": "PASS",
-      "ms": 103
+      "ms": 183
     },
     {
       "name": "mission_generated",
       "status": "PASS",
-      "ms": 76
+      "ms": 120
     },
     {
       "name": "mission_completed",
+      "status": "PASS",
+      "ms": 68
+    },
+    {
+      "name": "xp_awarded",
+      "status": "PASS",
+      "ms": 163
+    },
+    {
+      "name": "streak_increased",
+      "status": "PASS",
+      "ms": 93
+    },
+    {
+      "name": "coach_opened",
+      "status": "PASS",
+      "ms": 907
+    },
+    {
+      "name": "chat_created",
+      "status": "PASS",
+      "ms": 71
+    },
+    {
+      "name": "realtime_subscribed",
+      "status": "PASS",
+      "ms": 2150
+    },
+    {
+      "name": "message_sent",
+      "status": "PASS",
+      "ms": 196
+    },
+    {
+      "name": "realtime_delivered",
       "status": "FAIL",
-      "ms": 117,
-      "detail": "complete_mission reported an update\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mundefined\u001b[39m"
+      "ms": 29934,
+      "detail": "\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeGreaterThan\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: > \u001b[32m0\u001b[39m\nReceived:   \u001b[31m0\u001b[39m\n\nCall Log:\n- Timeout 30000ms exceeded while waiting on the predicate"
     }
   ]
 }

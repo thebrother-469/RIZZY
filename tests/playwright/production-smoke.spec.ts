@@ -302,14 +302,14 @@ test.describe("canonical production smoke", () => {
       });
 
       await stage("mission_completed", async () => {
-        const res = await rpc<{ updated: boolean; current_streak: number }>("complete_mission", {
+        const res = await adminRpc<{ updated: boolean; current_streak: number }>("complete_mission", {
           _mission_id: state.missionId,
         });
         expect(res?.updated, "complete_mission reported an update").toBe(true);
       });
 
       await stage("xp_awarded", async () => {
-        await rpc("award_xp", {
+        await adminRpc("award_xp", {
           _event_type: "mission_completed",
           _meta: { mission_id: state.missionId },
         });
