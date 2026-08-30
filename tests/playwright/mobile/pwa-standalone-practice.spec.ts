@@ -86,7 +86,9 @@ async function installStandalone(page: Page) {
 /** The composer must be fully inside the visible viewport. */
 async function assertComposerVisible(page: Page, height: number, label: string, device: string) {
   const composer = page.getByRole("textbox").last();
-  await expect(composer, `${label}: composer missing`).toBeVisible();
+  // The chat route hydrates, restores the session and loads/creates the chat
+  // before the composer mounts, so allow a generous first-paint budget.
+  await expect(composer, `${label}: composer missing`).toBeVisible({ timeout: 30_000 });
   const box = await composer.boundingBox();
   expect(box, `${label}: composer has no layout box`).not.toBeNull();
   expect(box!.y, `${label}: composer above the viewport`).toBeGreaterThanOrEqual(0);
