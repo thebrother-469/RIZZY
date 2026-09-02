@@ -94,6 +94,11 @@ jobs:
           PLAYWRIGHT_BASE_URL: ${{ env.PREVIEW_URL }}
         run: bun run verify:ssr:artifacts
 
+      - name: Deployed preview SSR + hydration evidence
+        env:
+          PREVIEW_URL: ${{ env.PREVIEW_URL }}
+        run: bun run verify:preview:smoke
+
       - name: Mobile PWA standalone smoke
         run: bun run test:mobile:pwa
 

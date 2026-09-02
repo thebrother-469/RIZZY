@@ -1,0 +1,84 @@
+{
+  "generatedAt": "2026-09-02T08:05:14.722Z",
+  "target": "https://id-preview--d16c14ac-6a85-462d-b19f-e7e8978a7761.lovable.app",
+  "status": "PASS",
+  "summary": {
+    "pass": 6,
+    "fail": 0,
+    "notVerified": 0
+  },
+  "routes": [
+    {
+      "path": "/",
+      "status": "PASS",
+      "httpStatus": 200,
+      "ssrHtmlBytes": 58835,
+      "ssrRendered": true,
+      "hydrated": true,
+      "title": "RizzGod AI — Brutally Honest AI Dating Coach",
+      "hasH1": true,
+      "consoleErrors": [],
+      "networkFailures": []
+    },
+    {
+      "path": "/pricing",
+      "status": "PASS",
+      "httpStatus": 200,
+      "ssrHtmlBytes": 36775,
+      "ssrRendered": true,
+      "hydrated": true,
+      "title": "Pricing — RizzGod AI",
+      "hasH1": true,
+      "consoleErrors": [],
+      "networkFailures": []
+    },
+    {
+      "path": "/auth",
+      "status": "PASS",
+      "httpStatus": 200,
+      "ssrHtmlBytes": 20308,
+      "ssrRendered": true,
+      "hydrated": true,
+      "title": "Sign in — RizzGod AI",
+      "hasH1": true,
+      "consoleErrors": [],
+      "networkFailures": []
+    },
+    {
+      "path": "/privacy",
+      "status": "PASS",
+      "httpStatus": 200,
+      "ssrHtmlBytes": 27622,
+      "ssrRendered": true,
+      "hydrated": true,
+      "title": "Privacy Policy — RizzGod AI",
+      "hasH1": true,
+      "consoleErrors": [],
+      "networkFailures": []
+    },
+    {
+      "path": "/terms",
+      "status": "PASS",
+      "httpStatus": 200,
+      "ssrHtmlBytes": 27425,
+      "ssrRendered": true,
+      "hydrated": true,
+      "title": "Terms of Service — RizzGod AI",
+      "hasH1": true,
+      "consoleErrors": [],
+      "networkFailures": []
+    },
+    {
+      "path": "/dating-profile-generator",
+      "status": "PASS",
+      "httpStatus": 200,
+      "ssrHtmlBytes": 40472,
+      "ssrRendered": true,
+      "hydrated": true,
+      "title": "AI Dating Profile Generator — Hinge, Tinder & Bumble",
+      "hasH1": true,
+      "consoleErrors": [],
+      "networkFailures": []
+    }
+  ]
+}

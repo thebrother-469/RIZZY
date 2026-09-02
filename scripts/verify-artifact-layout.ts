@@ -38,6 +38,12 @@ export const REQUIRED_ARTIFACTS: ArtifactSpec[] = [
     requiredKeys: ["generatedAt", "status", "summary", "scope"],
   },
   { file: "production-smoke.json", kind: "json", requiredKeys: ["status", "stages"] },
+  // Deployed-preview SSR + hydration evidence, one record per public route.
+  {
+    file: "preview-smoke.json",
+    kind: "json",
+    requiredKeys: ["generatedAt", "status", "summary", "routes"],
+  },
   { file: "ssr-smoke.json", kind: "json", requiredKeys: ["generatedAt", "status", "summary"] },
   {
     file: "hydration-smoke.json",
