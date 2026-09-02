@@ -47,6 +47,7 @@
     "test:mobile:pwa": "playwright test tests/playwright/mobile",
     "verify:artifacts": "bun run scripts/verify-artifact-layout.ts",
     "verify:ssr:artifacts": "bun run scripts/run-ssr-suites.ts",
+    "verify:preview:smoke": "bun run scripts/verify-preview-smoke.ts",
     "gate:artifacts": "bun run security:evidence && bun run security:findings && bun run verify:artifacts"
   },
   "dependencies": {
