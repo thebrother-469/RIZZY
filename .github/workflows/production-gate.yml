@@ -79,7 +79,7 @@ jobs:
       - name: Unit test suite
         run: bun run test
       - name: Verify the SSR/hydration artifacts
-        run: bun run verify:artifacts --optional graphql-exposure.json,graphql-row-scope.json,production-smoke.json,mobile-pwa.json,security-findings.json,security-evidence.md,security-evidence.json
+        run: bun run verify:artifacts --optional graphql-exposure.json,graphql-row-scope.json,production-smoke.json,preview-smoke.json,mobile-pwa.json,security-findings.json,security-evidence.md,security-evidence.json
       - uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -129,7 +129,7 @@ jobs:
       - name: Security findings audit (SUPA_pg_graphql_authenticated_table_exposed)
         run: bun run security:findings
       - name: Verify the security artifact layout
-        run: bun run verify:artifacts --optional production-smoke.json,ssr-smoke.json,hydration-smoke.json,mobile-pwa.json
+        run: bun run verify:artifacts --optional production-smoke.json,preview-smoke.json,ssr-smoke.json,hydration-smoke.json,mobile-pwa.json
 
       - name: Publish the verification summary
         if: always()
@@ -178,6 +178,9 @@ jobs:
         env:
           SMOKE_RUN_ID: gate-${{ github.run_id }}-${{ github.run_attempt }}
         run: bunx playwright test tests/playwright/production-smoke.spec.ts
+
+      - name: Deployed-surface SSR + hydration evidence (preview smoke)
+        run: bun run verify:preview:smoke
 
       - name: Mobile PWA standalone smoke
         run: bun run test:mobile:pwa
