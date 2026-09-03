@@ -1,22 +1,50 @@
 {
-  "generatedAt": "2026-09-03T11:37:22.132Z",
+  "generatedAt": "2026-09-03T11:38:24.885Z",
   "suite": "pwa-standalone-practice",
   "displayMode": "standalone",
   "observations": [
     {
-      "device": "-",
-      "scenario": "suite",
-      "status": "NOT_VERIFIED",
-      "detail": "missing required secrets: PLAYWRIGHT_BASE_URL"
+      "device": "small mobile",
+      "scenario": "first render",
+      "status": "PASS",
+      "detail": "composer at y=466"
+    },
+    {
+      "device": "small mobile",
+      "scenario": "keyboard open",
+      "status": "PASS",
+      "detail": "composer at y=210"
+    },
+    {
+      "device": "small mobile",
+      "scenario": "keyboard closed",
+      "status": "PASS",
+      "detail": "composer at y=466"
+    },
+    {
+      "device": "small mobile",
+      "scenario": "after refresh",
+      "status": "PASS",
+      "detail": "composer at y=466"
+    },
+    {
+      "device": "small mobile",
+      "scenario": "landscape",
+      "status": "PASS",
+      "detail": "composer at y=218"
+    },
+    {
+      "device": "small mobile",
+      "scenario": "back to portrait",
+      "status": "PASS",
+      "detail": "composer at y=466"
     }
   ],
-  "blockers": [
-    "missing required secrets: PLAYWRIGHT_BASE_URL"
-  ],
+  "blockers": [],
   "summary": {
-    "pass": 0,
+    "pass": 6,
     "fail": 0,
-    "notVerified": 2
+    "notVerified": 0
   },
-  "status": "NOT_VERIFIED"
+  "status": "PASS"
 }
