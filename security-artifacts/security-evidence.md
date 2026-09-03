@@ -1,6 +1,6 @@
 # RIZZGOD AI — Security Evidence Report
 
-Generated: 2026-08-15T00:36:13.146Z
+Generated: 2026-09-03T11:39:47.857Z
 Database snapshot captured: 2026-08-03T22:36:36.931Z (live-query)
 Supabase project: `jfiojbbrdfgeruborkzx`
 
