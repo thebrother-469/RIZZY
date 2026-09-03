@@ -1,38 +1,38 @@
 {
-  "generatedAt": "2026-08-29T15:04:03.068Z",
-  "runId": "smoke-mteigfm2",
+  "generatedAt": "2026-09-03T11:37:16.800Z",
+  "runId": "smoke-mtlg9wt0",
   "status": "PASS",
-  "userId": "7289bd51-c42c-431a-a772-796e0660a581",
-  "storagePrefix": "e2e/smoke-mteigfm2",
+  "userId": "7de8f5cf-2072-44f5-82ec-fcf5be74bbcf",
+  "storagePrefix": "e2e/smoke-mtlg9wt0",
   "timings": {
-    "totalMs": 18931,
+    "totalMs": 12972,
     "stages": {
-      "session_created": 1289,
-      "onboarding_completed": 389,
-      "onboarding_persisted": 72,
-      "baseline_xp_streak": 98,
-      "mission_generated": 212,
-      "mission_completed": 112,
-      "xp_awarded": 153,
-      "streak_increased": 97,
-      "coach_opened": 563,
-      "chat_created": 131,
-      "realtime_subscribed": 1826,
-      "message_sent": 51,
-      "realtime_delivered": 334,
-      "message_persisted": 55,
-      "memory_saved": 50,
-      "memory_retrieved": 40,
-      "profile_generated": 507,
-      "profile_persisted": 51,
-      "dashboard_persisted_after_refresh": 873,
-      "mission_xp_streak_persisted": 349,
-      "logged_out": 2347,
-      "logged_back_in": 2299,
-      "state_survives_relogin": 538,
-      "subscription_state": 51,
-      "no_console_errors": 6,
-      "no_network_failures": 1
+      "session_created": 1534,
+      "onboarding_completed": 89,
+      "onboarding_persisted": 82,
+      "baseline_xp_streak": 106,
+      "mission_generated": 72,
+      "mission_completed": 78,
+      "xp_awarded": 170,
+      "streak_increased": 60,
+      "coach_opened": 508,
+      "chat_created": 118,
+      "realtime_subscribed": 2253,
+      "message_sent": 61,
+      "realtime_delivered": 406,
+      "message_persisted": 49,
+      "memory_saved": 70,
+      "memory_retrieved": 54,
+      "profile_generated": 377,
+      "profile_persisted": 67,
+      "dashboard_persisted_after_refresh": 710,
+      "mission_xp_streak_persisted": 216,
+      "logged_out": 330,
+      "logged_back_in": 1595,
+      "state_survives_relogin": 169,
+      "subscription_state": 53,
+      "no_console_errors": 3,
+      "no_network_failures": 2
     }
   },
   "completedStages": [
@@ -73,11 +73,11 @@
     "after": 1,
     "delta": 1
   },
-  "chatId": "e23015c8-4def-4d9f-965f-a11b31b08236",
-  "messageId": "a25967a1-b1ea-4b76-9936-cba34a60fa0d",
-  "memoryId": "bc31c824-e88c-438d-897f-198e8d7129f4",
-  "missionId": "7cfb8bc5-a271-4b81-8176-4eee9e8cd3e2",
-  "profileId": "954ffcc7-e370-45c3-8c95-6f7d3418264b",
+  "chatId": "5b0127d1-67fb-4254-937b-5dd8fd3440bb",
+  "messageId": "0874cae2-122b-4c3f-9970-d6887b9cfba2",
+  "memoryId": "aa4549d9-4446-449a-9524-89210e3d41b6",
+  "missionId": "e214f41f-a939-4286-869a-61707005022f",
+  "profileId": "ea7fd36d-c853-46f2-a1a5-bf58d211f279",
   "subscription": {
     "plan": "free",
     "status": null
@@ -88,132 +88,132 @@
     {
       "name": "session_created",
       "status": "PASS",
-      "ms": 1289
+      "ms": 1534
     },
     {
       "name": "onboarding_completed",
       "status": "PASS",
-      "ms": 389
+      "ms": 89
     },
     {
       "name": "onboarding_persisted",
       "status": "PASS",
-      "ms": 72
+      "ms": 82
     },
     {
       "name": "baseline_xp_streak",
       "status": "PASS",
-      "ms": 98
+      "ms": 106
     },
     {
       "name": "mission_generated",
       "status": "PASS",
-      "ms": 212
+      "ms": 72
     },
     {
       "name": "mission_completed",
       "status": "PASS",
-      "ms": 112
+      "ms": 78
     },
     {
       "name": "xp_awarded",
       "status": "PASS",
-      "ms": 153
+      "ms": 170
     },
     {
       "name": "streak_increased",
       "status": "PASS",
-      "ms": 97
+      "ms": 60
     },
     {
       "name": "coach_opened",
       "status": "PASS",
-      "ms": 563
+      "ms": 508
     },
     {
       "name": "chat_created",
       "status": "PASS",
-      "ms": 131
+      "ms": 118
     },
     {
       "name": "realtime_subscribed",
       "status": "PASS",
-      "ms": 1826
+      "ms": 2253
     },
     {
       "name": "message_sent",
       "status": "PASS",
-      "ms": 51
+      "ms": 61
     },
     {
       "name": "realtime_delivered",
       "status": "PASS",
-      "ms": 334
+      "ms": 406
     },
     {
       "name": "message_persisted",
       "status": "PASS",
-      "ms": 55
+      "ms": 49
     },
     {
       "name": "memory_saved",
       "status": "PASS",
-      "ms": 50
+      "ms": 70
     },
     {
       "name": "memory_retrieved",
       "status": "PASS",
-      "ms": 40
+      "ms": 54
     },
     {
       "name": "profile_generated",
       "status": "PASS",
-      "ms": 507
+      "ms": 377
     },
     {
       "name": "profile_persisted",
       "status": "PASS",
-      "ms": 51
+      "ms": 67
     },
     {
       "name": "dashboard_persisted_after_refresh",
       "status": "PASS",
-      "ms": 873
+      "ms": 710
     },
     {
       "name": "mission_xp_streak_persisted",
       "status": "PASS",
-      "ms": 349
+      "ms": 216
     },
     {
       "name": "logged_out",
       "status": "PASS",
-      "ms": 2347
+      "ms": 330
     },
     {
       "name": "logged_back_in",
       "status": "PASS",
-      "ms": 2299
+      "ms": 1595
     },
     {
       "name": "state_survives_relogin",
       "status": "PASS",
-      "ms": 538
+      "ms": 169
     },
     {
       "name": "subscription_state",
       "status": "PASS",
-      "ms": 51
+      "ms": 53
     },
     {
       "name": "no_console_errors",
       "status": "PASS",
-      "ms": 6
+      "ms": 3
     },
     {
       "name": "no_network_failures",
       "status": "PASS",
-      "ms": 1
+      "ms": 2
     }
   ]
 }
