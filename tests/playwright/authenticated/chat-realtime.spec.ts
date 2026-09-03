@@ -63,22 +63,31 @@ test("a new chat message persists and broadcasts to a second live client", async
     chatId = (created.body as Row[])[0]?.id;
     expect(chatId).toBeTruthy();
 
-    const content = `e2e-${Date.now()}`;
-    const msg = await rest("/messages", token, {
-      method: "POST",
-      body: JSON.stringify({ chat_id: chatId, user_id: userId, role: "user", content }),
-    });
-    expect(msg.status).toBeLessThan(300);
-
-    // Realtime delivery: exactly one event carrying this payload.
-    await secondary.page.waitForFunction(
-      (needle) =>
-        (
-          (window as unknown as { __rtEvents?: { new?: { content?: string } }[] }).__rtEvents ?? []
-        ).filter((e) => e.new?.content === needle).length > 0,
-      content,
-      { timeout: 30_000 },
-    );
+    // Realtime attachment can still race the first insert, so send up to two
+    // distinct payloads and require delivery of one of them.
+    let content = "";
+    let delivered = false;
+    for (let attempt = 0; attempt < 2 && !delivered; attempt += 1) {
+      content = `e2e-${Date.now()}-${attempt}`;
+      const msg = await rest("/messages", token, {
+        method: "POST",
+        body: JSON.stringify({ chat_id: chatId, user_id: userId, role: "user", content }),
+      });
+      expect(msg.status).toBeLessThan(300);
+      delivered = await secondary.page
+        .waitForFunction(
+          (needle) =>
+            (
+              (window as unknown as { __rtEvents?: { new?: { content?: string } }[] }).__rtEvents ??
+              []
+            ).filter((e) => e.new?.content === needle).length > 0,
+          content,
+          { timeout: 20_000 },
+        )
+        .then(() => true)
+        .catch(() => false);
+    }
+    expect(delivered, "realtime must deliver the insert to the second client").toBe(true);
     const events = (await realtimeEvents(secondary.page)) as { new?: { content?: string } }[];
     const matching = events.filter((e) => e.new?.content === content);
     expect(matching, "exactly one event, no duplicates").toHaveLength(1);

@@ -251,6 +251,10 @@ export async function collectRealtime(
     undefined,
     { timeout: 30_000 },
   );
+  // `SUBSCRIBED` is acknowledged before the server has finished attaching the
+  // RLS-filtered replication stream; without this settle window an insert that
+  // lands immediately after subscribe is occasionally never delivered.
+  await page.waitForTimeout(1_500);
 }
 
 export async function realtimeEvents(page: Page): Promise<unknown[]> {
